@@ -118,7 +118,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>/</Name>
+          <Name>楾?</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -155,93 +155,62 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>580</LineNumber>
+          <LineNumber>46</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134221992</Address>
+          <Address>134229102</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Src/freertos.c</Filename>
+          <Filename>.\myuser\my_exit.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\L4_master_v16\../Src/freertos.c\580</Expression>
+          <Expression>\\L4_master_v16\myuser/my_exit.c\46</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>577</LineNumber>
+          <LineNumber>631</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134221966</Address>
+          <Address>134221422</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Src/freertos.c</Filename>
+          <Filename>.\myuser\my_cc1101.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\L4_master_v16\../Src/freertos.c\577</Expression>
+          <Expression>\\L4_master_v16\myuser/my_cc1101.c\631</Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>601</LineNumber>
+          <LineNumber>678</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
+          <Address>134221550</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>../Src/freertos.c</Filename>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\myuser\my_cc1101.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression></Expression>
-        </Bp>
-        <Bp>
-          <Number>3</Number>
-          <Type>0</Type>
-          <LineNumber>604</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>../Src/freertos.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\L4_master_v16\myuser/my_cc1101.c\678</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>htim7,0x0A</ItemText>
+          <ItemText>GPIO_Pin</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>my_cc,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>2</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>my_wave_record_sec2,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>my_os_count1</ItemText>
-        </Ww>
-        <Ww>
-          <count>4</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>my_os_count1 % (my_DAC_cyc_time),0x0A</ItemText>
+          <ItemText>EXIT_dianliu_Pin</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
