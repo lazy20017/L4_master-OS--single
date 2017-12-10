@@ -629,7 +629,7 @@ void CC1101SendPacket_add( INT8U *txbuffer, INT8U size, TX_DATA_MODE mode, INT8U
     //xSemaphoreTake(myMutex01Handle,3000);
 
     HAL_NVIC_DisableIRQ(EXIT_CC_IRQ_GD0); //关闭中断，不产生发射中断
-    //HAL_NVIC_DisableIRQ(EXIT_jiedi_EXTI_IRQn);
+    HAL_NVIC_DisableIRQ(EXIT_jiedi_EXTI_IRQn);
     //载波监听
     kk = 0;
     while(my_fun_CC1101_re_CCA_status() == 1)
@@ -708,8 +708,9 @@ void CC1101SendPacket_add( INT8U *txbuffer, INT8U size, TX_DATA_MODE mode, INT8U
     __HAL_GPIO_EXTI_CLEAR_IT(PIN_CC_IRQ); //这个可以清除外部中断，每个中断的清除函数都不一样，需要分别调用
     HAL_NVIC_EnableIRQ(EXIT_CC_IRQ_GD0); //---------开启接收中断
 
-    //__HAL_GPIO_EXTI_CLEAR_IT(EXIT_jiedi_Pin);
-    //HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn);
+    __HAL_GPIO_EXTI_CLEAR_IT(EXIT_jiedi_EXTI_IRQn);
+		__HAL_GPIO_EXTI_CLEAR_FLAG(EXIT_jiedi_EXTI_IRQn);
+    HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn);
     my_cc_Efied_count = 1;
 
     //xSemaphoreGive(myMutex01Handle);

@@ -768,7 +768,7 @@ uint8_t fun_Judege_It_cache3(void)
 //	  double my_all_current_aver1[4]= {0};
     double my_all_current_aver2[8] = {0};
 
-    double my_half_current_aver1[4] = {0};
+    double my_half_current_aver1[4] = {0}; //故障前4个半波
     double my_half_current_aver2[8] = {0}; //半波ADC采样后转换后得到的电流值
     double my_E_fild_aver0 = 0;
     //double my_E_fild_aver1[4]= {0};
@@ -778,14 +778,14 @@ uint8_t fun_Judege_It_cache3(void)
     uint8_t ii = 0, jj = 0;
     //全波对应有效电流值
     //my_all_current_aver0=(WAVE_all_ave_Current3[0][1]+WAVE_all_ave_Current3[1][1]+WAVE_all_ave_Current3[2][1]+WAVE_all_ave_Current3[3][1])/4.0;
-    my_all_current_aver0 = WAVE_all_ave_Current3[0][1];
+    my_all_current_aver0 = WAVE_all_ave_Current3[0][1]; //故障前，第一个全波的值
 
     printf("wave0 aver0=%.2f\r\n", my_all_current_aver0);
-    //my_all_current_aver0=(my_all_current_aver0-1.2)/V_cell;//故障时刻前的4个周期的平均有效电流值
+    //my_all_current_aver0=(my_all_current_aver0-1.2)/V_cell;//故障前，的4个周期的平均有效电流值
     for(ii = 0; ii < 4; ii++)
     {
 //			my_all_current_aver1[ii]=WAVE_all_ave_Current3[ii][1];
-        my_half_current_aver1[ii] = WAVE_half_ave_Current3[ii][1];
+        my_half_current_aver1[ii] = WAVE_half_ave_Current3[ii][1]; //故障前4个周期
 //			my_E_fild_aver1[ii]=WAVE_all_ave_E_Field3[ii][1];
     }
 
@@ -809,13 +809,13 @@ uint8_t fun_Judege_It_cache3(void)
         my_cmpar_value[0][jj] = (my_all_current_aver2[jj] - my_all_current_aver0); //后8个周期的每个周期的电流值，减去故障前的平均值
         if(my_cmpar_value[0][jj] < 0) my_cmpar_value[0][jj] = 0;
 
-        my_cmpar_value[1][jj] = (my_E_fild_aver2[jj] - my_E_fild_aver0); //后8个周期，减去前4个周期的平均值
+        my_cmpar_value[1][jj] = (my_E_fild_aver2[jj] - my_E_fild_aver0); //后8个周期，减去前4个周期的平均值，电场值
 
-        printf("cmpar=%.2f\r\n", my_cmpar_value[0][jj]);
+        printf("cmpar=%.2f\r\n", my_cmpar_value[0][jj]); //电流差值
     }
 
     //电流和电场变化次数记录
-    my_short_circuit_count = 0;
+    my_short_circuit_count = 0; //短路电流大于门限，次数
     my_after_short_stop_count1 = 0;
     my_after_stop1_normal_count = 0;
     my_after_short_stop_count2 = 0;
@@ -1035,13 +1035,15 @@ uint8_t fun_Judege_It_end(void)
 
 #if Debug_Usart_OUT_WAVE_End_Just_Interupt==1
     printf("  I=[%XH],  E=[%XH]\r\n", my_Fault_Current_End_Status, my_Fault_E_Fild_End_Status);
-    printf("500ms前有电=%d,短路前停电=%d,短路=%d,短路后停电1=%d,停电1后正常=%d,正常后停电2=%d\r\n",
+    //printf("500ms  短路前有电=%d, 前停电=%d, 短路=%d, 短路后停电=%d, 停电后正常=%d, 正常后停电=%d\r\n",
+		  printf("500ms  frontX_A=%d, frontX_NOA=%d, short_circurt=%d, afterX_NOA=%d, afterNOA_normal=%d, afternorm_NOA=%d\r\n",
            my_befor_500ms_normal_count,
            my_befor_short_stop_count,
            my_short_circuit_count,
            my_after_short_stop_count1,
            my_after_stop1_normal_count,
            my_after_short_stop_count2);
+		printf("短路前有电A, 短路前停电B, 短路C, 短路后停电D, 停电后正常E, 正常后停电F\n");
 
 #endif
 
@@ -1080,7 +1082,7 @@ void my_fun_wave_rec(void)
 uint8_t my_fun_current_exit_just(void)
 {
     my_IT_Count++; //调用中断故障判断程序次数统计
-    USART_printf(&huart2, "---interrupt count=%d\n", my_IT_Count);
+    USART_printf(&huart2, "---just interrupt count=%d-----\n", my_IT_Count);
     uint8_t temp8 = 0;
     //1.中断事件处理
     if(my_IT_status == 0 && (my_Current_exit_Status == 1 || my_E_Field_exit_Status == 1))

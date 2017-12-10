@@ -276,7 +276,7 @@ void StartTask02(void const * argument)
         my_fun_CC1101_time_dialog_tx2(my_step, 0xF600, 0xF700, 0, my_fun_CC1101_test1);
         my_fun_CC1101_time_dialog_tx2(my_step, 0xF800, 0xF900, 1, my_fun_CC1101_test1);
 				//=====主动发送心跳帧
-				my_fun_CC1101_time_dialog_tx2(my_step, 0x0000, 0x00E0, 0, my_fun_TX_CC1101_heart);
+				my_fun_CC1101_time_dialog_tx2(my_step, 0x0000, 0x00E0, 0, my_fun_TX_CC1101_heart);  //心跳
 
         //=====2 发送周期数据		
 				my_fun_CC1101_time_dialog_tx2(my_step, 0x0000, 0x0001, 0, my_fun_TX_CC1101_test0);//遥信
@@ -284,7 +284,7 @@ void StartTask02(void const * argument)
         my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0041, 0, my_fun_TX_CC1101_test2);//AC有效值
         my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0042, 0, my_fun_TX_CC1101_test3);//AC12T
 				if(my_use_cyc_rec_data_status==1)
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0043, 0, my_fun_TX_CC1101_test4);
+        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0043, 0, my_fun_TX_CC1101_test4);//录波
 
         //====1 发送报警数据
         my_fun_CC1101_time_dialog_tx2(my_step, 0x0000, 0x0002, 0, my_fun_TX_CC1101_test0); //遥信
@@ -293,6 +293,9 @@ void StartTask02(void const * argument)
         my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0052, 0, my_fun_TX_CC1101_test3); //遥测12TAC
 				if(my_use_alarm_rec_data_status==1)
         my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0053, 0, my_fun_TX_CC1101_test4); //录波
+				
+				//======3 参数设置部分
+				
 				
 
         //LED2_TOGGLE;
@@ -351,10 +354,7 @@ void StartTask03(void const * argument)
         //======  报警接收  ==
         my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0002, 0x2000, 0x0050, 0, my_fun_RX_CC1101_text0_RX_OK);
         my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0050, 0x2000, 0x0051, 0, my_fun_RX_CC1101_text0_RX_OK);
-        my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0051, 0x2000, 0x0052, 0, my_fun_RX_CC1101_text0_RX_OK);
-        //my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0052, 0x2000, 0x0053, 0, my_fun_RX_CC1101_text0_RX_OK);
-        //my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0053, 0x2000, 0x0000, 1, my_fun_RX_CC1101_text0_RX_OK);
-				
+        my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0051, 0x2000, 0x0052, 0, my_fun_RX_CC1101_text0_RX_OK);		
 				if(my_use_alarm_rec_data_status==1)
 				{
 				my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0052, 0x2000, 0x0053, 0, my_fun_RX_CC1101_text0_RX_OK);

@@ -54,9 +54,7 @@ void HAL_GPIO_EXTI_Callback ( uint16_t GPIO_Pin)
 #if ADC_interrupt_data==1
         my_PA00_count++; //记录中断次数
 			  if(my_sys_start_status==1) return;
-       // if(my_PA00_count==1) return;
-      //  else if(my_PA00_count>=0xFFFF)my_PA00_count=1;
-
+      
         if(my_Current_exit_Status==0) //如果已经进入过1次中断，在处理完成之前，防止重复进入
         {
             my_Current_exit_Status=1;  //电流中断
@@ -72,7 +70,7 @@ void HAL_GPIO_EXTI_Callback ( uint16_t GPIO_Pin)
             my_dianliu_exit_add=my_add1;
 
 
-            printf("\n exit PA0,i_interrup=%d\n",my_PA00_count);
+            printf("\n ==电流中断==exit PA0,I_interrup=%d=====\n",my_PA00_count);
 
             //发送状态标识0X01，到状态标识组中,PA1
             xResult=	xEventGroupSetBitsFromISR(xCreatedEventGroup2, 0X01,&xHigherPriorityTaskWoken);
@@ -97,17 +95,10 @@ void HAL_GPIO_EXTI_Callback ( uint16_t GPIO_Pin)
 #if ADC_interrupt_data==1
         my_PA01_count++; //记录中断次数
 			  if(my_sys_start_status==1) return;
-			
+			  printf("==enter E_Interrupt==%d\n",my_PA01_count);
 				printf("==efild exit==CC1101_all_step=[%XH],A_EXIT_status=%d,E_exit_status=%d,cyc_exit_status=%d\n",
 			  my_CC1101_all_step,my_E_Field_exit_Status,my_Current_exit_Status,my_Time_Cyc_exit_Status);
-			  //LED1_TOGGLE;
-				//LED2_TOGGLE;
-				//LED3_TOGGLE;
-				//LED4_TOGGLE;
-        
-			//	if(my_PA01_count==1) return;
-      //  else if(my_PA01_count>=0xFFFF)my_PA01_count=1;
-
+			 
         if(my_E_Field_exit_Status==0) //如果已经进入过1次中断，在处理完成之前，防止重复进入
         {
             my_E_Field_exit_Status=1;  //电流中断
@@ -123,7 +114,7 @@ void HAL_GPIO_EXTI_Callback ( uint16_t GPIO_Pin)
             my_dianliu_exit_add=my_add1;
             my_E_Field_exit_add=my_dianliu_exit_add;
 
-            printf("\n exit PA1,E_interrup=%d\n",my_PA01_count);
+            printf("\n ==电场中断==exit PA1,E_interrup=%d====\n",my_PA01_count);
 
             //发送状态标识0X01，到状态标识组中,PA1
             xResult=	xEventGroupSetBitsFromISR(xCreatedEventGroup2, 0X01,&xHigherPriorityTaskWoken);

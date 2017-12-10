@@ -3,7 +3,7 @@
 <title>Static Call Graph - [L4_master_v16\L4_master_v16.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image L4_master_v16\L4_master_v16.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Wed Nov 29 15:59:34 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Sun Dec 10 19:58:59 2017
 <BR><P>
 <H3>Maximum Stack Usage =        728 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -819,7 +819,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101Init
 </UL>
 
-<P><STRONG><a name="[a5]"></a>CC1101SendPacket_add</STRONG> (Thumb, 228 bytes, Stack size 24 bytes, my_cc1101.o(i.CC1101SendPacket_add))
+<P><STRONG><a name="[a5]"></a>CC1101SendPacket_add</STRONG> (Thumb, 246 bytes, Stack size 24 bytes, my_cc1101.o(i.CC1101SendPacket_add))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = CC1101SendPacket_add &rArr; my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
@@ -1225,7 +1225,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;STMFLASH_Write
 </UL>
 
-<P><STRONG><a name="[cd]"></a>HAL_GPIO_EXTI_Callback</STRONG> (Thumb, 414 bytes, Stack size 32 bytes, my_exit.o(i.HAL_GPIO_EXTI_Callback))
+<P><STRONG><a name="[cd]"></a>HAL_GPIO_EXTI_Callback</STRONG> (Thumb, 424 bytes, Stack size 32 bytes, my_exit.o(i.HAL_GPIO_EXTI_Callback))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = HAL_GPIO_EXTI_Callback &rArr; CC1101GetRXCnt &rArr; CC1101ReadStatus &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
@@ -2211,7 +2211,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_current_exit_just
 </UL>
 
-<P><STRONG><a name="[14c]"></a>fun_Judege_It_end</STRONG> (Thumb, 566 bytes, Stack size 16 bytes, my_wave_rec.o(i.fun_Judege_It_end))
+<P><STRONG><a name="[14c]"></a>fun_Judege_It_end</STRONG> (Thumb, 572 bytes, Stack size 16 bytes, my_wave_rec.o(i.fun_Judege_It_end))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = fun_Judege_It_end &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
@@ -2598,52 +2598,46 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Callback01
 </UL>
 
-<P><STRONG><a name="[62]"></a>my_fun_TX_CC1101_heart</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, my_os.o(i.my_fun_TX_CC1101_heart))
+<P><STRONG><a name="[62]"></a>my_fun_TX_CC1101_heart</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, my_os.o(i.my_fun_TX_CC1101_heart))
 <BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = my_fun_TX_CC1101_heart &rArr; my_fun_101_send_short_data &rArr; my_fun_CC1101_send_long_data &rArr; CC1101SendPacket_add &rArr; my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_give_Queue
-<LI><a href="#[15d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_101_send_short_data
+<BR>[Calls]<UL><LI><a href="#[15d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_101_send_short_data
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.StartTask02)
 </UL>
-<P><STRONG><a name="[63]"></a>my_fun_TX_CC1101_test0</STRONG> (Thumb, 56 bytes, Stack size 8 bytes, my_os.o(i.my_fun_TX_CC1101_test0))
+<P><STRONG><a name="[63]"></a>my_fun_TX_CC1101_test0</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, my_os.o(i.my_fun_TX_CC1101_test0))
 <BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = my_fun_TX_CC1101_test0 &rArr; my_fun_101send_Alarm_status_data &rArr; my_fun_101_send_long_data &rArr; my_fun_CC1101_send_long_data &rArr; CC1101SendPacket_add &rArr; my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_give_Queue
-<LI><a href="#[161]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_101send_Alarm_status_data
+<BR>[Calls]<UL><LI><a href="#[161]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_101send_Alarm_status_data
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.StartTask02)
 </UL>
-<P><STRONG><a name="[64]"></a>my_fun_TX_CC1101_test1</STRONG> (Thumb, 62 bytes, Stack size 8 bytes, my_os.o(i.my_fun_TX_CC1101_test1))
+<P><STRONG><a name="[64]"></a>my_fun_TX_CC1101_test1</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, my_os.o(i.my_fun_TX_CC1101_test1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = my_fun_TX_CC1101_test1 &rArr; my_fun_101send_DC_data &rArr; my_fun_101_send_long_data &rArr; my_fun_CC1101_send_long_data &rArr; CC1101SendPacket_add &rArr; my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[151]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_adc_1_convert_dis
-<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_give_Queue
 <LI><a href="#[162]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_101send_DC_data
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.StartTask02)
 </UL>
-<P><STRONG><a name="[65]"></a>my_fun_TX_CC1101_test2</STRONG> (Thumb, 56 bytes, Stack size 8 bytes, my_os.o(i.my_fun_TX_CC1101_test2))
+<P><STRONG><a name="[65]"></a>my_fun_TX_CC1101_test2</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, my_os.o(i.my_fun_TX_CC1101_test2))
 <BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = my_fun_TX_CC1101_test2 &rArr; my_fun_101send_AC_data &rArr; my_fun_101_send_long_data &rArr; my_fun_CC1101_send_long_data &rArr; CC1101SendPacket_add &rArr; my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_give_Queue
-<LI><a href="#[160]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_101send_AC_data
+<BR>[Calls]<UL><LI><a href="#[160]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_101send_AC_data
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.StartTask02)
 </UL>
-<P><STRONG><a name="[66]"></a>my_fun_TX_CC1101_test3</STRONG> (Thumb, 56 bytes, Stack size 8 bytes, my_os.o(i.my_fun_TX_CC1101_test3))
+<P><STRONG><a name="[66]"></a>my_fun_TX_CC1101_test3</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, my_os.o(i.my_fun_TX_CC1101_test3))
 <BR><BR>[Stack]<UL><LI>Max Depth = 376<LI>Call Chain = my_fun_TX_CC1101_test3 &rArr; my_fun_101send_AC12T_Cyc_data &rArr; my_fun_101_send_long_data &rArr; my_fun_CC1101_send_long_data &rArr; CC1101SendPacket_add &rArr; my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_give_Queue
-<LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_101send_AC12T_Cyc_data
+<BR>[Calls]<UL><LI><a href="#[15e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_101send_AC12T_Cyc_data
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.StartTask02)
 </UL>
-<P><STRONG><a name="[67]"></a>my_fun_TX_CC1101_test4</STRONG> (Thumb, 100 bytes, Stack size 8 bytes, my_os.o(i.my_fun_TX_CC1101_test4))
+<P><STRONG><a name="[67]"></a>my_fun_TX_CC1101_test4</STRONG> (Thumb, 90 bytes, Stack size 8 bytes, my_os.o(i.my_fun_TX_CC1101_test4))
 <BR><BR>[Stack]<UL><LI>Max Depth = 360<LI>Call Chain = my_fun_TX_CC1101_test4 &rArr; my_fun_101send_AC_Rec_data &rArr; my_fun_101_send_long_data &rArr; my_fun_CC1101_send_long_data &rArr; CC1101SendPacket_add &rArr; my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_give_Queue
-<LI><a href="#[15f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_101send_AC_Rec_data
+<BR>[Calls]<UL><LI><a href="#[15f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_101send_AC_Rec_data
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.StartTask02)
 </UL>
@@ -2684,12 +2678,6 @@ Global Symbols
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback2
-<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_TX_CC1101_test4
-<LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_TX_CC1101_test3
-<LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_TX_CC1101_test2
-<LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_TX_CC1101_test1
-<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_TX_CC1101_test0
-<LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_TX_CC1101_heart
 <LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Callback01
 </UL>
 

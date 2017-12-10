@@ -98,35 +98,9 @@ void my_fun_Set_DAC_I_ref(void)
     //printf("\r\n",MY_VDD);
     printf("DAC_Rise_i=[%.2f]_A,OUT_V=[%.2f]_V,MY_VDD=%.2f\n",temp_i,my_dac1_channel1_data_i/4096.0*3.3,MY_VDD); //*=*=
 #endif
-
-		
+	
 		 //电场值
 		 my_fun_DAC_evref_auto_ajust();
-
-//    //计算电场DA 值
-//    temp_e=temp_e*0.01;
-//    temp_e=0;
-//    temp_e=(temp_e+my_5A_ref_int);
-
-//    temp_e=temp_e*1.414; //最大值
-
-//    if(temp_e>100)
-//        my_temp_16=(temp_e-my_adjust_300_b)/(my_adjust_300_a*my_all_a_adjust)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
-//    else
-//        my_temp_16=(temp_e-my_adjust_100_b)/(my_adjust_100_a*my_all_a_adjust)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
-
-//    //my_dac1_channel2_data_e=my_temp_16;
-//		my_12v_int=(1.32)/3.3*4096;
-//    my_dac1_channel2_data_e =  my_temp_16 +  my_12v_int;//加上抬升的值
-//    //my_dac1_channel2_data_e=62;//@@@
-
-//    HAL_DAC_SetValue(&hdac1, DAC_CHANNEL_2, DAC_ALIGN_12B_R, my_dac1_channel2_data_e); //设置数字量
-//#if Debug_Usart_out_DAC_normal_data==1
-//    printf("DAC2_Rise_i=[%.2f]_A,OUT_V=[%.2f]_V \n",temp_e,(my_temp_16*1.0/4096*MY_VDD+1.32)); //*=*=
-//    //printf("DAC2_Rise_i=[%.2f]_A,OUT_V=[%.2f]_V \n",temp_e,(my_temp_16*1.0/4096*MY_VDD)); //*=*=
-//#endif
-
-
 }
 
 /*
@@ -134,7 +108,7 @@ void my_fun_Set_DAC_I_ref(void)
 
 */
 double my_adjust_value_V=0.00;
-double my_counst_value=0.04*1.414;// 电场参考电压的恒定偏差，0.004对应1A电流，
+double my_counst_value=0.02*1.414;// 电场参考电压的恒定偏差，0.004对应1A电流，小于0.04V就频繁进中断，默认设置0.04
 void my_fun_DAC_evref_auto_ajust(void)
 {
 		double temp_i = 0, temp_e = 0;

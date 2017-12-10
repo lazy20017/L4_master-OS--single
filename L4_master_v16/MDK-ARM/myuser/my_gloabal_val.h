@@ -50,7 +50,7 @@
 
 //OS_CC1101_Test
 #define USE_CC1101_PWR_ON_STATUS  1  //1给CC1101供电，0为不供电
-#define OS_CC1101_auto_reveive_OK 1 //OS调试使用，CC1101发送数据后，模拟收到OK帧
+#define OS_CC1101_auto_reveive_OK 0 //OS调试使用，CC1101发送数据后，模拟收到OK帧
 #define OS_heap_high_water_data 1 //OS调试串口显示，每个函数剩余的堆栈区数量@@@，1为显示，0为不显示
 
 //录波数据显示
