@@ -49,9 +49,11 @@
 
 
 //OS_CC1101_Test
-#define USE_CC1101_PWR_ON_STATUS  1  //1给CC1101供电，0为不供电
+
 #define OS_CC1101_auto_reveive_OK 0 //OS调试使用，CC1101发送数据后，模拟收到OK帧
+#define OS_CC1101_ZSQ_Monidata 1  //指示器产生模拟数据给DTU
 #define OS_heap_high_water_data 1 //OS调试串口显示，每个函数剩余的堆栈区数量@@@，1为显示，0为不显示
+#define USE_CC1101_PWR_ON_STATUS  1  //1给CC1101供电，0为不供电
 
 //录波数据显示
 #define Debug_Usart_OUT_WAVE_12T_Interupt 1 // 3级缓冲，1为显示，故障录波时，4+8=12的中断故障录波的,12个周期的数据的有效值

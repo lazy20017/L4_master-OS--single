@@ -108,7 +108,7 @@ void my_fun_Set_DAC_I_ref(void)
 
 */
 double my_adjust_value_V=0.00;
-double my_counst_value=0.02*1.414;// 电场参考电压的恒定偏差，0.004对应1A电流，小于0.04V就频繁进中断，默认设置0.04
+double my_counst_value=0.04*1.414;// 电场参考电压的恒定偏差，0.004对应1A电流，小于0.04V就频繁进中断，默认设置0.04
 void my_fun_DAC_evref_auto_ajust(void)
 {
 		double temp_i = 0, temp_e = 0;

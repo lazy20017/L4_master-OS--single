@@ -166,29 +166,29 @@ void my_fun_101send_DC_data(UART_HandleTypeDef* USARTx, uint8_t my_status, uint8
 
 
 
-    if(my_status >= 1)
-    {
-        for(ii = 0; ii < ADC1_COLM; ii++)
-        {   
-					  if(my_sys_start_status==0)
-						{
-						temp = ADC1_GetValue_Aver[ii]; //直流数据，采样值，未进行转换
-						}
-						else
-						{
-							temp=0x11; //指示器重新启动标识						
-						}
-            my_data[2 * ii] = temp;
-            my_data[2 * ii + 1] = (temp >> 8) & 0x00FF;
+//    if(my_status >= 1)
+//    {
+//        for(ii = 0; ii < ADC1_COLM; ii++)
+//        {   
+//					  if(my_sys_start_status==0)
+//						{
+//						temp = ADC1_GetValue_Aver[ii]; //直流数据，采样值，未进行转换
+//						}
+//						else
+//						{
+//							temp=0x11; //指示器重新启动标识						
+//						}
+//            my_data[2 * ii] = temp;
+//            my_data[2 * ii + 1] = (temp >> 8) & 0x00FF;
 
-        }
-				my_sys_start_status=0;
-        my_fun_101_send_long_data(USARTx, my_contorl_byte + 1, my_data, ADC1_COLM * 2, ADDRESS_CHECK, my_CC1101_dest_address); //发送ADC采样整数值
+//        }
+//				my_sys_start_status=0;
+//        my_fun_101_send_long_data(USARTx, my_contorl_byte + 1, my_data, ADC1_COLM * 2, ADDRESS_CHECK, my_CC1101_dest_address); //发送ADC采样整数值
 
-    }
+//    }
 
 
-//发送转换后的数据
+//发送转换后的数据******
     for(ii = 0; ii < ADC1_COLM; ii++)  //1温度、2电源、3参考电压、4干电池、5线上电压、6太阳能、7锂电池
     {   
 			if(my_sys_start_status==0)
@@ -204,6 +204,22 @@ void my_fun_101send_DC_data(UART_HandleTypeDef* USARTx, uint8_t my_status, uint8
 			
 
     }
+		
+		//模拟数据
+		#if OS_CC1101_ZSQ_Monidata==1
+		for(ii = 0; ii < ADC1_COLM; ii++)  //1温度、2电源、3参考电压、4干电池、5线上电压、6太阳能、7锂电池
+    {   
+			
+				my_data[2 * ii] = 2*ii;
+        my_data[2 * ii + 1] = 2*ii+1;
+			
+
+    }
+		
+		
+		#endif
+		
+		
 		my_sys_start_status=0;
     my_fun_101_send_long_data(USARTx, my_contorl_byte, my_data, ADC1_COLM * 2, ADDRESS_CHECK, my_CC1101_dest_address); //发送转换后的结果
 }
@@ -219,17 +235,19 @@ void my_fun_101send_AC_data(UART_HandleTypeDef* USARTx, uint8_t my_status, uint8
     uint16_t temp = 0;
     //周期值
 
-    if(my_status >= 1)
-    {
-        for(ii = 0; ii < ADC2_COLM; ii++)
-        {
-            temp = ADC2_Filer_value_buf_1[ii][1];  //采样值，0平均值，1有效值，2最大值
-            my_data[2 * ii] = temp;
-            my_data[2 * ii + 1] = (temp >> 8) & 0x00FF;
+//    if(my_status >= 1)
+//    {
+//        for(ii = 0; ii < ADC2_COLM; ii++)
+//        {
+//            temp = ADC2_Filer_value_buf_1[ii][1];  //采样值，0平均值，1有效值，2最大值
+//            my_data[2 * ii] = temp;
+//            my_data[2 * ii + 1] = (temp >> 8) & 0x00FF;
 
-        }
-        my_fun_101_send_long_data(USARTx, my_contorl_byte + 1, my_data, ADC2_COLM * 2, ADDRESS_CHECK, my_CC1101_dest_address); //发送ADC采样整数值
-    }
+//        }
+//        my_fun_101_send_long_data(USARTx, my_contorl_byte + 1, my_data, ADC2_COLM * 2, ADDRESS_CHECK, my_CC1101_dest_address); //发送ADC采样整数值
+//    }
+		
+		
     //=============
     if(my_contorl_byte == 0X41)
     {
@@ -250,7 +268,11 @@ void my_fun_101send_AC_data(UART_HandleTypeDef* USARTx, uint8_t my_status, uint8
 
         }
     }
-
+    //模拟数据
+		#if OS_CC1101_ZSQ_Monidata==1
+						my_data[2 * ii] = 2 * ii;
+            my_data[2 * ii + 1] = 2 * ii + 1;		
+		#endif
 
 
     my_fun_101_send_long_data(USARTx, my_contorl_byte, my_data, ADC2_COLM * 2, ADDRESS_CHECK, my_CC1101_dest_address); //发送转换后的结果
@@ -268,32 +290,32 @@ void my_fun_101send_AC12T_Cyc_data(UART_HandleTypeDef* USARTx, uint8_t my_status
 
 
 
-    if(my_status >= 1)
-    {
-        for(ii = 0; ii < 12; ii++)
-        {
-            temp = WAVE_all_ave_Current1[ii][1];
-            my_data[2 * ii] = temp;
-            my_data[2 * ii + 1] = (temp >> 8) & 0x00FF;
+//    if(my_status >= 1)
+//    {
+//        for(ii = 0; ii < 12; ii++)
+//        {
+//            temp = WAVE_all_ave_Current1[ii][1];
+//            my_data[2 * ii] = temp;
+//            my_data[2 * ii + 1] = (temp >> 8) & 0x00FF;
 
-        }
+//        }
 
-        for(ii = 0; ii < 12; ii++)
-        {
-            temp = (uint16_t)(WAVE_all_ave_E_Field1[ii][1] );
-            my_data[2 * ii + 24] = temp;
-            my_data[2 * ii + 1 + 24] = (temp >> 8) & 0x00FF;
+//        for(ii = 0; ii < 12; ii++)
+//        {
+//            temp = (uint16_t)(WAVE_all_ave_E_Field1[ii][1] );
+//            my_data[2 * ii + 24] = temp;
+//            my_data[2 * ii + 1 + 24] = (temp >> 8) & 0x00FF;
 
-        }
-        for(ii = 0; ii < 12; ii++)
-        {
-            temp = (uint16_t)(WAVE_half_ave_Current1[ii][1]);
-            my_data[2 * ii + 48] = temp;
-            my_data[2 * ii + 1 + 48] = (temp >> 8) & 0x00FF;
+//        }
+//        for(ii = 0; ii < 12; ii++)
+//        {
+//            temp = (uint16_t)(WAVE_half_ave_Current1[ii][1]);
+//            my_data[2 * ii + 48] = temp;
+//            my_data[2 * ii + 1 + 48] = (temp >> 8) & 0x00FF;
 
-        }
-        my_fun_101_send_long_data(USARTx, my_contorl_byte + 1, my_data, ADC2_COLM * 12 * 2, ADDRESS_CHECK, my_CC1101_dest_address); //发送ADC采样整数值
-    }
+//        }
+//        my_fun_101_send_long_data(USARTx, my_contorl_byte + 1, my_data, ADC2_COLM * 12 * 2, ADDRESS_CHECK, my_CC1101_dest_address); //发送ADC采样整数值
+//    }
 
 
     if(my_contorl_byte == 0X42) //周期
@@ -340,6 +362,31 @@ void my_fun_101send_AC12T_Cyc_data(UART_HandleTypeDef* USARTx, uint8_t my_status
 
         }
     }
+		
+		
+		 //模拟数据
+		#if OS_CC1101_ZSQ_Monidata==1
+				for(ii = 0; ii < 12; ii++)
+        {   //电流全波
+            my_data[2 * ii] = 2 * ii;
+            my_data[2 * ii + 1] = 2 * ii+1;
+
+        }
+        for(ii = 0; ii < 12; ii++)
+        {   //电场全波
+            my_data[2 * ii + 24] = 2 * ii + 24;
+            my_data[2 * ii + 1 + 24] = 2 * ii + 1 + 24;
+
+        }
+        for(ii = 0; ii < 12; ii++)
+        {   //电流半波
+            my_data[2 * ii + 48] = 2 * ii + 48;
+            my_data[2 * ii + 1 + 48] = 2 * ii + 1 + 48;
+
+        }
+		#endif
+		
+		
     my_fun_101_send_long_data(USARTx, my_contorl_byte, my_data, ADC2_COLM * 12 * 2, ADDRESS_CHECK, my_CC1101_dest_address); //发送转换后的结果
 
 
@@ -442,6 +489,24 @@ void my_fun_101send_AC_Rec_data(UART_HandleTypeDef* USARTx, uint8_t my_status, u
         }
 
     }
+		
+		#if OS_CC1101_ZSQ_Monidata==1
+		
+					for(ii = 0; ii < WAVE_number_sec2; ii++)
+        {
+            my_data[2 * ii] = 2 * ii;
+            my_data[2 * ii + 1] = 2 * ii + 1;
+        }
+		
+		
+		#endif
+		
+		
+		
+		
+		
+		
+		
 
     //测试使用
 #if Debug_Usart_OUT_WAVE_Chazhi==1
@@ -505,6 +570,12 @@ void my_fun_101send_Alarm_status_data(UART_HandleTypeDef* USARTx, uint8_t my_sta
     my_data[2] = my_Fault_E_Fild_End_Status;
     my_data[3] = (my_cyc_delay>>8);  //计时高字节
 		//my_sys_start_status=0;
+		#if OS_CC1101_ZSQ_Monidata==1
+		my_data[0] = 0X01;
+    my_data[1] = 0X02;  //计时低字节
+    my_data[2] = 0X03;
+    my_data[3] = 0X04;  //计时高字节	
+		#endif
 
     my_fun_101_send_long_data(USARTx, my_contorl_byte, my_data, 4, ADDRESS_CHECK, my_CC1101_dest_address); //发送转换后的结果，利用串口进行发送
 

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [L4_master_v16\L4_master_v16.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image L4_master_v16\L4_master_v16.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Sun Dec 10 19:58:59 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Mon Dec 11 17:21:34 2017
 <BR><P>
 <H3>Maximum Stack Usage =        728 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -811,10 +811,10 @@ Global Symbols
 <P><STRONG><a name="[99]"></a>CC1101Reset</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, my_cc1101.o(i.CC1101Reset))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = CC1101Reset &rArr; CC1101WriteCmd &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101WriteCmd
+<BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101WriteCmd
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC_CSN_LOW
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC_CSN_HIGH
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101Init
 </UL>
@@ -822,17 +822,17 @@ Global Symbols
 <P><STRONG><a name="[a5]"></a>CC1101SendPacket_add</STRONG> (Thumb, 246 bytes, Stack size 24 bytes, my_cc1101.o(i.CC1101SendPacket_add))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = CC1101SendPacket_add &rArr; my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_DisableIRQ
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101WriteReg
+<BR>[Calls]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101WriteReg
 <LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101SetTRMode
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101ReadStatus
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101ReadReg
 <LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_CC1101_re_CCA_status
 <LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101WriteMultiReg
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101ClrTXBuff
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
+<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_DisableIRQ
 </UL>
 <BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_CC1101_test1
 <LI><a href="#[15c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_CC1101_send_long_data
@@ -969,13 +969,13 @@ Global Symbols
 <P><STRONG><a name="[6e]"></a>Callback01</STRONG> (Thumb, 450 bytes, Stack size 16 bytes, freertos.o(i.Callback01))
 <BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = Callback01 &rArr; my_fun_Set_DAC_I_ref &rArr; my_fun_DAC_evref_auto_ajust &rArr; __aeabi_dsub &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; _double_round
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_give_Queue
+<BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_give_Queue
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTimerPendFunctionCallFromISR
 <LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_task_heap_value
 <LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_get_Line_stop_Efild
 <LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdrcmple
 <LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_Set_DAC_I_ref
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(.constdata)
@@ -1030,8 +1030,8 @@ Global Symbols
 <P><STRONG><a name="[b5]"></a>FLASH_WaitForLastOperation</STRONG> (Thumb, 216 bytes, Stack size 16 bytes, stm32l4xx_hal_flash.o(i.FLASH_WaitForLastOperation))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = FLASH_WaitForLastOperation
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_SetErrorCode
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
+<BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
+<LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_SetErrorCode
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FLASH_Program
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FLASHEx_Erase
@@ -1075,9 +1075,9 @@ Global Symbols
 <P><STRONG><a name="[b8]"></a>HAL_ADC_MspInit</STRONG> (Thumb, 330 bytes, Stack size 32 bytes, adc.o(i.HAL_ADC_MspInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = HAL_ADC_MspInit &rArr; HAL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Init
+<BR>[Calls]<UL><LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_Error_Handler
+<LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Init
 <LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
-<LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_Error_Handler
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_Init
 </UL>
@@ -1132,9 +1132,9 @@ Global Symbols
 <P><STRONG><a name="[c3]"></a>HAL_DAC_MspInit</STRONG> (Thumb, 84 bytes, Stack size 32 bytes, dac.o(i.HAL_DAC_MspInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = HAL_DAC_MspInit &rArr; HAL_NVIC_SetPriority &rArr; NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
-<LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
+<BR>[Calls]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
 <LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DAC_Init
 </UL>
@@ -1228,10 +1228,10 @@ Global Symbols
 <P><STRONG><a name="[cd]"></a>HAL_GPIO_EXTI_Callback</STRONG> (Thumb, 424 bytes, Stack size 32 bytes, my_exit.o(i.HAL_GPIO_EXTI_Callback))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = HAL_GPIO_EXTI_Callback &rArr; CC1101GetRXCnt &rArr; CC1101ReadStatus &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
-<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTimerPendFunctionCallFromISR
+<BR>[Calls]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xTimerPendFunctionCallFromISR
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101GetRXCnt
 <LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101ClrRXBuff
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_EXTI_IRQHandler
@@ -1275,17 +1275,17 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[8f]"></a>HAL_GetTick</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32l4xx_hal.o(i.HAL_GetTick))
-<BR><BR>[Called By]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCCEx_PeriphCLKConfig
+<BR><BR>[Called By]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_TransmitReceive
+<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_WaitFlagStateUntilTimeout
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_WaitFifoStateUntilTimeout
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
+<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Enable
+<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCCEx_PeriphCLKConfig
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCCEx_PLLSAI2_Config
 <LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCCEx_PLLSAI1_Config
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_OscConfig
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_ClockConfig
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_WaitForLastOperation
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Enable
-<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_TransmitReceive
-<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_WaitFlagStateUntilTimeout
-<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_WaitFifoStateUntilTimeout
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_EnterInitMode
 <LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RTC_WaitForSynchro
 <LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
@@ -1301,9 +1301,9 @@ Global Symbols
 <P><STRONG><a name="[ce]"></a>HAL_Init</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, stm32l4xx_hal.o(i.HAL_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = HAL_Init &rArr; HAL_InitTick &rArr; HAL_TIM_Base_Init &rArr; HAL_TIM_Base_MspInit &rArr; HAL_NVIC_SetPriority &rArr; NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriorityGrouping
-<LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_MspInit
+<BR>[Calls]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_MspInit
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_InitTick
+<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriorityGrouping
 </UL>
 <BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1311,16 +1311,16 @@ Global Symbols
 <P><STRONG><a name="[d0]"></a>HAL_InitTick</STRONG> (Thumb, 118 bytes, Stack size 48 bytes, stm32l4xx_hal_timebase_tim.o(i.HAL_InitTick))
 <BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = HAL_InitTick &rArr; HAL_TIM_Base_Init &rArr; HAL_TIM_Base_MspInit &rArr; HAL_NVIC_SetPriority &rArr; NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
+<BR>[Calls]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetPCLK2Freq
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetClockConfig
-<LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
 <LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Start_IT
 <LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Init
 </UL>
-<BR>[Called By]<UL><LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_OscConfig
+<BR>[Called By]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
+<LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_OscConfig
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_ClockConfig
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
 </UL>
 
 <P><STRONG><a name="[d1]"></a>HAL_MspInit</STRONG> (Thumb, 140 bytes, Stack size 8 bytes, stm32l4xx_hal_msp.o(i.HAL_MspInit))
@@ -1373,8 +1373,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[cf]"></a>HAL_NVIC_SetPriorityGrouping</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, stm32l4xx_hal_cortex.o(i.HAL_NVIC_SetPriorityGrouping))
-<BR><BR>[Called By]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
-<LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_MspInit
+<BR><BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_MspInit
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
 </UL>
 
 <P><STRONG><a name="[139]"></a>HAL_PWREx_ControlVoltageScaling</STRONG> (Thumb, 128 bytes, Stack size 0 bytes, stm32l4xx_hal_pwr_ex.o(i.HAL_PWREx_ControlVoltageScaling))
@@ -1388,9 +1388,9 @@ Global Symbols
 <P><STRONG><a name="[d8]"></a>HAL_RCCEx_PeriphCLKConfig</STRONG> (Thumb, 1158 bytes, Stack size 32 bytes, stm32l4xx_hal_rcc_ex.o(i.HAL_RCCEx_PeriphCLKConfig))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLLSAI2_Config
 </UL>
-<BR>[Calls]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCCEx_PLLSAI2_Config
+<BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
+<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCCEx_PLLSAI2_Config
 <LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCCEx_PLLSAI1_Config
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
 <BR>[Called By]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
@@ -1398,9 +1398,9 @@ Global Symbols
 <P><STRONG><a name="[db]"></a>HAL_RCC_ClockConfig</STRONG> (Thumb, 470 bytes, Stack size 16 bytes, stm32l4xx_hal_rcc.o(i.HAL_RCC_ClockConfig))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = HAL_RCC_ClockConfig &rArr; HAL_InitTick &rArr; HAL_TIM_Base_Init &rArr; HAL_TIM_Base_MspInit &rArr; HAL_NVIC_SetPriority &rArr; NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetSysClockFreq
+<BR>[Calls]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_InitTick
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
-<LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_InitTick
+<LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetSysClockFreq
 </UL>
 <BR>[Called By]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
@@ -1410,10 +1410,10 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[de]"></a>HAL_RCC_GetHCLKFreq</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32l4xx_hal_rcc.o(i.HAL_RCC_GetHCLKFreq))
-<BR><BR>[Called By]<UL><LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetPCLK2Freq
-<LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetPCLK1Freq
-<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR><BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
+<LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetPCLK2Freq
+<LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetPCLK1Freq
 </UL>
 
 <P><STRONG><a name="[dd]"></a>HAL_RCC_GetPCLK1Freq</STRONG> (Thumb, 36 bytes, Stack size 4 bytes, stm32l4xx_hal_rcc.o(i.HAL_RCC_GetPCLK1Freq))
@@ -1436,19 +1436,19 @@ Global Symbols
 <P><STRONG><a name="[dc]"></a>HAL_RCC_GetSysClockFreq</STRONG> (Thumb, 356 bytes, Stack size 20 bytes, stm32l4xx_hal_rcc.o(i.HAL_RCC_GetSysClockFreq))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = HAL_RCC_GetSysClockFreq
 </UL>
-<BR>[Called By]<UL><LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_OscConfig
+<BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_OscConfig
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_ClockConfig
-<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_SetConfig
 </UL>
 
 <P><STRONG><a name="[df]"></a>HAL_RCC_OscConfig</STRONG> (Thumb, 1598 bytes, Stack size 24 bytes, stm32l4xx_hal_rcc.o(i.HAL_RCC_OscConfig))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = HAL_RCC_OscConfig &rArr; HAL_InitTick &rArr; HAL_TIM_Base_Init &rArr; HAL_TIM_Base_MspInit &rArr; HAL_NVIC_SetPriority &rArr; NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetSysClockFreq
-<LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_SetFlashLatencyFromMSIRange
+<BR>[Calls]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_InitTick
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
-<LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_InitTick
+<LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetSysClockFreq
+<LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_SetFlashLatencyFromMSIRange
 </UL>
 <BR>[Called By]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
@@ -1498,8 +1498,8 @@ Global Symbols
 <P><STRONG><a name="[e7]"></a>HAL_SPI_TransmitReceive</STRONG> (Thumb, 648 bytes, Stack size 48 bytes, stm32l4xx_hal_spi.o(i.HAL_SPI_TransmitReceive))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
-<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_EndRxTxTransaction
+<BR>[Calls]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_EndRxTxTransaction
+<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_ExchangeByte
 </UL>
@@ -1545,8 +1545,8 @@ Global Symbols
 <P><STRONG><a name="[ea]"></a>HAL_TIM_Base_MspInit</STRONG> (Thumb, 112 bytes, Stack size 16 bytes, tim.o(i.HAL_TIM_Base_MspInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = HAL_TIM_Base_MspInit &rArr; HAL_NVIC_SetPriority &rArr; NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
-<LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
+<BR>[Calls]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Init
 </UL>
@@ -1588,8 +1588,8 @@ Global Symbols
 <P><STRONG><a name="[f0]"></a>HAL_TIM_PeriodElapsedCallback</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, main.o(i.HAL_TIM_PeriodElapsedCallback))
 <BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = HAL_TIM_PeriodElapsedCallback &rArr; HAL_TIM_PeriodElapsedCallback2 &rArr; my_fun_CC1101_init_reum &rArr; CC1101Init &rArr; CC1101SetAddress &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_IncTick
-<LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback2
+<BR>[Calls]<UL><LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback2
+<LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_IncTick
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_IRQHandler
 </UL>
@@ -1646,9 +1646,9 @@ Global Symbols
 <P><STRONG><a name="[100]"></a>HAL_UART_MspInit</STRONG> (Thumb, 92 bytes, Stack size 32 bytes, usart.o(i.HAL_UART_MspInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = HAL_UART_MspInit &rArr; HAL_NVIC_SetPriority &rArr; NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
-<LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
+<BR>[Calls]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
 <LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Init
 </UL>
@@ -1704,10 +1704,10 @@ Global Symbols
 <P><STRONG><a name="[10a]"></a>MX_ADC1_Init</STRONG> (Thumb, 330 bytes, Stack size 40 bytes, adc.o(i.MX_ADC1_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = MX_ADC1_Init &rArr; HAL_ADCEx_MultiModeConfigChannel
 </UL>
-<BR>[Calls]<UL><LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADCEx_MultiModeConfigChannel
+<BR>[Calls]<UL><LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_Error_Handler
+<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADCEx_MultiModeConfigChannel
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_Init
 <LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_ConfigChannel
-<LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_Error_Handler
 </UL>
 <BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1715,9 +1715,9 @@ Global Symbols
 <P><STRONG><a name="[10d]"></a>MX_ADC2_Init</STRONG> (Thumb, 172 bytes, Stack size 32 bytes, adc.o(i.MX_ADC2_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 108<LI>Call Chain = MX_ADC2_Init &rArr; HAL_ADC_Init &rArr; HAL_ADC_MspInit &rArr; HAL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_Init
+<BR>[Calls]<UL><LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_Error_Handler
+<LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_Init
 <LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_ConfigChannel
-<LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_Error_Handler
 </UL>
 <BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1735,8 +1735,8 @@ Global Symbols
 <P><STRONG><a name="[10f]"></a>MX_DMA_Init</STRONG> (Thumb, 90 bytes, Stack size 8 bytes, dma.o(i.MX_DMA_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = MX_DMA_Init &rArr; HAL_NVIC_SetPriority &rArr; NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
-<LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
+<BR>[Calls]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
 </UL>
 <BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1758,10 +1758,10 @@ Global Symbols
 <P><STRONG><a name="[118]"></a>MX_GPIO_Init</STRONG> (Thumb, 522 bytes, Stack size 32 bytes, gpio.o(i.MX_GPIO_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = MX_GPIO_Init &rArr; HAL_NVIC_SetPriority &rArr; NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
-<LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
+<BR>[Calls]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
 <LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
 </UL>
 <BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1841,11 +1841,11 @@ Global Symbols
 <P><STRONG><a name="[120]"></a>RF_RecvHandler_intrrupt_get_data_to_buf</STRONG> (Thumb, 192 bytes, Stack size 88 bytes, my_cc1101.o(i.RF_RecvHandler_intrrupt_get_data_to_buf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = RF_RecvHandler_intrrupt_get_data_to_buf &rArr; CC1101RecPacket &rArr; CC1101ReadMultiReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101SetTRMode
+<BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101SetTRMode
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101ReadStatus
 <LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101RecPacket
 <LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101ClrRXBuff
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
 <LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
@@ -1890,10 +1890,10 @@ Global Symbols
 <P><STRONG><a name="[109]"></a>STMFLASH_Write</STRONG> (Thumb, 272 bytes, Stack size 40 bytes, bsp_stm_flash.o(i.STMFLASH_Write))
 <BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = STMFLASH_Write &rArr; STMFLASH_Write_NoCheck_64bit &rArr; HAL_FLASH_Program &rArr; FLASH_Program_Fast
 </UL>
-<BR>[Calls]<UL><LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FLASH_Unlock
+<BR>[Calls]<UL><LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;STMFLASH_Read
+<LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FLASH_Unlock
 <LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FLASH_Lock
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FLASHEx_Erase
-<LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;STMFLASH_Read
 <LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;STMFLASH_Write_NoCheck_64bit
 </UL>
 <BR>[Called By]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_write_update_data_to_FLASH
@@ -1911,12 +1911,12 @@ Global Symbols
 <P><STRONG><a name="[6f]"></a>StartDefaultTask</STRONG> (Thumb, 62 bytes, Stack size 0 bytes, freertos.o(i.StartDefaultTask))
 <BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = StartDefaultTask &rArr; my_fun_CC1101_init_resume &rArr; my_fun_CC1101_init_reum &rArr; CC1101Init &rArr; CC1101SetAddress &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101SetSleep
+<BR>[Calls]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101SetSleep
 <LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_CC1101_init_reum
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_usart_init_resume
 <LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_CC1101_init_resume
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(.constdata)
 </UL>
@@ -1952,13 +1952,13 @@ Global Symbols
 <P><STRONG><a name="[73]"></a>StartTask08</STRONG> (Thumb, 148 bytes, Stack size 16 bytes, freertos.o(i.StartTask08))
 <BR><BR>[Stack]<UL><LI>Max Depth = 728<LI>Call Chain = StartTask08 &rArr; my_fun_current_exit_just &rArr; fun_Judege_It_cache2 &rArr; __aeabi_dsub &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; _double_round
 </UL>
-<BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
-<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_adc_1_convert
+<BR>[Calls]<UL><LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_adc_1_convert
 <LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xEventGroupWaitBits
 <LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend
 <LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_wave1_to_wave2_old_data
 <LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_current_exit_just
 <LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_adc2_convert2
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
 <LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Start_IT
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(.constdata)
@@ -1973,15 +1973,15 @@ Global Symbols
 <P><STRONG><a name="[138]"></a>SystemClock_Config</STRONG> (Thumb, 178 bytes, Stack size 232 bytes, main.o(i.SystemClock_Config))
 <BR><BR>[Stack]<UL><LI>Max Depth = 376<LI>Call Chain = SystemClock_Config &rArr; HAL_RCC_OscConfig &rArr; HAL_InitTick &rArr; HAL_TIM_Base_Init &rArr; HAL_TIM_Base_MspInit &rArr; HAL_NVIC_SetPriority &rArr; NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCCEx_PeriphCLKConfig
+<BR>[Calls]<UL><LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_Error_Handler
+<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SYSTICK_Config
+<LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
+<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PWREx_ControlVoltageScaling
+<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCCEx_PeriphCLKConfig
 <LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SYSTICK_CLKSourceConfig
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_OscConfig
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetHCLKFreq
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_ClockConfig
-<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SYSTICK_Config
-<LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
-<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PWREx_ControlVoltageScaling
-<LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_Error_Handler
 </UL>
 <BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -2281,15 +2281,7 @@ Global Symbols
 <P><STRONG><a name="[59]"></a>main</STRONG> (Thumb, 1512 bytes, Stack size 48 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 424<LI>Call Chain = main &rArr; SystemClock_Config &rArr; HAL_RCC_OscConfig &rArr; HAL_InitTick &rArr; HAL_TIM_Base_Init &rArr; HAL_TIM_Base_MspInit &rArr; HAL_NVIC_SetPriority &rArr; NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_DisableIRQ
-<LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_ClearPendingIRQ
-<LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetSysClockFreq
-<LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetHCLKFreq
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
-<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
-<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_Start_DMA
-<LI><a href="#[155]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osKernelStart
+<BR>[Calls]<UL><LI><a href="#[155]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osKernelStart
 <LI><a href="#[154]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_read_all_reg
 <LI><a href="#[151]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_adc_1_convert_dis
 <LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_printf
@@ -2314,6 +2306,14 @@ Global Symbols
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101ReadReg
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101Init
 <LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
+<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_Start_DMA
+<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_DisableIRQ
+<LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_ClearPendingIRQ
+<LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetSysClockFreq
+<LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetHCLKFreq
 <LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Start_IT
 <LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Receive_IT
@@ -2420,7 +2420,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_101frame_analyse
 </UL>
 
-<P><STRONG><a name="[15e]"></a>my_fun_101send_AC12T_Cyc_data</STRONG> (Thumb, 670 bytes, Stack size 112 bytes, my_101.o(i.my_fun_101send_AC12T_Cyc_data))
+<P><STRONG><a name="[15e]"></a>my_fun_101send_AC12T_Cyc_data</STRONG> (Thumb, 634 bytes, Stack size 112 bytes, my_101.o(i.my_fun_101send_AC12T_Cyc_data))
 <BR><BR>[Stack]<UL><LI>Max Depth = 368<LI>Call Chain = my_fun_101send_AC12T_Cyc_data &rArr; my_fun_101_send_long_data &rArr; my_fun_CC1101_send_long_data &rArr; CC1101SendPacket_add &rArr; my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
@@ -2431,7 +2431,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_TX_CC1101_test3
 </UL>
 
-<P><STRONG><a name="[15f]"></a>my_fun_101send_AC_Rec_data</STRONG> (Thumb, 746 bytes, Stack size 96 bytes, my_101.o(i.my_fun_101send_AC_Rec_data))
+<P><STRONG><a name="[15f]"></a>my_fun_101send_AC_Rec_data</STRONG> (Thumb, 780 bytes, Stack size 96 bytes, my_101.o(i.my_fun_101send_AC_Rec_data))
 <BR><BR>[Stack]<UL><LI>Max Depth = 352<LI>Call Chain = my_fun_101send_AC_Rec_data &rArr; my_fun_101_send_long_data &rArr; my_fun_CC1101_send_long_data &rArr; CC1101SendPacket_add &rArr; my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
@@ -2444,7 +2444,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_TX_CC1101_test4
 </UL>
 
-<P><STRONG><a name="[160]"></a>my_fun_101send_AC_data</STRONG> (Thumb, 282 bytes, Stack size 48 bytes, my_101.o(i.my_fun_101send_AC_data))
+<P><STRONG><a name="[160]"></a>my_fun_101send_AC_data</STRONG> (Thumb, 236 bytes, Stack size 48 bytes, my_101.o(i.my_fun_101send_AC_data))
 <BR><BR>[Stack]<UL><LI>Max Depth = 304<LI>Call Chain = my_fun_101send_AC_data &rArr; my_fun_101_send_long_data &rArr; my_fun_CC1101_send_long_data &rArr; CC1101SendPacket_add &rArr; my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
@@ -2454,7 +2454,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_TX_CC1101_test2
 </UL>
 
-<P><STRONG><a name="[161]"></a>my_fun_101send_Alarm_status_data</STRONG> (Thumb, 70 bytes, Stack size 32 bytes, my_101.o(i.my_fun_101send_Alarm_status_data))
+<P><STRONG><a name="[161]"></a>my_fun_101send_Alarm_status_data</STRONG> (Thumb, 94 bytes, Stack size 32 bytes, my_101.o(i.my_fun_101send_Alarm_status_data))
 <BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = my_fun_101send_Alarm_status_data &rArr; my_fun_101_send_long_data &rArr; my_fun_CC1101_send_long_data &rArr; CC1101SendPacket_add &rArr; my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[15a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_101_send_long_data
@@ -2462,7 +2462,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_TX_CC1101_test0
 </UL>
 
-<P><STRONG><a name="[162]"></a>my_fun_101send_DC_data</STRONG> (Thumb, 226 bytes, Stack size 56 bytes, my_101.o(i.my_fun_101send_DC_data))
+<P><STRONG><a name="[162]"></a>my_fun_101send_DC_data</STRONG> (Thumb, 184 bytes, Stack size 56 bytes, my_101.o(i.my_fun_101send_DC_data))
 <BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = my_fun_101send_DC_data &rArr; my_fun_101_send_long_data &rArr; my_fun_CC1101_send_long_data &rArr; CC1101SendPacket_add &rArr; my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
@@ -2475,11 +2475,11 @@ Global Symbols
 <P><STRONG><a name="[12a]"></a>my_fun_CC1101_init_resume</STRONG> (Thumb, 82 bytes, Stack size 16 bytes, my_os.o(i.my_fun_CC1101_init_resume))
 <BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = my_fun_CC1101_init_resume &rArr; my_fun_CC1101_init_reum &rArr; CC1101Init &rArr; CC1101SetAddress &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101SetIdle
+<BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101SetIdle
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101ReadStatus
 <LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_CC1101_init_reum
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101GetRXCnt
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartDefaultTask
@@ -2488,16 +2488,16 @@ Global Symbols
 <P><STRONG><a name="[f6]"></a>my_fun_CC1101_init_reum</STRONG> (Thumb, 148 bytes, Stack size 8 bytes, my_cc1101.o(i.my_fun_CC1101_init_reum))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = my_fun_CC1101_init_reum &rArr; CC1101Init &rArr; CC1101SetAddress &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_DisableIRQ
-<LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_ClearPendingIRQ
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101WriteReg
+<BR>[Calls]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101WriteReg
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101WriteCmd
 <LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101SetTRMode
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101SetIdle
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101Init
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
+<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_DisableIRQ
+<LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_ClearPendingIRQ
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback2
@@ -2508,9 +2508,9 @@ Global Symbols
 <P><STRONG><a name="[a7]"></a>my_fun_CC1101_re_CCA_status</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, my_cc1101.o(i.my_fun_CC1101_re_CCA_status))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
+<BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101SetTRMode
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101SetTRMode
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101SendPacket_add
 </UL>
@@ -2518,8 +2518,8 @@ Global Symbols
 <P><STRONG><a name="[15c]"></a>my_fun_CC1101_send_long_data</STRONG> (Thumb, 128 bytes, Stack size 40 bytes, my_cc1101.o(i.my_fun_CC1101_send_long_data))
 <BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = my_fun_CC1101_send_long_data &rArr; CC1101SendPacket_add &rArr; my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101SendPacket_add
+<BR>[Calls]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101SendPacket_add
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[15d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_101_send_short_data
@@ -2529,10 +2529,10 @@ Global Symbols
 <P><STRONG><a name="[61]"></a>my_fun_CC1101_test1</STRONG> (Thumb, 80 bytes, Stack size 16 bytes, my_os.o(i.my_fun_CC1101_test1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = my_fun_CC1101_test1 &rArr; CC1101SendPacket_add &rArr; my_fun_CC1101_re_CCA_status &rArr; CC1101SetTRMode &rArr; CC1101WriteReg &rArr; SPI_ExchangeByte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[163]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_display_buf_16
+<BR>[Calls]<UL><LI><a href="#[163]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_display_buf_16
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CC1101SendPacket_add
 <LI><a href="#[15b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_fun_101check_generate
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(i.StartTask02)
 </UL>
@@ -2558,14 +2558,14 @@ Global Symbols
 <P><STRONG><a name="[164]"></a>my_fun_DAC_evref_auto_ajust</STRONG> (Thumb, 1444 bytes, Stack size 104 bytes, my_dac.o(i.my_fun_DAC_evref_auto_ajust))
 <BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = my_fun_DAC_evref_auto_ajust &rArr; __aeabi_dsub &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; _double_round
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
-<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
+<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
 <LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2uiz
 <LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdrcmple
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
 <LI><a href="#[152]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DAC_SetValue
 <LI><a href="#[165]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DAC_GetValue
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
@@ -2854,8 +2854,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xEventGroupSetBits
 </UL>
-<BR>[Address Reference Count : 4]<UL><LI> my_usart_change.o(i.HAL_UART_RxCpltCallback)
-<LI> my_time.o(i.HAL_TIM_PeriodElapsedCallback2)
+<BR>[Address Reference Count : 4]<UL><LI> my_time.o(i.HAL_TIM_PeriodElapsedCallback2)
+<LI> my_usart_change.o(i.HAL_UART_RxCpltCallback)
 <LI> my_exit.o(i.HAL_GPIO_EXTI_Callback)
 <LI> freertos.o(i.Callback01)
 </UL>
