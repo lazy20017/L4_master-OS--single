@@ -27,10 +27,16 @@ extern double MY_VDD;
 extern double my_all_a_adjust; //实验数据，301/387获得的，在300A电流时刻，实际值，与ADC测量值的比较值
 extern double my_adjust_300_a; //y=x*a+b,最小二乘法，的系数a，b，x为ADC测量值经过校正后的值，利用二乘法进行二次校正
 extern double my_adjust_300_b;
-extern double my_adjust_100_a;
-extern double my_adjust_100_b;
+
+extern double my_adjust_50_a;
+extern double my_adjust_50_b;
+
+extern double my_adjust_5_a;
+extern double my_adjust_5_b;
+
 extern double my_I_100A_Radio;
 extern double my_i_5a_radio;//0.857517365; 
+extern double my_i_50a_radio;//0.770811922;
 extern double my_i_300a_radio;//0.770811922;
 
 
@@ -84,10 +90,14 @@ void my_fun_Set_DAC_I_ref(void)
 
     temp_i=temp_i*1.414;
 
-    if(temp_i>100)
+    if(temp_i>165)
         my_temp_16=(temp_i-my_adjust_300_b)/(my_adjust_300_a*my_all_a_adjust)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
-    else
-        my_temp_16=(temp_i-my_adjust_100_b)/(my_adjust_100_a*my_all_a_adjust)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
+		else if(temp_i>100 && temp_i<=165)
+			my_temp_16=(temp_i)/(my_all_a_adjust)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
+		else if(temp_i>10 && temp_i<=100)
+        my_temp_16=(temp_i-my_adjust_50_b)/(my_adjust_50_a*my_all_a_adjust)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
+    else if(temp_i<=10)
+        my_temp_16=(temp_i-my_adjust_5_b)/(my_adjust_5_a*my_all_a_adjust)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
 
 
     my_12v_int=(1.2)/3.3*4096;
@@ -139,10 +149,12 @@ void my_fun_DAC_evref_auto_ajust(void)
 //        my_temp_16=(temp_e-my_adjust_100_b)/(my_adjust_100_a*my_all_a_adjust)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
 		
 		
-		if(temp_e>10)
+		if(temp_e>100)
         my_temp_16=(temp_e-my_adjust_300_b)/(my_adjust_300_a*my_i_300a_radio)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096; //电压值
-    else
-        my_temp_16=(temp_e-my_adjust_100_b)/(my_adjust_100_a*my_i_5a_radio)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
+    else if(temp_e>10 && temp_e<=100)
+			  my_temp_16=(temp_e-my_adjust_50_b)/(my_adjust_50_a*my_i_50a_radio)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
+		else if(temp_e<=10)
+        my_temp_16=(temp_e-my_adjust_5_b)/(my_adjust_5_a*my_i_5a_radio)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
 
     //my_dac1_channel2_data_e=my_temp_16;
 		my_12v_int=(1.20+my_adjust_value_V)/3.3*4096;//报警电压 阶跃门限，1.2V基础上调整
@@ -169,10 +181,14 @@ void my_fun_DAC_evref_auto_ajust(void)
 
     temp_e=temp_e*1.414; //最大值
 
-    if(temp_e>10)
+    if(temp_e>165)
         my_temp_16=(temp_e-my_adjust_300_b)/(my_adjust_300_a*my_i_300a_radio)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
-    else
-        my_temp_16=(temp_e-my_adjust_100_b)/(my_adjust_100_a*my_i_5a_radio)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
+		else if(temp_e>100 && temp_e<=165)
+			  my_temp_16=(temp_e)/(my_i_300a_radio)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
+		else if(temp_e>10 && temp_e<=100)
+			  my_temp_16=(temp_e-my_adjust_50_b)/(my_adjust_50_a*my_i_50a_radio)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
+    else if(temp_e<=10)
+        my_temp_16=(temp_e-my_adjust_5_b)/(my_adjust_5_a*my_i_5a_radio)/(my_i_ratio_value*my_I_100A_Radio)/MY_VDD*4096;
 
     //my_dac1_channel2_data_e=my_temp_16;
 		my_12v_int=(1.20+my_adjust_value_V+my_counst_value)/3.3*4096; //找到报警临界门限后，添加一个恒定常值门限。

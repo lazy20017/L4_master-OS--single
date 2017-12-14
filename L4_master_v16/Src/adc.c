@@ -316,7 +316,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
     PC2     ------> ADC2_IN3
     PC3     ------> ADC2_IN4 
     */
-    GPIO_InitStruct.Pin = AD_Efilde_all_200K_Pin|AD_Efilde_all_1M_Pin|AD_CURRENT0_half_Pin|AD_Efilde_all_Pin;
+    GPIO_InitStruct.Pin = AD_Efilde_all_200K_Pin|AD_CURRENT0_half_Pin|AD_Efilde_all_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG_ADC_CONTROL;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);

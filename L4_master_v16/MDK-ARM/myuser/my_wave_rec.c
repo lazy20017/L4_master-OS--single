@@ -33,16 +33,25 @@ uint16_t E_fild_threshold_value = 20; //电场最小值，小于这个值就认为接的了
 //========
 double my_all_a_adjust =0.76560196;//半波1.42655781;//全波0.798980075;    //1.42655781; // 0.798980075=301/368          301/387=0.7838541670; //实验数据，301/387获得的，在300A电流时刻，实际值，与ADC测量值的比较值
                           //295、395.7815=0.745360761
-double my_adjust_300_a = 1.009700101;//1.007328; //y=x*a+b,最小二乘法，的系数a，b，x为ADC测量值经过校正后的值，利用二乘法进行二次校正
-double my_adjust_300_b = -1.587214894;//-2.42403;
-double my_adjust_100_a =0.994672291; //1.00022;
-double my_adjust_100_b =-0.144475163;// -2.19103;
+double my_adjust_300_a = 1.054171799;//1.009700101;//1.007328; //y=x*a+b,最小二乘法，的系数a，b，x为ADC测量值经过校正后的值，利用二乘法进行二次校正
+double my_adjust_300_b = -12.56341994;//-1.587214894;//-2.42403;
+
+double my_adjust_50_a =0.986329196;//0.994672291; //1.00022;
+double my_adjust_50_b =0.686363636;//-0.144475163;// -2.19103;
+
+double my_adjust_5_a =1.059577357;//0.994672291; //1.00022;
+double my_adjust_5_b =-0.272350023;//-0.144475163;// -2.19103;
+
 double my_I_100A_Radio = 1.0; //标准线上电流为100A时的校正系数，算法，默认值为1，100A/测得数据的值
 double my_i_ratio_value = 1000; //1/2.0*1500; //电流变比系数//采样电阻为2欧姆，变比为1500:1,最终用的1000
 double my_value_daya=2.0; //加法校正系数，默认2.0
 
-double my_i_5a_radio=5.08/6.26;//0.662251656;//0.857517365;   //5.08--6.26  303---393
-double my_i_300a_radio=293.4/377.354;//0.748091603;//0.770811922;
+double my_i_5a_radio=5.3/6.96;   //5.08/6.26;//0.662251656;//0.857517365;   //5.08--6.26  303---393
+double my_i_50a_radio=51.5/68.14;
+double my_i_300a_radio=300/396.22;  //293.4/377.354;//0.748091603;//0.770811922;
+
+double my_10A_gatedata=13;
+double my_100A_gatedata=137;
 //在乘上一个100A时得到的校正系数。
 
 double my_E_ratio_value = 1000; //电场变比系数
@@ -225,10 +234,11 @@ void fun_real_half_Current(void)
 */
 
 //
+double temp_double = 0;
 void fun_real_all_Current(void)
 {
     uint32_t sum = 0, sum_pwr = 0, avr = 0, sum_avr_up = 0;
-    double temp_double = 0;
+    
     int temp = 0;
     int xi = 0, xj = 0, max = 0;
     for(xi = 0; xi < 12; xi++) //12个周期
@@ -279,26 +289,32 @@ void fun_real_all_Current(void)
 
         //有效值
         temp_double = sqrt(sum_pwr * 1.0 / 80) * MY_VDD / 4096 * (my_i_ratio_value * my_I_100A_Radio);
+				
         
 				#if USE_Adjust_suanfa==1
 				
-				if(temp_double > 100) //最小二乘法拟合
-            WAVE_all_ave_Current2[xi][1] = temp_double * my_all_a_adjust * my_adjust_300_a + my_adjust_300_b; //利用均方根法计算有效值,先矫正，后最小二乘法拟合
-        else
-            WAVE_all_ave_Current2[xi][1] = temp_double * my_all_a_adjust * my_adjust_100_a + my_adjust_100_b;
-        //WAVE_all_ave_Current2[xi][1] = temp_double * my_all_a_adjust * my_adjust_300_a + my_adjust_300_b;
-        //有效值负值校正
-        if(WAVE_all_ave_Current2[xi][1] <50)
-            WAVE_all_ave_Current2[xi][1] =WAVE_all_ave_Current2[xi][1] +my_value_daya; //绝对校正系统
+//				if(temp_double > 100) //最小二乘法拟合
+//            WAVE_all_ave_Current2[xi][1] = temp_double * my_all_a_adjust * my_adjust_300_a + my_adjust_300_b; //利用均方根法计算有效值,先矫正，后最小二乘法拟合
+//        else
+//            WAVE_all_ave_Current2[xi][1] = temp_double * my_all_a_adjust * my_adjust_100_a + my_adjust_100_b;
+//        //WAVE_all_ave_Current2[xi][1] = temp_double * my_all_a_adjust * my_adjust_300_a + my_adjust_300_b;
+//        //有效值负值校正
+//        if(WAVE_all_ave_Current2[xi][1] <50)
+//            WAVE_all_ave_Current2[xi][1] =WAVE_all_ave_Current2[xi][1] +my_value_daya; //绝对校正系统
 				
 				#elif USE_Adjust_suanfa==2
-					if(temp_double > 10) //系数校正法
+					if(temp_double > my_100A_gatedata) //系数校正法
+						if(temp_double>138 && temp_double<230)
+						WAVE_all_ave_Current2[xi][1] = temp_double * my_i_300a_radio ;
+						else
 						WAVE_all_ave_Current2[xi][1] = temp_double * my_i_300a_radio * my_adjust_300_a + my_adjust_300_b;
-						//WAVE_all_ave_Current2[xi][1] = temp_double*my_i_300a_radio;
+					else if(temp_double>my_10A_gatedata && temp_double<=my_100A_gatedata )
+						WAVE_all_ave_Current2[xi][1] = temp_double * my_i_50a_radio * my_adjust_50_a + my_adjust_50_b;
 					else
-					WAVE_all_ave_Current2[xi][1] = temp_double * my_i_5a_radio * my_adjust_100_a + my_adjust_100_b;	
-					//WAVE_all_ave_Current2[xi][1] = temp_double*my_i_5a_radio;
+						WAVE_all_ave_Current2[xi][1] = temp_double * my_i_5a_radio * my_adjust_5_a + my_adjust_5_b;	
+					
 				#else
+					
 				   WAVE_all_ave_Current2[xi][1] =temp_double;
         #endif
 
@@ -343,8 +359,9 @@ void fun_real_all_dianchang(void)
 
         //转换值
         WAVE_all_ave_E_Field2[xi][0] = sum * MY_VDD / 4096 / count * my_E_ratio_value;
-        //WAVE_all_ave_E_Field2[xi][1]=WAVE_all_ave_E_Field2[xi][0]*1.1;
-        WAVE_all_ave_E_Field2[xi][1] = sqrt(sum_pwr * 1.0 / count) * MY_VDD / 4096 * my_E_ratio_value; //均方根法
+       
+        //WAVE_all_ave_E_Field2[xi][1] = sqrt(sum_pwr * 1.0 / count) * MY_VDD / 4096 * my_E_ratio_value; //电场，均方根法
+				WAVE_all_ave_E_Field2[xi][1] = WAVE_all_ave_E_Field2[xi][0] ; //电场，均方根法
         WAVE_all_ave_E_Field2[xi][2] = max * MY_VDD / 4096 * my_E_ratio_value;
     }
 

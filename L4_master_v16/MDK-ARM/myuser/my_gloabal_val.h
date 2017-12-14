@@ -51,7 +51,7 @@
 //OS_CC1101_Test
 
 #define OS_CC1101_auto_reveive_OK 0 //OS调试使用，CC1101发送数据后，模拟收到OK帧
-#define OS_CC1101_ZSQ_Monidata 1  //指示器产生模拟数据给DTU
+#define OS_CC1101_ZSQ_Monidata 0  //指示器产生模拟数据给DTU
 #define OS_heap_high_water_data 1 //OS调试串口显示，每个函数剩余的堆栈区数量@@@，1为显示，0为不显示
 #define USE_CC1101_PWR_ON_STATUS  1  //1给CC1101供电，0为不供电
 
@@ -90,4 +90,4 @@
 #define USE_LED14_STATUS 1  //1为使用LED显示，0为不使用
 
 //校正算法是否使用
-#define USE_Adjust_suanfa 2  //1为使用最小二乘法校正算法，2为分段系数校正法，0位不使用校正算法
+#define USE_Adjust_suanfa 2  //1为使用最小二乘法校正算法，2为分段系数最小二乘法校正法，0位不使用校正算法
