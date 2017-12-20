@@ -252,7 +252,7 @@ void my_fun_101send_AC_data(UART_HandleTypeDef* USARTx, uint8_t my_status, uint8
     if(my_contorl_byte == 0X41)
     {
         for(ii = 0; ii < ADC2_COLM; ii++)
-        {   temp = (uint16_t)(ADC2_Filer_value_buf_2[ii][1] * 10); //转换值
+        {   temp = (uint16_t)(ADC2_Filer_value_buf_2[ii][1] * 10); //转换值，有效值===电流、电场，半波
             my_data[2 * ii] = temp;
             my_data[2 * ii + 1] = (temp >> 8) & 0x00FF;
 
@@ -270,8 +270,11 @@ void my_fun_101send_AC_data(UART_HandleTypeDef* USARTx, uint8_t my_status, uint8
     }
     //模拟数据
 		#if OS_CC1101_ZSQ_Monidata==1
+			for(ii = 0; ii < ADC2_COLM; ii++)
+			{
 						my_data[2 * ii] = 2 * ii;
             my_data[2 * ii + 1] = 2 * ii + 1;		
+			}
 		#endif
 
 

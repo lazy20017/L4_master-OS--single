@@ -220,7 +220,7 @@ void MX_ADC2_Init(void)
 
     /**Configure Regular Channel 
     */
-  sConfig.Channel = ADC_CHANNEL_1;
+  sConfig.Channel = ADC_CHANNEL_2;
   sConfig.Rank = 2;
   if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
   {
@@ -316,7 +316,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
     PC2     ------> ADC2_IN3
     PC3     ------> ADC2_IN4 
     */
-    GPIO_InitStruct.Pin = AD_Efilde_all_200K_Pin|AD_CURRENT0_half_Pin|AD_Efilde_all_Pin;
+    GPIO_InitStruct.Pin = GPIO_PIN_0|AD_Efilde_1M_Pin|AD_CURRENT0_half_Pin|AD_CURRENT_ALL_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG_ADC_CONTROL;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
@@ -397,7 +397,7 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
     PC2     ------> ADC2_IN3
     PC3     ------> ADC2_IN4 
     */
-    HAL_GPIO_DeInit(GPIOC, AD_Efilde_all_200K_Pin|AD_Efilde_all_1M_Pin|AD_CURRENT0_half_Pin|AD_Efilde_all_Pin);
+    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_0|AD_Efilde_1M_Pin|AD_CURRENT0_half_Pin|AD_CURRENT_ALL_Pin);
 
     /* ADC2 DMA DeInit */
     HAL_DMA_DeInit(adcHandle->DMA_Handle);

@@ -56,14 +56,12 @@
 
 /* Private define ------------------------------------------------------------*/
 
-#define AD_Efilde_all_200K_Pin GPIO_PIN_0
-#define AD_Efilde_all_200K_GPIO_Port GPIOC
-#define AD_Efilde_all_1M_Pin GPIO_PIN_1
-#define AD_Efilde_all_1M_GPIO_Port GPIOC
+#define AD_Efilde_1M_Pin GPIO_PIN_1
+#define AD_Efilde_1M_GPIO_Port GPIOC
 #define AD_CURRENT0_half_Pin GPIO_PIN_2
 #define AD_CURRENT0_half_GPIO_Port GPIOC
-#define AD_Efilde_all_Pin GPIO_PIN_3
-#define AD_Efilde_all_GPIO_Port GPIOC
+#define AD_CURRENT_ALL_Pin GPIO_PIN_3
+#define AD_CURRENT_ALL_GPIO_Port GPIOC
 #define EXIT_dianliu_Pin GPIO_PIN_0
 #define EXIT_dianliu_GPIO_Port GPIOA
 #define EXIT_dianliu_EXTI_IRQn EXTI0_IRQn

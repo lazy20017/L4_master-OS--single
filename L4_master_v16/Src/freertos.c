@@ -97,7 +97,7 @@ EventGroupHandle_t xCreatedEventGroup = NULL;
 EventGroupHandle_t xCreatedEventGroup2 = NULL;
 
 uint8_t my_use_cyc_rec_data_status=0; //是否进行周期录波数据发送，1为发送，0为不发送
-uint8_t my_use_alarm_rec_data_status=0; //是否进行周期录波数据发送，1为发送，0为不发送
+uint8_t my_use_alarm_rec_data_status=1; //是否进行周期录波数据发送，1为发送，0为不发送
 
 /* USER CODE END Variables */
 
@@ -280,8 +280,8 @@ void StartTask02(void const * argument)
 
         //=====2 发送周期数据		
 				my_fun_CC1101_time_dialog_tx2(my_step, 0x0000, 0x0001, 0, my_fun_TX_CC1101_test0);//遥信
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0040, 0, my_fun_TX_CC1101_test1);//DC
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0041, 0, my_fun_TX_CC1101_test2);//AC有效值
+        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0040, 0, my_fun_TX_CC1101_test1);//DC，共7个分量
+        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0041, 0, my_fun_TX_CC1101_test2);//AC有效值，3个分量
         my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0042, 0, my_fun_TX_CC1101_test3);//AC12T
 				if(my_use_cyc_rec_data_status==1)
         my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0043, 0, my_fun_TX_CC1101_test4);//录波
@@ -508,7 +508,7 @@ void StartTask08(void const * argument)
     uint8_t my_status = 0;
     uint8_t temp8 = 0;
     uint16_t my_step = 0;
-    //HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启
+    HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启
 	  HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn); //接地中断开启
 		HAL_TIM_Base_Start_IT(&htim6);  //开启tim6定时器,1s
     for(;;)
@@ -546,8 +546,21 @@ void StartTask08(void const * argument)
 
             if(temp8 == 1 && (my_Fault_Current_End_Status!=0||my_Fault_E_Fild_End_Status!=0))
             {
+							  //中断处理结束了，恢复中断开启
+								HAL_NVIC_ClearPendingIRQ(EXIT_dianliu_EXTI_IRQn);
+								__HAL_GPIO_EXTI_CLEAR_FLAG(EXIT_dianliu_Pin);
+								__HAL_GPIO_EXTI_CLEAR_IT(EXIT_dianliu_Pin);
+								
+								HAL_NVIC_ClearPendingIRQ(EXIT_jiedi_EXTI_IRQn);
+								__HAL_GPIO_EXTI_CLEAR_FLAG(EXIT_jiedi_Pin);
+								__HAL_GPIO_EXTI_CLEAR_IT(EXIT_jiedi_Pin);
+								
+							
+								HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启
+								HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn); //接地中断开启
+							
                 //进入数据发送环节
-                my_step = 0X0200;
+                my_step = 0X0002; //0X0200
                 xQueueSend(myQueue01Handle, &my_step, 100);
             }
         }
