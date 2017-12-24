@@ -98,6 +98,9 @@ EventGroupHandle_t xCreatedEventGroup2 = NULL;
 
 uint8_t my_use_cyc_rec_data_status=0; //是否进行周期录波数据发送，1为发送，0为不发送
 uint8_t my_use_alarm_rec_data_status=1; //是否进行周期录波数据发送，1为发送，0为不发送
+uint8_t my_use_alarm_rec_data_status_Efild=1;
+
+uint16_t my_que1_wait_time=2000;  //队列1的等待时间
 
 /* USER CODE END Variables */
 
@@ -191,11 +194,11 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the queue(s) */
   /* definition and creation of myQueue01 */
-  osMessageQDef(myQueue01, 16, uint16_t);
+  osMessageQDef(myQueue01, 3, uint16_t);
   myQueue01Handle = osMessageCreate(osMessageQ(myQueue01), NULL);
 
   /* definition and creation of myQueue02 */
-  osMessageQDef(myQueue02, 16, uint16_t);
+  osMessageQDef(myQueue02, 3, uint16_t);
   myQueue02Handle = osMessageCreate(osMessageQ(myQueue02), NULL);
 
   /* USER CODE BEGIN RTOS_QUEUES */
@@ -254,7 +257,8 @@ void StartTask02(void const * argument)
     {
         //==CC1101 发送数据环节，对应队列1
 
-        my_result = xQueueReceive(myQueue01Handle, &my_step, 2000); //xQueuePeek
+        //my_result = xQueueReceive(myQueue01Handle, &my_step, my_que1_wait_time); //xQueuePeek
+				my_result = xQueueReceive(myQueue01Handle, &my_step, 10000); //xQueuePeek
         if(my_result == pdPASS)
         {
             printf("=========CC1101 CC_T_QU1 IS send=[%X]--------\r\n", my_step);
@@ -262,6 +266,7 @@ void StartTask02(void const * argument)
         else
         {
             my_step = 0X00;
+						
             //printf("QH1 error re = %d, step=%d \r\n",my_result,my_step);
 
         }
@@ -281,18 +286,20 @@ void StartTask02(void const * argument)
         //=====2 发送周期数据		
 				my_fun_CC1101_time_dialog_tx2(my_step, 0x0000, 0x0001, 0, my_fun_TX_CC1101_test0);//遥信
         my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0040, 0, my_fun_TX_CC1101_test1);//DC，共7个分量
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0041, 0, my_fun_TX_CC1101_test2);//AC有效值，3个分量
+        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0041, 0, my_fun_TX_CC1101_test2);//AC有效值，3个分量，电流，电场，半波
         my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0042, 0, my_fun_TX_CC1101_test3);//AC12T
-				if(my_use_cyc_rec_data_status==1)
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0043, 0, my_fun_TX_CC1101_test4);//录波
+//				if(my_use_cyc_rec_data_status==1)
+//        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0043, 0, my_fun_TX_CC1101_test4);//录波
 
         //====1 发送报警数据
         my_fun_CC1101_time_dialog_tx2(my_step, 0x0000, 0x0002, 0, my_fun_TX_CC1101_test0); //遥信
         my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0050, 0, my_fun_TX_CC1101_test1); //遥测DC
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0051, 0, my_fun_TX_CC1101_test2); //遥测AC，线上电流，电场的有效值，就2个值
+        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0051, 0, my_fun_TX_CC1101_test2); //遥测AC，线上电流，电场、半波的有效值，就3个值
         my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0052, 0, my_fun_TX_CC1101_test3); //遥测12TAC
 				if(my_use_alarm_rec_data_status==1)
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0053, 0, my_fun_TX_CC1101_test4); //录波
+        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0053, 0, my_fun_TX_CC1101_test4); //录波_电流
+				if(my_use_alarm_rec_data_status_Efild==1)
+				my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0054, 0, my_fun_TX_CC1101_test5); //录波_电场
 				
 				//======3 参数设置部分
 				
@@ -316,7 +323,7 @@ void StartTask03(void const * argument)
     for(;;)
     {
         //CC1101接收数据环节，对应队列2
-        my_result = xQueueReceive(myQueue02Handle, &my_step, 1000); //xQueuePeek,队列2对应，M35接收队列
+        my_result = xQueueReceive(myQueue02Handle, &my_step, 2000); //xQueuePeek,队列2对应，M35接收队列
         if(my_result == pdPASS)
         {
             printf("-------CC1101 CC_R_QU2 receive=[%X]\r\n", my_step);
@@ -342,12 +349,12 @@ void StartTask03(void const * argument)
         my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0001, 0x2000, 0x0040, 0, my_fun_RX_CC1101_text0_RX_OK);
         my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0040, 0x2000, 0x0041, 0, my_fun_RX_CC1101_text0_RX_OK);
         my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0041, 0x2000, 0x0042, 0, my_fun_RX_CC1101_text0_RX_OK);
-				if(my_use_cyc_rec_data_status==1)
-				{
-				my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0042, 0x2000, 0x0043, 0, my_fun_RX_CC1101_text0_RX_OK);
-				my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0043, 0x2000, 0x0000, 1, my_fun_RX_CC1101_text0_RX_OK);
-				}
-				else 			
+//				if(my_use_cyc_rec_data_status==1)
+//				{
+//				my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0042, 0x2000, 0x0043, 0, my_fun_RX_CC1101_text0_RX_OK);
+//				my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0043, 0x2000, 0x0000, 1, my_fun_RX_CC1101_text0_RX_OK);
+//				}
+//				else 			
         my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0042, 0x2000, 0x0000, 1, my_fun_RX_CC1101_text0_RX_OK);
 				
 			
@@ -355,10 +362,17 @@ void StartTask03(void const * argument)
         my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0002, 0x2000, 0x0050, 0, my_fun_RX_CC1101_text0_RX_OK);
         my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0050, 0x2000, 0x0051, 0, my_fun_RX_CC1101_text0_RX_OK);
         my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0051, 0x2000, 0x0052, 0, my_fun_RX_CC1101_text0_RX_OK);		
-				if(my_use_alarm_rec_data_status==1)
+				if(my_use_alarm_rec_data_status==1 && my_use_alarm_rec_data_status_Efild==0)
 				{
 				my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0052, 0x2000, 0x0053, 0, my_fun_RX_CC1101_text0_RX_OK);
 				my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0053, 0x2000, 0x0000, 1, my_fun_RX_CC1101_text0_RX_OK);
+				}
+				else if(my_use_alarm_rec_data_status==1 && my_use_alarm_rec_data_status_Efild==1)
+				{
+					my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0052, 0x2000, 0x0053, 0, my_fun_RX_CC1101_text0_RX_OK);
+					my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0053, 0x2000, 0x0054, 0, my_fun_RX_CC1101_text0_RX_OK);
+					my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0054, 0x2000, 0x0000, 1, my_fun_RX_CC1101_text0_RX_OK);
+					
 				}
 				else 			
         my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0052, 0x2000, 0x0000, 1, my_fun_RX_CC1101_text0_RX_OK);
@@ -559,7 +573,8 @@ void StartTask08(void const * argument)
 								HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启
 								HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn); //接地中断开启
 							
-                //进入数据发送环节
+                //进入数据发送环节@@@@@@@
+							  my_zsq_ALarm_send_status=1;  //报警发送状态为1，启动发送
                 my_step = 0X0002; //0X0200
                 xQueueSend(myQueue01Handle, &my_step, 100);
             }
@@ -603,11 +618,7 @@ void Callback01(void const * argument)
 					//my_fun_give_Queue(&myQueue01Handle, 0X0001); //发送周期数据
 				
     }
-		if(my_os_count1 % (30) == 0 && my_os_count1 != 0)
-    {
-					
-					//my_fun_get_Line_stop_Efild();  //停电状态及状态恢复判断
-    }
+		
 #endif
 
 #if DAC_auto_change_on==1
@@ -619,7 +630,7 @@ void Callback01(void const * argument)
 				printf("\n==DAC Vref CC1101_all_step=[%X],A_EXIT_status=%d,E_exit_status=%d,cyc_exit_status=%d\n",my_CC1101_all_step,my_E_Field_exit_Status,my_Current_exit_Status,my_Time_Cyc_exit_Status);
 				//printf("=====DAC Vref====\n");
         my_fun_Set_DAC_I_ref();//DA转换
-        my_fun_get_Line_stop_Efild();
+        my_fun_get_Line_stop_Efild(); //静态判断
 				printf("----after DAC CC1101_STEP=[%X]---\n",my_CC1101_all_step);
 			}
     }
@@ -627,12 +638,13 @@ void Callback01(void const * argument)
 
 
 #if OS_heap_high_water_data==1
-    if(my_os_count1 % (47) == 0 && my_os_count1 != 0)
+    if(my_os_count1 % (437) == 0 && my_os_count1 != 0)
     {
 			 if(my_CC1101_all_step==00 && my_E_Field_exit_Status==0 && my_Current_exit_Status==0 && my_Time_Cyc_exit_Status==0)
 			 {
         my_fun_task_heap_value();
 			 }
+			 
     }
 #endif
 
@@ -644,10 +656,20 @@ void Callback01(void const * argument)
 				if(ADC1_Filer_value_buf[6]>=4.0)
 				{
 					my_CC1101_Sleep_status=0;
+					if(my_CC1101_all_step==0x00)
+					{
+						
+					}
+					
 				}
 				else
 				{
 					my_CC1101_Sleep_status=1;
+					if(my_CC1101_all_step==0x00)
+					{
+						CC1101SetSleep();
+					}
+					
 				}
 							
 				//===拥塞处理，恢复原始状态
@@ -712,9 +734,22 @@ void Callback01(void const * argument)
        		
 
 		}
-		if(my_os_count1 % (3) ==0 )
+		
+		//模拟报警
+		if(my_os_count1 % (67) ==0 && my_zsq_ALarm_send_status==0)
 		{		
+			printf("===send simulation alarm data--1!!!\n");
+			my_zsq_ALarm_send_status=1;
+			my_fun_give_Queue(&myQueue01Handle, 0X0002); //发送模拟报警
+			
 		//LED2_TOGGLE;		
+		}
+		
+		//重复发送报警数据
+		if(my_os_count1 % (33) ==0 && my_CC1101_all_step==0x00 && my_zsq_ALarm_send_status==1)
+		{
+			printf("==cyc send alarm data!!!--2\n");
+			my_fun_give_Queue(&myQueue01Handle, 0X0002); //发送报警
 		}
 
 	

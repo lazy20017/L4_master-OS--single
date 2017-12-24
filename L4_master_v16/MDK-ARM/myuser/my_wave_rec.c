@@ -1207,7 +1207,9 @@ void my_fun_get_Line_stop_Efild(void)
         fun_wave2_to_wave3();
         my_Fault_Current_End_Status=00;
         my_Fault_E_Fild_End_Status=00;
-        my_step=0x0002;
+				printf("==return normal--1\n");
+				my_zsq_ALarm_send_status=1;
+        my_step=0x0002;//发送报警，消息任务
         xQueueSend(myQueue01Handle, &my_step, 100);
     }
 
@@ -1218,7 +1220,9 @@ void my_fun_get_Line_stop_Efild(void)
         my_Fault_Current_End_Status=0xFF;
         my_Fault_E_Fild_End_Status=0xFF;
         my_Line_Current_stop_last_status=1;
-        my_step=0x0002;
+			  printf("==return normal--2---stop\n");
+				my_zsq_ALarm_send_status=1;
+        my_step=0x0002; //发送报警，消息任务
         xQueueSend(myQueue01Handle, &my_step, 100);
     }
 //接地状态上传
@@ -1229,7 +1233,9 @@ void my_fun_get_Line_stop_Efild(void)
 
         my_Fault_E_Fild_End_Status=0x01;
         my_Line_Current_stop_last_status=my_Line_Current_stop_status;
-        my_step=0x0002;
+				 printf("==return normal--2---jiedi\n");
+			my_zsq_ALarm_send_status=1;
+        my_step=0x0002; //发送报警，消息任务
         xQueueSend(myQueue01Handle, &my_step, 100);
 
     }
@@ -1329,7 +1335,8 @@ void my_fun_query_Efild(void)
 
         my_Fault_E_Fild_End_Status=0x01;
         my_Line_Current_stop_last_status=my_Line_Current_stop_status;
-        my_step=0x0002;
+			 my_zsq_ALarm_send_status=1;
+        my_step=0x0002;//发送报警，消息任务
         xQueueSend(myQueue01Handle, &my_step, 100);
 
     }

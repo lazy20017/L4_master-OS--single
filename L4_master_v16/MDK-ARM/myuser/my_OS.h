@@ -112,3 +112,4 @@ void my_fun_PWR_time_dialog_tx2(
 		
 		
 void my_fun_TX_CC1101_heart(void); //ÐÄÌø
+void my_fun_TX_CC1101_test5(void);

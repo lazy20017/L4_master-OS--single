@@ -72,7 +72,7 @@ void my_adc_1_convert(void)
     ADC1_Filer_value_buf[4]=ADC1_GetValue_Aver[4]*MY_VDD/4096*(2); //线上电压
     ADC1_Filer_value_buf[5]=ADC1_GetValue_Aver[5]*MY_VDD/4096*(2); //太阳能
     ADC1_Filer_value_buf[6]=ADC1_GetValue_Aver[6]*MY_VDD/4096*(2); //锂电池
-		ADC1_Filer_value_buf[7]=ADC1_GetValue_Aver[7]*MY_VDD/4096; //锂电池
+		ADC1_Filer_value_buf[7]=ADC1_GetValue_Aver[7]*MY_VDD/4096; //1.2V
 
 }
 

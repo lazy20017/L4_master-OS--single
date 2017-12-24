@@ -37,6 +37,8 @@ extern uint8_t my_UART1_Status;
 extern uint8_t my_UART2_Status;
 extern uint8_t my_UART3_Status;
 
+extern uint8_t my_use_alarm_rec_data_status_Efild;
+
 uint16_t  my_GPRS_all_step = 0;
 uint8_t my_GPRS_all_count = 0;
 
@@ -50,7 +52,7 @@ void my_fun_give_Queue(osMessageQId *my_QHL, uint16_t temp_step)
 {
     BaseType_t pt = NULL;
     BaseType_t xResult;
-    xResult = xQueueSendFromISR(*my_QHL, &temp_step, &pt); 
+    xResult = xQueueSendFromISR(*my_QHL, &temp_step, &pt);
 
     if(xResult != pdFAIL)
     {
@@ -60,11 +62,11 @@ void my_fun_give_Queue(osMessageQId *my_QHL, uint16_t temp_step)
     }
     else
     {
-        printf(" send QH ERROR--[%XH],xRseult=[%XH]\r\n", temp_step,xResult);
-				//xQueueReset(*my_QHL);
-			  //NVIC_SystemReset(); //应该打开使用20171025
-			
-			  
+        printf(" send QH ERROR--[%XH],xRseult=[%XH]--\r\n", temp_step, xResult);
+        
+        NVIC_SystemReset(); //应该打开使用20171025@@@@@@
+
+
 
     }
     //printf("queue3 is %d\r\n",temp8);
@@ -112,18 +114,18 @@ void my_fun_CC1101_time_dialog_tx2(
 
         my_CC1101_all_count = 0;
         my_CC1101_all_step = 0x00;
-			  my_Time_Cyc_exit_Status=0;
+        my_Time_Cyc_exit_Status = 0;
 
-			
+
         if(my_CC1101_Sleep_status == 1)
         {
             CC1101SetSleep();
         }
-				//DTU失败次数标识
-				my_DTU_send_faile_count++;
-				if(my_DTU_send_faile_count>=0XFFFF)
-					my_DTU_send_faile_count=11;
-				
+        //DTU失败次数标识
+        my_DTU_send_faile_count++;
+        if(my_DTU_send_faile_count >= 0XFFFF)
+            my_DTU_send_faile_count = 11;
+
     }
 
     //====只发送一次就结束
@@ -131,10 +133,10 @@ void my_fun_CC1101_time_dialog_tx2(
     {
         my_CC1101_all_count = 0;
         my_CC1101_all_step = 0x00;
-			  
-			 my_Time_Cyc_exit_Status=0;
 
-			
+        //my_Time_Cyc_exit_Status = 0;
+
+
 
         if(my_CC1101_Sleep_status == 1)
         {
@@ -159,29 +161,29 @@ void my_fun_CC1101_time_dialog_rx2(
 {
     uint8_t my_status = 0;
     uint8_t my_temp = 0;
-		
+
     //=====0====
     if(my_get_step == my_now_step && my_before_step == 0x00) //无条件处理接收到的数据
     {
         my_status = 1;
-			  my_DTU_send_faile_count=0;
+        my_DTU_send_faile_count = 0;
     }
     else if(my_get_step == my_now_step && my_before_step == my_CC1101_all_step) //条件绑定，有前提条件
     {
         my_status = 1;
-				 my_DTU_send_faile_count=0; //DTU在发送数据失败计数
+        my_DTU_send_faile_count = 0; //DTU在发送数据失败计数
     }
     else
     {
         return;
-			
+
     }
     //======1=====
     if(my_status == 1 && end_status == 0)
     {
         //printf("CC1101 RX-step = [%XH]\r\n",my_now_step);
-			  
-			  
+
+
         my_temp = ptfun();
         if(my_temp == 1)
         {
@@ -196,8 +198,8 @@ void my_fun_CC1101_time_dialog_rx2(
         // printf("CC1101 RX-step = [%XH]\r\n",my_now_step);
         ptfun();
         my_CC1101_all_step = 0X00; //结束状态
-			  
-			  my_Time_Cyc_exit_Status=0;
+
+        my_Time_Cyc_exit_Status = 0;
 
         if(my_CC1101_Sleep_status == 1)
         {
@@ -436,26 +438,25 @@ void my_fun_TX_CC1101_test3(void)
 #endif
 
 }
-uint8_t CC1101_960data_Efield_STATUS=0;
+uint8_t CC1101_960data_Efield_STATUS = 0;
 void my_fun_TX_CC1101_test4(void)
 {
     if(my_CC1101_all_step == 0x0043)
     {
         //=====4  发送录波数据，周期
-if (CC1101_960data_Efield_STATUS==1) //发送波形的选择，1为电场，0为电流
-        my_fun_101send_AC_Rec_data(&huart2, my_DC_AC_status, 0X44); //960电场
-else
-        my_fun_101send_AC_Rec_data(&huart2, my_DC_AC_status, 0X43); //960全波电流
-//#endif
-        //my_fun_101send_AC_Rec_data(&huart2,my_DC_AC_status, 0X50);
+        if (CC1101_960data_Efield_STATUS == 1) //发送波形的选择，1为电场，0为电流
+            my_fun_101send_AC_Rec_data(&huart2, my_DC_AC_status, 0X44); //960电场
+        else
+            my_fun_101send_AC_Rec_data(&huart2, my_DC_AC_status, 0X43); //960全波电流
+
     }
     else if(my_CC1101_all_step == 0x0053)
     {
         //====录波数据，报警
-		if (CC1101_960data_Efield_STATUS==1)
-        my_fun_101send_AC_Rec_data(&huart2,my_DC_AC_status, 0X54); //电场
-		else
-        my_fun_101send_AC_Rec_data(&huart2, my_DC_AC_status, 0X53); //电流
+        if (CC1101_960data_Efield_STATUS == 1)
+            my_fun_101send_AC_Rec_data(&huart2, my_DC_AC_status, 0X54); //电场
+        else
+            my_fun_101send_AC_Rec_data(&huart2, my_DC_AC_status, 0X53); //电流
     }
 
 #if CC1101_TX_Delay==1
@@ -470,6 +471,41 @@ else
 #endif
 
 }
+//电场
+void my_fun_TX_CC1101_test5(void)
+{
+    if(my_CC1101_all_step == 0x0044)
+    {
+        //=====4  发送录波数据，周期
+       
+            my_fun_101send_AC_Rec_data(&huart2, my_DC_AC_status, 0X44); //960电场
+        
+
+    }
+    else if(my_CC1101_all_step == 0x0054)
+    {
+        //====录波数据，报警
+        
+            my_fun_101send_AC_Rec_data(&huart2, my_DC_AC_status, 0X54); //电场
+        
+    }
+
+#if CC1101_TX_Delay==1
+    HAL_Delay(2000);
+#endif
+
+#if Debug_Usart_out_ADCdata==1
+    //my_adc2_convert_dis(0); //@@@ 发送显示数据AC，到调试串口
+#endif
+#if OS_CC1101_auto_reveive_OK==1
+    my_fun_give_Queue(&myQueue02Handle, 0x2000); //@@@@@
+#endif
+
+}
+
+//电场 over
+
+
 
 void my_fun_CC1101_test1(void)
 {
@@ -498,25 +534,57 @@ void my_fun_CC1101_test1(void)
 }
 
 //===CC1101  接收对话
+extern uint16_t my_que1_wait_time;
 uint8_t my_fun_RX_CC1101_text0_RX_OK(void)
 {
-	uint16_t my_temp=0;
-	if(my_CC1101_COM_Fram_buf[1]==0x20)  //进行tim6的校时
-	{
-		my_temp=my_CC1101_COM_Fram_buf[5];
-		my_temp=(my_temp<<8)+ my_CC1101_COM_Fram_buf[4];
-		my_tim6_count=my_temp;
-	}
-  if(my_CC1101_COM_Fram_buf[1]==0x20 && my_CC1101_all_step==0x0042)
-	{
+    uint16_t my_temp = 0;
+    if(my_CC1101_COM_Fram_buf[1] == 0x20) //进行tim6的校时
+    {
+        my_temp = my_CC1101_COM_Fram_buf[5];
+        my_temp = (my_temp << 8) + my_CC1101_COM_Fram_buf[4];
+        my_tim6_count = my_temp;
+    }
+    if(my_CC1101_COM_Fram_buf[1] == 0x20 && my_CC1101_all_step == 0x0042)
+    {
+				my_Time_Cyc_exit_Status = 0;
+				if(my_CC1101_Sleep_status==1)
+					CC1101SetSleep();
+				
+        printf("====CC1101 CYC TIME FINISH!!===\n\n");
+    }
+    else if(my_CC1101_COM_Fram_buf[1] == 0x20 && my_CC1101_all_step == 0x00E0)
+    {
+				my_Time_Cyc_exit_Status = 0;
+				if(my_CC1101_Sleep_status==1)
+					CC1101SetSleep();
+        printf("====CC1101 Heart TIME FINISH!!===\n\n");
+    }
+		else if(my_CC1101_COM_Fram_buf[1] == 0x20 && my_CC1101_all_step == 0x0053)
+    {  
+			if(my_use_alarm_rec_data_status_Efild==0)
+			{
+				//my_zsq_ALarm_send_status=0;
+				if(my_CC1101_Sleep_status==1)
+				 	CC1101SetSleep();
+			}
+        printf("====@@@@ CC1101 ALarm TIME FINISH!!==dianliu=\n\n");
+    }
 		
-		printf("====CC1101 CYC TIME FINISH!!===\n\n");
-	}
-   else if(my_CC1101_COM_Fram_buf[1]==0x20 && my_CC1101_all_step==0x00E0)
-	{
+		else if(my_CC1101_COM_Fram_buf[1] == 0x20 && my_CC1101_all_step == 0x0054)
+    {
+				my_zsq_ALarm_send_status=0;
+				if(my_CC1101_Sleep_status==1)
+					CC1101SetSleep();
+        printf("====@@@@ CC1101 ALarm TIME FINISH!!==jiedi=\n\n");
+    }
 		
-		printf("====CC1101 Heart TIME FINISH!!===\n\n");
-	}
+		//
+		if(my_CC1101_COM_Fram_buf[1] == 0x20 && my_CC1101_all_step == 0x0052)
+			my_que1_wait_time=5000;
+		else if(my_CC1101_COM_Fram_buf[1] == 0x20 && my_CC1101_all_step == 0x0053)
+			my_que1_wait_time=5000;
+		else
+			my_que1_wait_time=2000;
     return 1;
 }
 
@@ -631,19 +699,19 @@ void my_fun_PWR_time_dialog_rx2(
 void my_fun_CC1101_init_resume(void)
 {
     uint8_t my_status = 0;
-	  uint8_t my_rx_count = 0;
+    uint8_t my_rx_count = 0;
     //xSemaphoreTake(myMutex01Handle,1000);
-	  CC1101SetIdle();
-	  HAL_Delay(10);
+    CC1101SetIdle();
+    HAL_Delay(10);
     my_status = CC1101ReadStatus(CC1101_MARCSTATE);
-	  my_rx_count = CC1101GetRXCnt();
+    my_rx_count = CC1101GetRXCnt();
     //xSemaphoreGive(myMutex01Handle);
-    
-	   if(my_status==0x01&&my_rx_count>0)
-		{
-			 printf("------ CC1101 status=[%XH] RXBUF=%d \n", my_status, my_rx_count);
-			my_fun_CC1101_init_reum();
-		}
+
+    if(my_status == 0x01 && my_rx_count > 0)
+    {
+        printf("------ CC1101 status=[%XH] RXBUF=%d \n", my_status, my_rx_count);
+        my_fun_CC1101_init_reum();
+    }
 
     if(my_status != 0x01 && my_status != 0x0D &&  my_status != 0x13  ) //0X01空闲，0X0D接收，0X13发送,0x11接收溢出
     {

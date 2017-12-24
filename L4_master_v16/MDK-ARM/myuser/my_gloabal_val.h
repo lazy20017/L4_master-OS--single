@@ -51,7 +51,7 @@
 //OS_CC1101_Test
 
 #define OS_CC1101_auto_reveive_OK 0 //OS调试使用，CC1101发送数据后，模拟收到OK帧
-#define OS_CC1101_ZSQ_Monidata 0  //指示器产生模拟数据给DTU
+#define OS_CC1101_ZSQ_Monidata 1  //指示器产生模拟数据给DTU
 #define OS_heap_high_water_data 1 //OS调试串口显示，每个函数剩余的堆栈区数量@@@，1为显示，0为不显示
 #define USE_CC1101_PWR_ON_STATUS  1  //1给CC1101供电，0为不供电
 
@@ -74,7 +74,7 @@
 
 //CC1101发送录波数据
 //#define CC1101_960data_Efield_STATUS 0  //1 CC1101发送录波电场数据，0为不发送电场，发送电流
-#define CC1101_SEND_E_Simulation_data_status 0  //CC1101发送电场模拟数据
+#define CC1101_SEND_I_E_Simulation_data_status 1  //CC1101发送 电流、电场模拟数据
 
 
 //显示DC直流数据

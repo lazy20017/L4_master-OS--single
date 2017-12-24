@@ -44,7 +44,7 @@ uint8_t  my_Current_exit_Status=0; //±íÊ¾µçÁ÷²úÉúÖĞ¶Ï
 uint8_t  my_E_Field_exit_Status=0; //±íÊ¾µç³¡²úÉúÖĞ¶Ï
 uint16_t my_E_Field_exit_add=0;
 
-uint8_t  my_Time_Cyc_exit_Status=0; //±íÊ¾µç³¡²úÉúÖĞ¶Ï
+uint8_t  my_Time_Cyc_exit_Status=0; //ÖÜÆÚ¶¨Ê±ÖĞ¶Ï
 uint16_t my_Time_Cyc_exit_add=0;
 
 //
@@ -64,7 +64,7 @@ uint8_t my_CC1101_Sleep_status=1;  //CC1101µÄSLEEP±êÊ¶£¬Îª1±êÊ¶CC1101Ë¯Ãß
 
 //TIM6
 uint16_t my_tim6_count=0;
-uint16_t my_cyc_time_count=67;  //ÖÜÆÚ·¢ËÍÊı¾İÊ±¼ä£¬ÃëÎªµ¥Î»
+uint16_t my_cyc_time_count=147;  //ÖÜÆÚ·¢ËÍÊı¾İÊ±¼ä£¬ÃëÎªµ¥Î»
 uint16_t  my_cyc_delay=0;
 
 uint8_t my_cc_Efied_count=0;  //¼ÇÂ¼CC1101·¢ËÍºó£¬Í£Ö¹µÄÊ±¼ä£¬È»ºó¿ªÆô½ÓµØÖĞ¶Ï
@@ -75,5 +75,8 @@ uint8_t my_DTU_status=1;  //1ÎªÔÚÏß£¬0Îª²»ÔÚÏß¡£DTUÔÚÏß×´Ì¬£¬Èç¹û·¢ËÍ10´Î¶¼²»ÄÜÁ
 uint16_t my_DTU_send_faile_count=0;  //¸øDTU·¢ËÍÊı¾İ£¬Ê§°Ü¼ÆÊıÆ÷
 
 //DAC
-uint8_t my_DAC_cyc_time=2;  //DACÉèÖÃÊ±¼ä£¬Ä¬ÈÏÎª5
+uint8_t my_DAC_cyc_time=1;  //DACÉèÖÃÊ±¼ä£¬Ä¬ÈÏÎª5
+
+//CC1101±¨¾¯·¢ËÍ
+uint8_t my_zsq_ALarm_send_status=0;  //±¨¾¯×´Ì¬ÊÇ·ñ·¢ËÍ³öÈ¥£¬1Îª·¢ËÍ³öÈ¥£¬0ÎªÃ»ÓĞ·¢ËÍ³öÈ¥¡£
 
