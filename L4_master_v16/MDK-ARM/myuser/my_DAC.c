@@ -78,7 +78,7 @@ void my_fun_Set_DAC_I_ref(void)
     temp_i = ADC2_Filer_value_buf_2[0][1]; //获得12周波电流的有效值,转换后的值,2为最大值，1为有效值
     temp_e=temp_i;
 #if Debug_Usart_out_DAC_normal_data==1
-    printf("DAC_line_i=%.2f MAX_i=%.2f e_aver=%.2f\n",ADC2_Filer_value_buf_2[0][1],ADC2_Filer_value_buf_2[0][2],ADC2_Filer_value_buf_2[1][0]);
+    printf("DAC_line_Ai=%.2f M_Ai=%.2f,HI=%.2f,M_HI=%.2f,e_aver=%.2f\n",ADC2_Filer_value_buf_2[0][1],ADC2_Filer_value_buf_2[0][2],ADC2_Filer_value_buf_2[2][1],ADC2_Filer_value_buf_2[2][2],ADC2_Filer_value_buf_2[1][0]);
 #endif
 
     //计算电流 DA 值
@@ -117,8 +117,10 @@ void my_fun_Set_DAC_I_ref(void)
 功能：自动调整接地中断的DAC比较信号
 
 */
+double my_DAC_Line_I=0; //在DAC设置期间获得的电流值
+double my_DAC_Line_Efild=0; //同上，电场值
 double my_adjust_value_V=0.00;
-double my_counst_value=0.09;// 电场参考电压的恒定偏差，0.004对应1A电流，小于0.09V就频繁进中断，默认设置0.09
+double my_counst_value=0.04;// 电场参考电压的恒定偏差，0.004对应1A电流，小于0.09V就频繁进中断，默认设置0.09
 void my_fun_DAC_evref_auto_ajust(void)
 {
 		double temp_i = 0, temp_e = 0;
@@ -131,8 +133,10 @@ void my_fun_DAC_evref_auto_ajust(void)
 	
 	if(my_pin_status==0)
 	{
-		my_adjust_value_V=my_adjust_value_V+0.01; //自适应的电压门限值。一次0.01V,my_adjust_value_V为基础
+		my_adjust_value_V=my_adjust_value_V+0.1; //自适应的电压门限值0.01。一次0.01V,my_adjust_value_V为基础.5倍为0.1增长，如果是1倍，0.01V增长
 		
+		my_DAC_Line_I=ADC2_Filer_value_buf_2[0][1];
+		my_DAC_Line_Efild=ADC2_Filer_value_buf_2[1][1];
     temp_i = ADC2_Filer_value_buf_2[0][1]; //获得12周波电流的有效值,转换后的值,2为最大值，1为有效值
     temp_e=temp_i;  //线上的电流值
 
@@ -170,7 +174,8 @@ void my_fun_DAC_evref_auto_ajust(void)
 	}
 	else if(my_pin_status==1)
 	{
-		
+		my_DAC_Line_I=ADC2_Filer_value_buf_2[0][1];
+		my_DAC_Line_Efild=ADC2_Filer_value_buf_2[1][1];
 		temp_i = ADC2_Filer_value_buf_2[0][1]; //获得12周波电流的有效值,转换后的值,2为最大值，1为有效值
     temp_e=temp_i;
 

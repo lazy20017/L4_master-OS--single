@@ -67,7 +67,7 @@
 #define Debug_Usart_OUT_WAVE_960Data_Interupt 0 //3级缓冲,1位全波电流故障录波数据，2为电场，3为半波电流
 #define Debug_usart_out_wave_cmpare_data 0  //3级缓冲中，1显示，周期的首尾差值
 
-#define Debug_Usart_OUT_WAVE_Last_12T_Interupt 0 //显示故障中断后，每隔200ms录波的12个周期的数据
+#define Debug_Usart_OUT_WAVE_Last_12T_Interupt 1 //显示故障中断后，每隔200ms录波的12个周期的数据
 #define Debug_Usart_OUT_WAVE_End_Just_Interupt  1 //输出最终的判断结果，及依据。
 
 

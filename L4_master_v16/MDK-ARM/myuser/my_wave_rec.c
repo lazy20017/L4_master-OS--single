@@ -28,30 +28,30 @@ uint8_t my_E_fild_min_count = 0;   //接地，电场最小值
 #define V_cell (2*1.0/1500) //定义一个基础转换电压，1A电流对应的ADC采集电压
 #define E_cell 1.0        //电场对应的校正值,利用ADC采样得到的数据进行等比变化
 uint16_t Current_D_value = 150; //电流上升突变阀值,判断条件，大于此值表示，产生短路电流,这个值是判断短路条件，ADC使用
-uint16_t E_fild_D_value = 150; //电场下跌突变阀值
+uint16_t E_fild_D_value = 80; //电场下跌突变阀值
 uint16_t E_fild_threshold_value = 20; //电场最小值，小于这个值就认为接的了
 //========
-double my_all_a_adjust =0.76560196;//半波1.42655781;//全波0.798980075;    //1.42655781; // 0.798980075=301/368          301/387=0.7838541670; //实验数据，301/387获得的，在300A电流时刻，实际值，与ADC测量值的比较值
-                          //295、395.7815=0.745360761
+double my_all_a_adjust = 0.76560196; //半波1.42655781;//全波0.798980075;    //1.42655781; // 0.798980075=301/368          301/387=0.7838541670; //实验数据，301/387获得的，在300A电流时刻，实际值，与ADC测量值的比较值
+//295、395.7815=0.745360761
 double my_adjust_300_a = 1.054171799;//1.009700101;//1.007328; //y=x*a+b,最小二乘法，的系数a，b，x为ADC测量值经过校正后的值，利用二乘法进行二次校正
 double my_adjust_300_b = -12.56341994;//-1.587214894;//-2.42403;
 
-double my_adjust_50_a =0.986329196;//0.994672291; //1.00022;
-double my_adjust_50_b =0.686363636;//-0.144475163;// -2.19103;
+double my_adjust_50_a = 0.986329196; //0.994672291; //1.00022;
+double my_adjust_50_b = 0.686363636; //-0.144475163;// -2.19103;
 
-double my_adjust_5_a =1.059577357;//0.994672291; //1.00022;
-double my_adjust_5_b =-0.272350023;//-0.144475163;// -2.19103;
+double my_adjust_5_a = 1.059577357; //0.994672291; //1.00022;
+double my_adjust_5_b = -0.272350023; //-0.144475163;// -2.19103;
 
 double my_I_100A_Radio = 1.0; //标准线上电流为100A时的校正系数，算法，默认值为1，100A/测得数据的值
 double my_i_ratio_value = 1000; //1/2.0*1500; //电流变比系数//采样电阻为2欧姆，变比为1500:1,最终用的1000
-double my_value_daya=2.0; //加法校正系数，默认2.0
+double my_value_daya = 2.0; //加法校正系数，默认2.0
 
-double my_i_5a_radio=5.3/6.96;   //5.08/6.26;//0.662251656;//0.857517365;   //5.08--6.26  303---393
-double my_i_50a_radio=51.5/68.14;
-double my_i_300a_radio=300/396.22;  //293.4/377.354;//0.748091603;//0.770811922;
+double my_i_5a_radio = 5.3 / 6.96; //5.08/6.26;//0.662251656;//0.857517365;   //5.08--6.26  303---393
+double my_i_50a_radio = 51.5 / 68.14;
+double my_i_300a_radio = 300 / 396.22; //293.4/377.354;//0.748091603;//0.770811922;
 
-double my_10A_gatedata=13;
-double my_100A_gatedata=137;
+double my_10A_gatedata = 13;
+double my_100A_gatedata = 137;
 //在乘上一个100A时得到的校正系数。
 
 double my_E_ratio_value = 1000; //电场变比系数
@@ -95,11 +95,14 @@ extern uint16_t ADC2_Filer_value_buf_1[][3];
 
 extern osMessageQId myQueue01Handle;
 
+extern double my_DAC_Line_I; //在DAC设置期间获得的电流值
+extern double my_DAC_Line_Efild; //同上，电场值
+
 uint16_t my_all_i_up_value = 0; //测得的全波抬升1.2v电压对应的采样平均值，ADC采样的值，未经过转换
 
 
 #define rec_T_Count 12  //记录周期的数量
-uint16_t my_E_fild_time_add=0; //利用周期查询法时，my_E_fild_time_add存储查询的地址
+uint16_t my_E_fild_time_add = 0; //利用周期查询法时，my_E_fild_time_add存储查询的地址
 
 extern uint8_t  my_Time_Cyc_exit_Status;
 
@@ -220,9 +223,26 @@ void fun_real_half_Current(void)
         //printf("\n @@max=%d",max);
 
         //转换值
-        WAVE_half_ave_Current2[xi][0] = sum * MY_VDD / 4096 / count; //平均值
-        WAVE_half_ave_Current2[xi][1] = sqrt(sum_pwr * 1.0 / count) * MY_VDD / 4096; //利用均方根法计算有效值
+        WAVE_half_ave_Current2[xi][0] = sum * MY_VDD / 4096 / 80; //平均值
+        WAVE_half_ave_Current2[xi][1] = sqrt(sum_pwr * 1.0 / 80) * MY_VDD / 4096; //利用均方根法计算有效值
         WAVE_half_ave_Current2[xi][2] = max * MY_VDD / 4096;
+
+        if(WAVE_half_ave_Current1[xi][0] == WAVE_half_ave_Current1[xi][2] && WAVE_half_ave_Current1[xi][2] != 0)
+        {
+            //测量测量值
+            WAVE_half_ave_Current1[xi][0] = 0;
+            WAVE_half_ave_Current1[xi][1] = 0;
+            WAVE_half_ave_Current1[xi][2] = 0;
+            //printf("\n @@max=%d",max);
+
+            //转换值
+            WAVE_half_ave_Current2[xi][0] = 0; //平均值
+            WAVE_half_ave_Current2[xi][1] = 0; //利用均方根法计算有效值
+            WAVE_half_ave_Current2[xi][2] = 0;
+
+
+
+        }
 
         //调试使用
         //printf("half no zero count=%d\n",count);
@@ -238,7 +258,7 @@ double temp_double = 0;
 void fun_real_all_Current(void)
 {
     uint32_t sum = 0, sum_pwr = 0, avr = 0, sum_avr_up = 0;
-    
+
     int temp = 0;
     int xi = 0, xj = 0, max = 0;
     for(xi = 0; xi < 12; xi++) //12个周期
@@ -277,8 +297,8 @@ void fun_real_all_Current(void)
 
         }
         //采样值
-        WAVE_all_ave_Current1[xi][0] = sum / 80; //平均值
-        WAVE_all_ave_Current1[xi][1] = sqrt(sum_pwr * 1.0 / 80); //利用均方根法计算有效值,先矫正，后最小二乘法拟合
+        WAVE_all_ave_Current1[xi][0] = sum / 80.0; //平均值
+        WAVE_all_ave_Current1[xi][1] = sqrt(sum_pwr * 1.0 / 80.0); //利用均方根法计算有效值,先矫正，后最小二乘法拟合
         WAVE_all_ave_Current1[xi][2] = max;
 
 
@@ -289,10 +309,10 @@ void fun_real_all_Current(void)
 
         //有效值
         temp_double = sqrt(sum_pwr * 1.0 / 80) * MY_VDD / 4096 * (my_i_ratio_value * my_I_100A_Radio);
-				
-        
-				#if USE_Adjust_suanfa==1
-				
+
+
+#if USE_Adjust_suanfa==1
+
 //				if(temp_double > 100) //最小二乘法拟合
 //            WAVE_all_ave_Current2[xi][1] = temp_double * my_all_a_adjust * my_adjust_300_a + my_adjust_300_b; //利用均方根法计算有效值,先矫正，后最小二乘法拟合
 //        else
@@ -301,25 +321,25 @@ void fun_real_all_Current(void)
 //        //有效值负值校正
 //        if(WAVE_all_ave_Current2[xi][1] <50)
 //            WAVE_all_ave_Current2[xi][1] =WAVE_all_ave_Current2[xi][1] +my_value_daya; //绝对校正系统
-				
-				#elif USE_Adjust_suanfa==2
-					if(temp_double > my_100A_gatedata) //系数校正法
-						if(temp_double>138 && temp_double<230)
-						WAVE_all_ave_Current2[xi][1] = temp_double * my_i_300a_radio ;
-						else
-						WAVE_all_ave_Current2[xi][1] = temp_double * my_i_300a_radio * my_adjust_300_a + my_adjust_300_b;
-					else if(temp_double>my_10A_gatedata && temp_double<=my_100A_gatedata )
-						WAVE_all_ave_Current2[xi][1] = temp_double * my_i_50a_radio * my_adjust_50_a + my_adjust_50_b;
-					else
-						WAVE_all_ave_Current2[xi][1] = temp_double * my_i_5a_radio * my_adjust_5_a + my_adjust_5_b;	
-					
-				#else
-					
-				   WAVE_all_ave_Current2[xi][1] =temp_double;
-        #endif
+
+#elif USE_Adjust_suanfa==2
+        if(temp_double > my_100A_gatedata) //系数校正法
+            if(temp_double > 138 && temp_double < 230)
+                WAVE_all_ave_Current2[xi][1] = temp_double * my_i_300a_radio ;
+            else
+                WAVE_all_ave_Current2[xi][1] = temp_double * my_i_300a_radio * my_adjust_300_a + my_adjust_300_b;
+        else if(temp_double > my_10A_gatedata && temp_double <= my_100A_gatedata )
+            WAVE_all_ave_Current2[xi][1] = temp_double * my_i_50a_radio * my_adjust_50_a + my_adjust_50_b;
+        else
+            WAVE_all_ave_Current2[xi][1] = temp_double * my_i_5a_radio * my_adjust_5_a + my_adjust_5_b;
+
+#else
+
+        WAVE_all_ave_Current2[xi][1] = temp_double;
+#endif
 
 
-				//最大值
+        //最大值
         WAVE_all_ave_Current2[xi][2] = max * MY_VDD / 4096 * (my_i_ratio_value * my_I_100A_Radio);
     }
 
@@ -353,16 +373,31 @@ void fun_real_all_dianchang(void)
         }
         //采样值
 
-        WAVE_all_ave_E_Field1[xi][0] = sum / count;
-        WAVE_all_ave_E_Field1[xi][1] = sqrt(sum_pwr * 1.0 / count); //均方根法
+        WAVE_all_ave_E_Field1[xi][0] = sum / 80.0;
+        WAVE_all_ave_E_Field1[xi][1] = sum / 80.0;//sqrt(sum_pwr * 1.0 / 80); //均方根法
         WAVE_all_ave_E_Field1[xi][2] = max;
 
         //转换值
         WAVE_all_ave_E_Field2[xi][0] = sum * MY_VDD / 4096 / count * my_E_ratio_value;
-       
+
         //WAVE_all_ave_E_Field2[xi][1] = sqrt(sum_pwr * 1.0 / count) * MY_VDD / 4096 * my_E_ratio_value; //电场，均方根法
-				WAVE_all_ave_E_Field2[xi][1] = WAVE_all_ave_E_Field2[xi][0] ; //电场，平均值方法
+        WAVE_all_ave_E_Field2[xi][1] = WAVE_all_ave_E_Field2[xi][0] ; //电场，平均值方法
         WAVE_all_ave_E_Field2[xi][2] = max * MY_VDD / 4096 * my_E_ratio_value;
+				
+				if( WAVE_all_ave_E_Field1[xi][0]==WAVE_all_ave_E_Field1[xi][2] && WAVE_all_ave_E_Field1[xi][0]!=0)
+				{
+					//采样值
+
+        WAVE_all_ave_E_Field1[xi][0] = 0;
+        WAVE_all_ave_E_Field1[xi][1] = 0;
+        WAVE_all_ave_E_Field1[xi][2] = 0;
+
+        //转换值
+        WAVE_all_ave_E_Field2[xi][0] = 0;     
+        WAVE_all_ave_E_Field2[xi][1] = 0 ; //电场，平均值方法
+        WAVE_all_ave_E_Field2[xi][2] = 0;
+					
+				}
     }
 
 }
@@ -377,7 +412,7 @@ uint16_t  number_before_pp = 320; //录波数据，中断时刻前的点数，320个点，4个周期
 
 int fun_my_wave1_to_wave2(void)
 {
-    int xi = 0, xj =0;
+    int xi = 0, xj = 0;
     volatile	int xk = 0;
     //int ii=0,temp=0;
     uint16_t my_wav2_add = 0;
@@ -472,7 +507,7 @@ int fun_my_wave1_to_wave2(void)
         my_re = 0;
     }
     //计算前500ms周期前，是否停电
-    if(my_re == 1 && my_IT_status==0)
+    if(my_re == 1 && my_IT_status == 0)
     {
         my_befor_500ms_normal_count = 0;
         my_stop_add1 = my_dianliu_exit_add - 2400;
@@ -516,13 +551,13 @@ int fun_my_wave1_to_wave2(void)
 
 //----测试使用
 #if				CC1101_SEND_E_Simulation_data_status==1
-    int ii=0,my_temp=0;
-    int16_t xx=0;
-    for(ii=0; ii<960; ii++)
+    int ii = 0, my_temp = 0;
+    int16_t xx = 0;
+    for(ii = 0; ii < 960; ii++)
     {
-        my_temp=ii%80;
-        xx=(int16_t)(sinf((float)((my_temp/79.0*2*3.1415926)+1))/2.0*4096);
-        my_wave_record_sec2[1][ii]=xx;
+        my_temp = ii % 80;
+        xx = (int16_t)(sinf((float)((my_temp / 79.0 * 2 * 3.1415926) + 1)) / 2.0 * 4096);
+        my_wave_record_sec2[1][ii] = xx;
 
     }
 
@@ -691,35 +726,35 @@ void my_adc2_convert2(uint8_t my_status)
 
 //===
 #if Debug_Usart_OUT_WAVE_12T_CYC==1
-		//if(my_Current_exit_Status==1 || my_E_Field_exit_Status==1 || my_Time_Cyc_exit_Status==1 )
-		if(my_Current_exit_Status==1 || my_E_Field_exit_Status==1  )
-			return;
-	
+    //if(my_Current_exit_Status==1 || my_E_Field_exit_Status==1 || my_Time_Cyc_exit_Status==1 )
+    if(my_Current_exit_Status == 1 || my_E_Field_exit_Status == 1  )
+        return;
 
-		
+
+
     printf("***cache2 WAVE0 12T DATA --ALL_Current****\r\n");
-    int ii=0;
+    int ii = 0;
     for(ii = 0; ii < 12; ii++)
         printf("%.2f MAX=%.2f\r\n", WAVE_all_ave_Current2[ii][1], WAVE_all_ave_Current2[ii][2]); //12T,全波电流
 
     printf("**cache2 *WAVE0 12T DATA --Half_Current-MAX****\r\n");
     for(ii = 0; ii < 12; ii++)
     {
-        
+
         printf("%d\r\n", WAVE_half_ave_Current1[ii][2]); //12T,全波电流
     }
-		printf("**cache2 *WAVE0 12T DATA --E_fild-MAX****\r\n");
-		    for(ii = 0; ii < 12; ii++)
+    printf("**cache2 *WAVE0 12T DATA --E_fild-MAX****\r\n");
+    for(ii = 0; ii < 12; ii++)
     {
-        
+
         printf("%d\r\n", WAVE_half_ave_Current1[ii][1]); //12T,电池
     }
 
     printf("**cache2*WAVE0 12T DATA --END****\r\n");
 #endif
 #if Debug_Usart_OUT_WAVE_VALUE==1
-		printf("\n ==my_cc1101_all_step=[%x]\n",my_CC1101_all_step);
-		my_adc2_convert_dis(0);
+    printf("\n ==my_cc1101_all_step=[%x]\n", my_CC1101_all_step);
+    my_adc2_convert_dis(0);
 #endif
 
 
@@ -760,8 +795,8 @@ void fun_wave2_to_wave3(void)
         for(jj = 0; jj < 3; jj++)
         {
             ADC2_Filer_value_buf_3[jj][ii] = ADC2_Filer_value_buf_2[jj][ii];  //
-							
-					
+
+
         }
 
     }
@@ -782,33 +817,40 @@ void fun_wave2_to_wave3(void)
 */
 
 
+//////////////============================
+
 uint8_t fun_Judege_It_cache3(void)
 {
     double my_all_current_aver0 = 0;
 
-//	  double my_all_current_aver1[4]= {0};
+    double my_all_current_aver1[4] = {0};
     double my_all_current_aver2[8] = {0};
 
     double my_half_current_aver1[4] = {0}; //故障前4个半波
     double my_half_current_aver2[8] = {0}; //半波ADC采样后转换后得到的电流值
     double my_E_fild_aver0 = 0;
-    //double my_E_fild_aver1[4]= {0};
+    double my_E_fild_aver1[4] = {0};
     double my_E_fild_aver2[8] = {0};
-    double my_cmpar_value[3][8] = {0}; //0行全波电流，1行电场，2行半波电流
+    double my_cmpar_value[3][12] = {0}; //0行全波电流，1行电场，2行半波电流
 
-    uint8_t ii = 0, jj = 0;
+    uint16_t ii = 0, jj = 0;
     //全波对应有效电流值
-    //my_all_current_aver0=(WAVE_all_ave_Current3[0][1]+WAVE_all_ave_Current3[1][1]+WAVE_all_ave_Current3[2][1]+WAVE_all_ave_Current3[3][1])/4.0;
-    my_all_current_aver0 = WAVE_all_ave_Current3[0][1]; //故障前，第一个全波的值
+    //my_all_current_aver0 = WAVE_all_ave_Current3[0][1]; //故障前，第一个全波的值
+    my_all_current_aver0 = my_DAC_Line_I;
 
-    printf("wave0 aver0=%.2f\r\n", my_all_current_aver0);
-    //my_all_current_aver0=(my_all_current_aver0-1.2)/V_cell;//故障前，的4个周期的平均有效电流值
+    //中断前电场的平均值
+    //my_E_fild_aver0 = (WAVE_all_ave_E_Field3[0][1] + WAVE_all_ave_E_Field3[1][1] + WAVE_all_ave_E_Field3[2][1] + WAVE_all_ave_E_Field3[3][1]) / 4.0 / E_cell;
+    my_E_fild_aver0 = my_DAC_Line_Efild;
+
+
     for(ii = 0; ii < 4; ii++)
     {
-//			my_all_current_aver1[ii]=WAVE_all_ave_Current3[ii][1];
         my_half_current_aver1[ii] = WAVE_half_ave_Current3[ii][1]; //故障前4个周期
-//			my_E_fild_aver1[ii]=WAVE_all_ave_E_Field3[ii][1];
+        my_all_current_aver1[ii] = WAVE_all_ave_Current3[ii][1];
+        my_E_fild_aver1[ii] == WAVE_all_ave_Current3[ii][1];
     }
+
+
 
     for(ii = 0; ii < 8; ii++)
     {
@@ -818,8 +860,8 @@ uint8_t fun_Judege_It_cache3(void)
         my_E_fild_aver2[ii] = WAVE_all_ave_E_Field3[4 + ii][1] / E_cell; //中断后8个周期的每个周期的电场值
     }
 
-    //中断前电场的平均值
-    my_E_fild_aver0 = (WAVE_all_ave_E_Field3[0][1] + WAVE_all_ave_E_Field3[1][1] + WAVE_all_ave_E_Field3[2][1] + WAVE_all_ave_E_Field3[3][1]) / 4.0 / E_cell;
+
+    //==========================
 
 
 
@@ -830,7 +872,10 @@ uint8_t fun_Judege_It_cache3(void)
         my_cmpar_value[0][jj] = (my_all_current_aver2[jj] - my_all_current_aver0); //后8个周期的每个周期的电流值，减去故障前的平均值
         if(my_cmpar_value[0][jj] < 0) my_cmpar_value[0][jj] = 0;
 
-        my_cmpar_value[1][jj] = (my_E_fild_aver2[jj] - my_E_fild_aver0); //后8个周期，减去前4个周期的平均值，电场值
+        //my_cmpar_value[1][jj] = (my_E_fild_aver2[jj] - my_E_fild_aver0); //后8个周期，减去前4个周期的平均值，电场值
+        my_cmpar_value[1][jj] = fabs(my_E_fild_aver0 - my_E_fild_aver2[jj]);
+
+
 #if Debug_usart_out_wave_cmpare_data==1
         printf("cmpar=%.2f\r\n", my_cmpar_value[0][jj]); //电流差值
 #endif
@@ -843,6 +888,18 @@ uint8_t fun_Judege_It_cache3(void)
     my_after_short_stop_count2 = 0;
     my_E_fild_change_count = 0;
     my_E_fild_min_count = 0;
+
+    //开始判断
+    for(ii = 0; ii < 4; ii++)
+    {
+        if((my_all_current_aver1[ii] - my_all_current_aver0) >= Current_D_value)
+            my_short_circuit_count++;
+
+        if(fabs(my_E_fild_aver0 - my_E_fild_aver1[ii]) >= E_fild_D_value)
+            my_E_fild_change_count++;
+    }
+
+    //中断后的判断
 
     for(ii = 0; ii < 8; ii++)
     {
@@ -893,18 +950,22 @@ uint8_t fun_Judege_It_cache3(void)
     //=======960DATA======
 #if Debug_Usart_OUT_WAVE_960Data_Interupt==1
     for(ii = 0; ii < 960; ii++)
-        printf("%.2f\n", my_wave_record_sec3[0][ii]*MY_VDD / 4096 * (my_i_ratio_value * my_I_100A_Radio)); //960data,全波电流
+        printf("%.2f\n", my_wave_record_sec3[0][ii]*MY_VDD / 4096.0 * (my_i_ratio_value * my_I_100A_Radio)); //960data,全波电流
 #elif Debug_Usart_OUT_WAVE_960Data_Interupt==2
     for(ii = 0; ii < 960; ii++)
-        printf("%.2f\r\n", my_wave_record_sec3[1][ii]*MY_VDD / 4096 * (my_i_ratio_value * my_I_100A_Radio)); //960data,全波电场
+        printf("%.2f\r\n", my_wave_record_sec3[1][ii]*MY_VDD / 4096.0 * (my_i_ratio_value * my_I_100A_Radio)); //960data,全波电场
 #elif Debug_Usart_OUT_WAVE_960Data_Interupt==3
     for(ii = 0; ii < 960; ii++)
-        printf("%.2f\r\n", my_wave_record_sec3[2][ii]*MY_VDD / 4096 * (my_i_ratio_value * my_I_100A_Radio)); //960data,全波电场
+        printf("%.2f\r\n", my_wave_record_sec3[2][ii]*MY_VDD / 4096.0 * (my_i_ratio_value * my_I_100A_Radio)); //960data,全波电场
 #endif
 
     return 0;
 }
 
+
+
+
+//////////////////////////=====================
 /*
 功能：对2级缓存进行计算，统计出，
 （1）中断后 短路周期数量，
@@ -1040,8 +1101,8 @@ uint8_t fun_Judege_It_end(void)
 
 
 
-    if(my_befor_500ms_normal_count>0 && my_befor_short_stop_count>0&&my_short_circuit_count>0&&my_after_short_stop_count1==0  &&my_after_stop1_normal_count==0  && my_after_short_stop_count2==0)
-        my_Fault_Current_End_Status=0X0F; //非故障相合闸成功,不报警
+    if(my_befor_500ms_normal_count > 0 && my_befor_short_stop_count > 0 && my_short_circuit_count > 0 && my_after_short_stop_count1 == 0  && my_after_stop1_normal_count == 0  && my_after_short_stop_count2 == 0)
+        my_Fault_Current_End_Status = 0X0F; //非故障相合闸成功,不报警
 
 
 
@@ -1058,14 +1119,14 @@ uint8_t fun_Judege_It_end(void)
 #if Debug_Usart_OUT_WAVE_End_Just_Interupt==1
     printf("  I=[%XH],  E=[%XH]\r\n", my_Fault_Current_End_Status, my_Fault_E_Fild_End_Status);
     //printf("500ms  短路前有电=%d, 前停电=%d, 短路=%d, 短路后停电=%d, 停电后正常=%d, 正常后停电=%d\r\n",
-		  printf("500ms  frontX_A=%d, frontX_NOA=%d, short_circurt=%d, afterX_NOA=%d, afterNOA_normal=%d, afternorm_NOA=%d\r\n",
+    printf("500ms  frontX_A=%d, frontX_NOA=%d, short_circurt=%d, afterX_NOA=%d, afterNOA_normal=%d, afternorm_NOA=%d\r\n",
            my_befor_500ms_normal_count,
            my_befor_short_stop_count,
            my_short_circuit_count,
            my_after_short_stop_count1,
            my_after_stop1_normal_count,
            my_after_short_stop_count2);
-		printf("短路前有电A, 短路前停电B, 短路C, 短路后停电D, 停电后正常E, 正常后停电F\n");
+    printf("短路前有电A, 短路前停电B, 短路C, 短路后停电D, 停电后正常E, 正常后停电F\n");
 
 #endif
 
@@ -1176,21 +1237,21 @@ uint8_t my_fun_current_exit_just(void)
 思路：此函数不进行录波数据1级到2级的处理，也不进行转换。直接取12T的数据2级缓冲值（转换后的值），利用半波数据判断是否停电。
 用法：此函数，需要跟在DAC设置函数，或者周期采样函数后边，这样，利用上一个函数的录波结果就可以判断停电，和对地电场的值。
 */
-uint8_t my_Line_Current_stop_status=0;  //停电状态标识，1为停电，0为正常
-uint8_t my_Line_Current_stop_last_status=0xff;  //上一次的状态，利用这个变量，和最新的状态比较，停电了就上传
-uint16_t my_Line_Efild_valu=0;   //对地电场的值
-uint16_t my_line_Current_value=0;  //线上电流的有效值，放到10倍取整数
+uint8_t my_Line_Current_stop_status = 0; //停电状态标识，1为停电，0为正常
+uint8_t my_Line_Current_stop_last_status = 0xff; //上一次的状态，利用这个变量，和最新的状态比较，停电了就上传
+uint16_t my_Line_Efild_valu = 0; //对地电场的值
+uint16_t my_line_Current_value = 0; //线上电流的有效值，放到10倍取整数
 
 
-uint16_t MY_Efile_Zero_data=10;  //电场小于此值，表示为0
-uint16_t MY_Efile_floor_data=50; //电场下限，小于此值，表示接地
-uint16_t my_HA_Zero_data=0;
-uint16_t my_A_Zero_data=1;
+uint16_t MY_Efile_Zero_data = 10; //电场小于此值，表示为0
+uint16_t MY_Efile_floor_data = 50; //电场下限，小于此值，表示接地
+uint16_t my_HA_Zero_data = 0;
+uint16_t my_A_Zero_data = 1;
 
 void my_fun_get_Line_stop_Efild(void)
 {
 
-    uint16_t  my_step=00;
+    uint16_t  my_step = 00;
 
     return ;
 //取当前数据
@@ -1199,75 +1260,75 @@ void my_fun_get_Line_stop_Efild(void)
 
 
 //停电判断
-    if( ADC2_Filer_value_buf_2[1][0]<=MY_Efile_Zero_data &&  ADC2_Filer_value_buf_2[2][1]<=my_HA_Zero_data) //电场为0，半波为0
-        my_Line_Current_stop_status=1; //表示停电,  没有电场，没有电流
-    
-		else if(ADC2_Filer_value_buf_2[0][1]>=my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1]>MY_Efile_floor_data   && ADC2_Filer_value_buf_2[2][1]>my_HA_Zero_data)
-        my_Line_Current_stop_status=0;  //表示正常，  线路 有电流，有电场。
-    
-		else if(ADC2_Filer_value_buf_2[0][1]>=my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1]<=MY_Efile_floor_data 	&& ADC2_Filer_value_buf_2[2][1]>my_HA_Zero_data)
-        my_Line_Current_stop_status=2;//表示接地，  线路电场很小，有电流
+    if( ADC2_Filer_value_buf_2[1][0] <= MY_Efile_Zero_data &&  ADC2_Filer_value_buf_2[2][1] <= my_HA_Zero_data) //电场为0，半波为0
+        my_Line_Current_stop_status = 1; //表示停电,  没有电场，没有电流
+
+    else if(ADC2_Filer_value_buf_2[0][1] >= my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1] > MY_Efile_floor_data   && ADC2_Filer_value_buf_2[2][1] > my_HA_Zero_data)
+        my_Line_Current_stop_status = 0; //表示正常，  线路 有电流，有电场。
+
+    else if(ADC2_Filer_value_buf_2[0][1] >= my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1] <= MY_Efile_floor_data 	&& ADC2_Filer_value_buf_2[2][1] > my_HA_Zero_data)
+        my_Line_Current_stop_status = 2; //表示接地，  线路电场很小，有电流
 
 //报警状态恢复
-    if(	my_Line_Current_stop_status==0 &&(my_Fault_Current_End_Status!=0 || my_Fault_E_Fild_End_Status!=0))
+    if(	my_Line_Current_stop_status == 0 && (my_Fault_Current_End_Status != 0 || my_Fault_E_Fild_End_Status != 0))
     {
         fun_wave2_to_wave3();
-        my_Fault_Current_End_Status=00;
-        my_Fault_E_Fild_End_Status=00;
-				printf("==return normal--1\n");
-				my_zsq_ALarm_send_status=1;
-        my_step=0x0002;//发送报警，消息任务
+        my_Fault_Current_End_Status = 00;
+        my_Fault_E_Fild_End_Status = 00;
+        printf("==return normal--1\n");
+        my_zsq_ALarm_send_status = 1;
+        my_step = 0x0002; //发送报警，消息任务
         xQueueSend(myQueue01Handle, &my_step, 100);
     }
 
 //停电状态上传
-    if(my_Line_Current_stop_status==1 && my_Line_Current_stop_last_status==0 )  //上次正常，现在停电，上传
+    if(my_Line_Current_stop_status == 1 && my_Line_Current_stop_last_status == 0 ) //上次正常，现在停电，上传
     {
         fun_wave2_to_wave3();
-        my_Fault_Current_End_Status=0xFF;
-        my_Fault_E_Fild_End_Status=0xFF;
-        my_Line_Current_stop_last_status=1;
-			  printf("==return normal--2---stop\n");
-				my_zsq_ALarm_send_status=1;
-        my_step=0x0002; //发送报警，消息任务
+        my_Fault_Current_End_Status = 0xFF;
+        my_Fault_E_Fild_End_Status = 0xFF;
+        my_Line_Current_stop_last_status = 1;
+        printf("==return normal--2---stop\n");
+        my_zsq_ALarm_send_status = 1;
+        my_step = 0x0002; //发送报警，消息任务
         xQueueSend(myQueue01Handle, &my_step, 100);
     }
 //接地状态上传
-    else if(my_Line_Current_stop_status==2 && my_Line_Current_stop_last_status==0)
+    else if(my_Line_Current_stop_status == 2 && my_Line_Current_stop_last_status == 0)
     {
-        my_E_Field_exit_add=my_E_fild_time_add;
+        my_E_Field_exit_add = my_E_fild_time_add;
         fun_wave2_to_wave3();
 
-        my_Fault_E_Fild_End_Status=0x01;
-        my_Line_Current_stop_last_status=my_Line_Current_stop_status;
-				 printf("==return normal--2---jiedi\n");
-			my_zsq_ALarm_send_status=1;
-        my_step=0x0002; //发送报警，消息任务
+        my_Fault_E_Fild_End_Status = 0x01;
+        my_Line_Current_stop_last_status = my_Line_Current_stop_status;
+        printf("==return normal--2---jiedi\n");
+        my_zsq_ALarm_send_status = 1;
+        my_step = 0x0002; //发送报警，消息任务
         xQueueSend(myQueue01Handle, &my_step, 100);
 
     }
 //线路正常，历史数据变化
-    else if(my_Line_Current_stop_status==0 && my_Line_Current_stop_last_status!=0)
+    else if(my_Line_Current_stop_status == 0 && my_Line_Current_stop_last_status != 0)
     {
 
-        my_Line_Current_stop_last_status=0;  //把历史状态，恢复为最新状态
+        my_Line_Current_stop_last_status = 0; //把历史状态，恢复为最新状态
     }
 
 
 #if Debug_Usart_OUT_LINE_STOP_STATUS==1
-    printf("--Line stop staus=[%d]--\r\n",my_Line_Current_stop_status);
+    printf("--Line stop staus=[%d]--\r\n", my_Line_Current_stop_status);
 #endif
 
 //电场值获得
 
-    if(my_Line_Current_stop_status==1)
-        my_line_Current_value=0; //把全波的零飘值变为0
+    if(my_Line_Current_stop_status == 1)
+        my_line_Current_value = 0; //把全波的零飘值变为0
     else
         ;  //空语句，目的是显示停电的时候的零飘值，如果想屏蔽零飘，就屏蔽此空语句
-    my_line_Current_value=ADC2_Filer_value_buf_2[0][1]*10;  //电流的有效值
-    my_Line_Efild_valu=ADC2_Filer_value_buf_2[1][1];  //测得的电场的有效值
+    my_line_Current_value = ADC2_Filer_value_buf_2[0][1] * 10; //电流的有效值
+    my_Line_Efild_valu = ADC2_Filer_value_buf_2[1][1]; //测得的电场的有效值
 #if Debug_Usart_OUT_LINE_Efield_STATUS==1
-    printf("--Line current=%.2f  Efild=%d--\r\n",my_line_Current_value/10.0,my_Line_Efild_valu);
+    printf("--Line current=%.2f  Efild=%d--\r\n", my_line_Current_value / 10.0, my_Line_Efild_valu);
 
 #endif
 }
@@ -1278,39 +1339,39 @@ void my_fun_get_Line_stop_Efild(void)
 void my_fun_wave1_to_wave2_old_data(void)
 {
     int ii = 0;
-    uint16_t my_end_add=my_wave_write_add;
-    uint16_t my_start_add=0;
-    uint16_t temp_add=0;
-    uint16_t count_number=rec_T_Count*80;
-    my_E_fild_time_add=my_wave_write_add;
-    if(my_end_add>=count_number)
+    uint16_t my_end_add = my_wave_write_add;
+    uint16_t my_start_add = 0;
+    uint16_t temp_add = 0;
+    uint16_t count_number = rec_T_Count * 80;
+    my_E_fild_time_add = my_wave_write_add;
+    if(my_end_add >= count_number)
     {
-        my_start_add=my_end_add-count_number;
+        my_start_add = my_end_add - count_number;
     }
     else
     {
-        my_start_add=WAVE_number-(count_number-my_end_add);
+        my_start_add = WAVE_number - (count_number - my_end_add);
     }
 
     //计算数据
-    temp_add=my_start_add;
-    for(ii=0; ii<count_number; ii++)
+    temp_add = my_start_add;
+    for(ii = 0; ii < count_number; ii++)
     {
-        my_wave_record_sec2[0][ii]=my_wave_record[0][temp_add];
-        my_wave_record_sec2[1][ii]=my_wave_record[1][temp_add];
-        my_wave_record_sec2[2][ii]=my_wave_record[2][temp_add];
+        my_wave_record_sec2[0][ii] = my_wave_record[0][temp_add];
+        my_wave_record_sec2[1][ii] = my_wave_record[1][temp_add];
+        my_wave_record_sec2[2][ii] = my_wave_record[2][temp_add];
 
         temp_add++;
-        if(temp_add>=WAVE_number)
-            temp_add=0;
+        if(temp_add >= WAVE_number)
+            temp_add = 0;
     }
-    if(count_number<WAVE_number_sec2)
+    if(count_number < WAVE_number_sec2)
     {
-        for(; ii<WAVE_number_sec2; ii++)
+        for(; ii < WAVE_number_sec2; ii++)
         {
-            my_wave_record_sec2[0][ii]=0;
-            my_wave_record_sec2[1][ii]=0;
-            my_wave_record_sec2[2][ii]=0;
+            my_wave_record_sec2[0][ii] = 0;
+            my_wave_record_sec2[1][ii] = 0;
+            my_wave_record_sec2[2][ii] = 0;
         }
 
     }
@@ -1322,28 +1383,28 @@ void my_fun_wave1_to_wave2_old_data(void)
 void my_fun_query_Efild(void)
 {
 
-    uint16_t my_step=0;
+    uint16_t my_step = 0;
     my_fun_wave1_to_wave2_old_data();
     my_adc2_convert2(0);
 
     //停电判断
-    if( ADC2_Filer_value_buf_2[1][2]<=MY_Efile_Zero_data &&  ADC2_Filer_value_buf_2[2][2]<=my_HA_Zero_data) //电场为0，半波为0
-        my_Line_Current_stop_status=1; //表示停电,没有电场，没有电流
-    else if(ADC2_Filer_value_buf_2[0][1]>=my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1]>MY_Efile_Zero_data)
-        my_Line_Current_stop_status=0;  //表示正常，线路 有电流，有电场。
-    else if(ADC2_Filer_value_buf_2[0][1]>=my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1]<=MY_Efile_floor_data)
-        my_Line_Current_stop_status=2;//表示接地，线路电场很小，有电流
+    if( ADC2_Filer_value_buf_2[1][2] <= MY_Efile_Zero_data &&  ADC2_Filer_value_buf_2[2][2] <= my_HA_Zero_data) //电场为0，半波为0
+        my_Line_Current_stop_status = 1; //表示停电,没有电场，没有电流
+    else if(ADC2_Filer_value_buf_2[0][1] >= my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1] > MY_Efile_Zero_data)
+        my_Line_Current_stop_status = 0; //表示正常，线路 有电流，有电场。
+    else if(ADC2_Filer_value_buf_2[0][1] >= my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1] <= MY_Efile_floor_data)
+        my_Line_Current_stop_status = 2; //表示接地，线路电场很小，有电流
 
     //接地波形
-    if(my_Line_Current_stop_status==2  && my_Line_Current_stop_last_status==0)
+    if(my_Line_Current_stop_status == 2  && my_Line_Current_stop_last_status == 0)
     {
-        my_E_Field_exit_add=my_E_fild_time_add;
+        my_E_Field_exit_add = my_E_fild_time_add;
         fun_wave2_to_wave3();
 
-        my_Fault_E_Fild_End_Status=0x01;
-        my_Line_Current_stop_last_status=my_Line_Current_stop_status;
-			 my_zsq_ALarm_send_status=1;
-        my_step=0x0002;//发送报警，消息任务
+        my_Fault_E_Fild_End_Status = 0x01;
+        my_Line_Current_stop_last_status = my_Line_Current_stop_status;
+        my_zsq_ALarm_send_status = 1;
+        my_step = 0x0002; //发送报警，消息任务
         xQueueSend(myQueue01Handle, &my_step, 100);
 
     }

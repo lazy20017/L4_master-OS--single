@@ -725,7 +725,7 @@ void Callback01(void const * argument)
 						HAL_Delay(3000); //等待录波
 						
 						my_tim6_count=0;
-						//my_fun_give_Queue(&myQueue01Handle, 0X0001); //发送周期数据
+						my_fun_give_Queue(&myQueue01Handle, 0X0001); //发送周期数据
 						my_sys_start_status=0;
 					
 				}

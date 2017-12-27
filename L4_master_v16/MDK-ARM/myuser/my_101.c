@@ -339,8 +339,9 @@ void my_fun_101send_AC_Rec_data(UART_HandleTypeDef* USARTx, uint8_t my_status, u
     uint8_t *my_data = my_temp8_buf1;
     uint8_t my_row = 0;
     uint16_t ii = 0;
-    uint16_t temp = 0; //有符号数据
-		uint8_t xx=0;
+    //uint16_t temp = 0; //有符号数据
+		int temp=0;
+		uint16_t xx=0;
     int my_cc=0;
 
 
@@ -413,28 +414,35 @@ void my_fun_101send_AC_Rec_data(UART_HandleTypeDef* USARTx, uint8_t my_status, u
     {
         my_row = my_row - 10;
 			 xx=15;
+			  //printf("my_all_i_up_value=%d\n",my_all_i_up_value);
+				//printf("\n===960===start==\n");
         for(ii = 0; ii < WAVE_number_sec3; ii++)
         {
-            temp = (my_wave_record_sec3[my_row][ii] - my_all_i_up_value);
+            //temp = (my_wave_record_sec3[my_row][ii] - my_all_i_up_value);
+						temp = my_wave_record_sec3[my_row][ii];
+			
 
             //temp=my_wave_record_sec2[my_row][ii];
             temp = temp * MY_VDD / 4096 * (my_i_ratio_value * my_I_100A_Radio) * 10; //保留小数点后1位
             my_data[2 * ii] = temp;
-            my_data[2 * ii + 1] = (temp >> 8) & 0x00FF;
+            my_data[2 * ii + 1] =(temp >> 8);
+						
+						//printf("%d\n",temp);
+					  
 					
 					 #if	CC1101_SEND_I_E_Simulation_data_status==1
-							my_data[2 * ii] = ++xx;
-							my_data[2 * ii + 1] = ++xx;
-							if(xx>=200)
-								xx=15;
+							my_data[2 * ii] = xx;
+							my_data[2 * ii + 1] = (xx>>8);
+							xx++;
 					#endif
         }
+				//printf("\n===960===end==\n");
 
     }
     else if(my_row == 11 )  //电场
     {
         my_row = my_row - 10;
-				xx=200;
+				xx=2000;
         for(ii = 0; ii < WAVE_number_sec3; ii++)
         {
 
@@ -444,10 +452,9 @@ void my_fun_101send_AC_Rec_data(UART_HandleTypeDef* USARTx, uint8_t my_status, u
             my_data[2 * ii + 1] = (temp >> 8) & 0x00FF;
 					
 					 #if	CC1101_SEND_I_E_Simulation_data_status==1
-							my_data[2 * ii] =--xx;
-							my_data[2 * ii + 1] =--xx;
-							if(xx<=100) 
-								xx=200;
+							my_data[2 * ii] =xx;
+							my_data[2 * ii + 1] =(xx>>8);
+							xx--;
 					#endif
         }
 
