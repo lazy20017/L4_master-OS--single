@@ -67,7 +67,7 @@ uint16_t my_100E_real_int = 0; //校正后跌落电压对应的DAC，输入值
 void my_fun_Set_DAC_I_ref(void)
 {
     double temp_i = 0;
-	volatile	double temp_e = 0;
+		volatile	double temp_e = 0;
     uint16_t my_temp_16=0;
     uint16_t my_12v_int=0;
 	
@@ -118,7 +118,7 @@ void my_fun_Set_DAC_I_ref(void)
 
 */
 double my_adjust_value_V=0.00;
-double my_counst_value=0.04*1.414;// 电场参考电压的恒定偏差，0.004对应1A电流，小于0.04V就频繁进中断，默认设置0.04
+double my_counst_value=0.09;// 电场参考电压的恒定偏差，0.004对应1A电流，小于0.09V就频繁进中断，默认设置0.09
 void my_fun_DAC_evref_auto_ajust(void)
 {
 		double temp_i = 0, temp_e = 0;

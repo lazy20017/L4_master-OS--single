@@ -27,11 +27,19 @@ Project File Date:  12/15/2017
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'd:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'L4_master_v16'
-compiling my_gloabal_val.c...
+compiling my_101.c...
+myuser\my_101.c(343): warning:  #550-D: variable "xx"  was set but never used
+  		uint8_t xx=0;
+myuser\my_101.c: 1 warning, 0 errors
+compiling my_wave_rec.c...
+myuser\my_wave_rec.c(1197): warning:  #111-D: statement is unreachable
+      my_fun_wave1_to_wave2_old_data();
+myuser\my_wave_rec.c: 1 warning, 0 errors
+compiling main.c...
 linking...
-Program Size: Code=64404 RO-data=1444 RW-data=2552 ZI-data=87632  
+Program Size: Code=63772 RO-data=1460 RW-data=2552 ZI-data=87632  
 FromELF: creating hex file...
-"L4_master_v16\L4_master_v16.axf" - 0 Error(s), 0 Warning(s).
+"L4_master_v16\L4_master_v16.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -49,7 +57,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.0
-Build Time Elapsed:  00:00:04
+Build Time Elapsed:  00:00:14
 </pre>
 </body>
 </html>

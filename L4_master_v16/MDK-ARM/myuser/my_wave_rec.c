@@ -361,7 +361,7 @@ void fun_real_all_dianchang(void)
         WAVE_all_ave_E_Field2[xi][0] = sum * MY_VDD / 4096 / count * my_E_ratio_value;
        
         //WAVE_all_ave_E_Field2[xi][1] = sqrt(sum_pwr * 1.0 / count) * MY_VDD / 4096 * my_E_ratio_value; //电场，均方根法
-				WAVE_all_ave_E_Field2[xi][1] = WAVE_all_ave_E_Field2[xi][0] ; //电场，均方根法
+				WAVE_all_ave_E_Field2[xi][1] = WAVE_all_ave_E_Field2[xi][0] ; //电场，平均值方法
         WAVE_all_ave_E_Field2[xi][2] = max * MY_VDD / 4096 * my_E_ratio_value;
     }
 
@@ -717,8 +717,10 @@ void my_adc2_convert2(uint8_t my_status)
 
     printf("**cache2*WAVE0 12T DATA --END****\r\n");
 #endif
+#if Debug_Usart_OUT_WAVE_VALUE==1
 		printf("\n ==my_cc1101_all_step=[%x]\n",my_CC1101_all_step);
 		my_adc2_convert_dis(0);
+#endif
 
 
 }
@@ -757,7 +759,9 @@ void fun_wave2_to_wave3(void)
     {
         for(jj = 0; jj < 3; jj++)
         {
-            ADC2_Filer_value_buf_3[jj][ii] = ADC2_Filer_value_buf_2[jj][ii];
+            ADC2_Filer_value_buf_3[jj][ii] = ADC2_Filer_value_buf_2[jj][ii];  //
+							
+					
         }
 
     }
@@ -827,8 +831,9 @@ uint8_t fun_Judege_It_cache3(void)
         if(my_cmpar_value[0][jj] < 0) my_cmpar_value[0][jj] = 0;
 
         my_cmpar_value[1][jj] = (my_E_fild_aver2[jj] - my_E_fild_aver0); //后8个周期，减去前4个周期的平均值，电场值
-
+#if Debug_usart_out_wave_cmpare_data==1
         printf("cmpar=%.2f\r\n", my_cmpar_value[0][jj]); //电流差值
+#endif
     }
 
     //电流和电场变化次数记录
@@ -888,7 +893,7 @@ uint8_t fun_Judege_It_cache3(void)
     //=======960DATA======
 #if Debug_Usart_OUT_WAVE_960Data_Interupt==1
     for(ii = 0; ii < 960; ii++)
-        printf("%.2f\r\n", my_wave_record_sec3[0][ii]*MY_VDD / 4096 * (my_i_ratio_value * my_I_100A_Radio)); //960data,全波电流
+        printf("%.2f\n", my_wave_record_sec3[0][ii]*MY_VDD / 4096 * (my_i_ratio_value * my_I_100A_Radio)); //960data,全波电流
 #elif Debug_Usart_OUT_WAVE_960Data_Interupt==2
     for(ii = 0; ii < 960; ii++)
         printf("%.2f\r\n", my_wave_record_sec3[1][ii]*MY_VDD / 4096 * (my_i_ratio_value * my_I_100A_Radio)); //960data,全波电场
@@ -1099,7 +1104,7 @@ void my_fun_wave_rec(void)
 uint8_t my_fun_current_exit_just(void)
 {
     my_IT_Count++; //调用中断故障判断程序次数统计
-    USART_printf(&huart2, "---just interrupt count=%d-----\n", my_IT_Count);
+    //USART_printf(&huart2, "---just interrupt count=%d-----\n", my_IT_Count);
     uint8_t temp8 = 0;
     //1.中断事件处理
     if(my_IT_status == 0 && (my_Current_exit_Status == 1 || my_E_Field_exit_Status == 1))
@@ -1177,8 +1182,8 @@ uint16_t my_Line_Efild_valu=0;   //对地电场的值
 uint16_t my_line_Current_value=0;  //线上电流的有效值，放到10倍取整数
 
 
-uint16_t MY_Efile_Zero_data=0;  //电场小于此值，表示为0
-uint16_t MY_Efile_floor_data=10; //电场下限，小于此值，表示接地
+uint16_t MY_Efile_Zero_data=10;  //电场小于此值，表示为0
+uint16_t MY_Efile_floor_data=50; //电场下限，小于此值，表示接地
 uint16_t my_HA_Zero_data=0;
 uint16_t my_A_Zero_data=1;
 
@@ -1194,12 +1199,14 @@ void my_fun_get_Line_stop_Efild(void)
 
 
 //停电判断
-    if( ADC2_Filer_value_buf_2[1][2]<=MY_Efile_Zero_data &&  ADC2_Filer_value_buf_2[2][2]<=my_HA_Zero_data) //电场为0，半波为0
-        my_Line_Current_stop_status=1; //表示停电,没有电场，没有电流
-    else if(ADC2_Filer_value_buf_2[0][1]>=my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1]>MY_Efile_Zero_data)
-        my_Line_Current_stop_status=0;  //表示正常，线路 有电流，有电场。
-    else if(ADC2_Filer_value_buf_2[0][1]>=my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1]<=MY_Efile_floor_data)
-        my_Line_Current_stop_status=2;//表示接地，线路电场很小，有电流
+    if( ADC2_Filer_value_buf_2[1][0]<=MY_Efile_Zero_data &&  ADC2_Filer_value_buf_2[2][1]<=my_HA_Zero_data) //电场为0，半波为0
+        my_Line_Current_stop_status=1; //表示停电,  没有电场，没有电流
+    
+		else if(ADC2_Filer_value_buf_2[0][1]>=my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1]>MY_Efile_floor_data   && ADC2_Filer_value_buf_2[2][1]>my_HA_Zero_data)
+        my_Line_Current_stop_status=0;  //表示正常，  线路 有电流，有电场。
+    
+		else if(ADC2_Filer_value_buf_2[0][1]>=my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1]<=MY_Efile_floor_data 	&& ADC2_Filer_value_buf_2[2][1]>my_HA_Zero_data)
+        my_Line_Current_stop_status=2;//表示接地，  线路电场很小，有电流
 
 //报警状态恢复
     if(	my_Line_Current_stop_status==0 &&(my_Fault_Current_End_Status!=0 || my_Fault_E_Fild_End_Status!=0))
@@ -1226,7 +1233,7 @@ void my_fun_get_Line_stop_Efild(void)
         xQueueSend(myQueue01Handle, &my_step, 100);
     }
 //接地状态上传
-    else if(my_Line_Current_stop_status==2 && my_Line_Current_stop_status==0)
+    else if(my_Line_Current_stop_status==2 && my_Line_Current_stop_last_status==0)
     {
         my_E_Field_exit_add=my_E_fild_time_add;
         fun_wave2_to_wave3();
@@ -1254,9 +1261,9 @@ void my_fun_get_Line_stop_Efild(void)
 //电场值获得
 
     if(my_Line_Current_stop_status==1)
-        my_line_Current_value=0;
+        my_line_Current_value=0; //把全波的零飘值变为0
     else
-        ;  //空语句，目的是显示停电的时候的零飘值，如果想屏蔽零飘，就屏蔽此语句
+        ;  //空语句，目的是显示停电的时候的零飘值，如果想屏蔽零飘，就屏蔽此空语句
     my_line_Current_value=ADC2_Filer_value_buf_2[0][1]*10;  //电流的有效值
     my_Line_Efild_valu=ADC2_Filer_value_buf_2[1][1];  //测得的电场的有效值
 #if Debug_Usart_OUT_LINE_Efield_STATUS==1

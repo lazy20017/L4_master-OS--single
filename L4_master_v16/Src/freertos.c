@@ -100,7 +100,7 @@ uint8_t my_use_cyc_rec_data_status=0; //是否进行周期录波数据发送，1为发送，0为不
 uint8_t my_use_alarm_rec_data_status=1; //是否进行周期录波数据发送，1为发送，0为不发送
 uint8_t my_use_alarm_rec_data_status_Efild=1;
 
-uint16_t my_que1_wait_time=2000;  //队列1的等待时间
+uint16_t my_que1_wait_time=1000;  //队列1的等待时间
 
 /* USER CODE END Variables */
 
@@ -234,7 +234,7 @@ void StartDefaultTask(void const * argument)
         my_fun_usart_init_resume(); //串口拥塞后恢复程序
 				}
 				
-				if( my_DTU_send_faile_count>=10)
+				if( my_DTU_send_faile_count>=3)
 				{				
 					my_fun_CC1101_init_reum();
 				}
@@ -257,8 +257,8 @@ void StartTask02(void const * argument)
     {
         //==CC1101 发送数据环节，对应队列1
 
-        //my_result = xQueueReceive(myQueue01Handle, &my_step, my_que1_wait_time); //xQueuePeek
-				my_result = xQueueReceive(myQueue01Handle, &my_step, 10000); //xQueuePeek
+        my_result = xQueueReceive(myQueue01Handle, &my_step, my_que1_wait_time); //xQueuePeek
+				//my_result = xQueueReceive(myQueue01Handle, &my_step, 10000); //xQueuePeek
         if(my_result == pdPASS)
         {
             printf("=========CC1101 CC_T_QU1 IS send=[%X]--------\r\n", my_step);
@@ -648,24 +648,24 @@ void Callback01(void const * argument)
     }
 #endif
 
-    if(my_os_count1 % (17) == 0 )
+    if(my_os_count1 % (13) == 0 )
 		{				
 				printf("\n===yongsai control[%d]===\n",my_os_count1);
-				
+				my_adc_1_convert_dis(0); //显示直流值
 				//==CC1101低功耗控制策略
 				if(ADC1_Filer_value_buf[6]>=4.0)
 				{
 					my_CC1101_Sleep_status=0;
-					if(my_CC1101_all_step==0x00)
+					if(my_CC1101_all_step==0x00 && my_DTU_send_faile_count>=3) //my_DTU_send_faile_count表示CC1101与DTU通信失败多次
 					{
-						
+						CC1101SetSleep();
 					}
 					
 				}
 				else
 				{
 					my_CC1101_Sleep_status=1;
-					if(my_CC1101_all_step==0x00)
+					if(my_CC1101_all_step==0x00 && my_DTU_send_faile_count>=3)
 					{
 						CC1101SetSleep();
 					}
@@ -717,26 +717,26 @@ void Callback01(void const * argument)
 						my_Time_Cyc_exit_Status=1;
             my_dianliu_exit_add=my_wave_write_add; //当前录波地址
             my_Time_Cyc_exit_add = my_wave_write_add;
-					  xResult=	xEventGroupSetBitsFromISR(xCreatedEventGroup2, 0X02,&xHigherPriorityTaskWoken);
+					  xResult=	xEventGroupSetBitsFromISR(xCreatedEventGroup2, 0X02,&xHigherPriorityTaskWoken); //产生中断事件
             if(xResult!=pdFAIL)
             {
                 portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
             }
-						HAL_Delay(3000);
+						HAL_Delay(3000); //等待录波
 						
 						my_tim6_count=0;
-						my_fun_give_Queue(&myQueue01Handle, 0X0001); //发送周期数据
-						//my_sys_start_status=0;
+						//my_fun_give_Queue(&myQueue01Handle, 0X0001); //发送周期数据
+						my_sys_start_status=0;
 					
 				}
 				
-				//指示器数据重新发送，30秒后重新发送	
+			
        		
 
 		}
 		
-		//模拟报警
-		if(my_os_count1 % (67) ==0 && my_zsq_ALarm_send_status==0)
+		//模拟报
+		if(my_os_count1 % (3677) ==0 && my_zsq_ALarm_send_status==0)
 		{		
 			printf("===send simulation alarm data--1!!!\n");
 			my_zsq_ALarm_send_status=1;
@@ -746,10 +746,10 @@ void Callback01(void const * argument)
 		}
 		
 		//重复发送报警数据
-		if(my_os_count1 % (33) ==0 && my_CC1101_all_step==0x00 && my_zsq_ALarm_send_status==1)
+		if(my_os_count1 % (38) ==0 && my_CC1101_all_step==0x00 && my_zsq_ALarm_send_status==1)
 		{
 			printf("==cyc send alarm data!!!--2\n");
-			my_fun_give_Queue(&myQueue01Handle, 0X0002); //发送报警
+			//my_fun_give_Queue(&myQueue01Handle, 0X0002); //发送报警
 		}
 
 	

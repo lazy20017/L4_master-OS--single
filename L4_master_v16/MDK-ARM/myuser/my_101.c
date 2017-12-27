@@ -187,8 +187,8 @@ void my_fun_101send_DC_data(UART_HandleTypeDef* USARTx, uint8_t my_status, uint8
 		for(ii = 0; ii < ADC1_COLM; ii++)  //1温度、2电源、3参考电压、4干电池、5线上电压、6太阳能、7锂电池
     {   
 			
-				my_data[2 * ii] = 2*ii;
-        my_data[2 * ii + 1] = 2*ii+1;
+				//my_data[2 * ii] = 2*ii;
+        //my_data[2 * ii + 1] = 2*ii+1;
 			
 
     }
@@ -227,8 +227,9 @@ void my_fun_101send_AC_data(UART_HandleTypeDef* USARTx, uint8_t my_status, uint8
     {
 
         for(ii = 0; ii < ADC2_COLM; ii++)
-        {   temp = (uint16_t)(ADC2_Filer_value_buf_3[ii][1] * 10); //转换值，有效值===电流、电场，半波
-            my_data[2 * ii] = temp;
+        {   //temp = (uint16_t)(ADC2_Filer_value_buf_3[ii][1] * 10); //转换值，1有效值，0为平均值，2为最大值===电流、电场，半波
+						temp = (uint16_t)(ADC2_Filer_value_buf_3[ii][2] * 10 ); 
+						my_data[2 * ii] = temp;
             my_data[2 * ii + 1] = (temp >> 8) & 0x00FF;
 
         }
@@ -408,7 +409,7 @@ void my_fun_101send_AC_Rec_data(UART_HandleTypeDef* USARTx, uint8_t my_status, u
 
 
 
-    else if(my_row == 10 )
+    else if(my_row == 10 ) //电流
     {
         my_row = my_row - 10;
 			 xx=15;
@@ -430,7 +431,7 @@ void my_fun_101send_AC_Rec_data(UART_HandleTypeDef* USARTx, uint8_t my_status, u
         }
 
     }
-    else if(my_row == 11 )
+    else if(my_row == 11 )  //电场
     {
         my_row = my_row - 10;
 				xx=200;

@@ -21,6 +21,7 @@ extern uint16_t ADC2_GetValue[ADC2_ROW][ADC2_COLM];
 
 uint8_t my_IT_status = 0; //为0表示，没有中断，为1表示，产生了中断，并且把2及缓存数据已经移动至1级缓存中
 uint8_t my_IT_Count = 0;  //中断次数记录
+uint8_t my_reset_count=0;
 
 extern uint16_t  my_CC1101_all_step;
 
@@ -62,11 +63,16 @@ void HAL_TIM_PeriodElapsedCallback2(TIM_HandleTypeDef *htim)
 
         if(my_Current_exit_Status==1 || my_E_Field_exit_Status==1 || my_sys_start_status==1)
 				{
-          printf("==Current_exit_status=%d,e_filed_exit_status=%d,my_sys_start_status=%d  time6=%d\n"
-					,my_Current_exit_Status,my_E_Field_exit_Status,my_sys_start_status,my_tim6_count);  
+          printf("==Current_exit_status=%d,e_filed_exit_status=%d,my_sys_start_status=%d  time6=%d,reset_count=%d\n"
+					,my_Current_exit_Status,my_E_Field_exit_Status,my_sys_start_status,my_tim6_count,my_reset_count);  
+					
+					my_reset_count++;
+					if(my_reset_count>50)
+						HAL_NVIC_SystemReset();
+						
 					return;
 				}
-
+				my_reset_count=0;
 
        
 				//开启周期采样

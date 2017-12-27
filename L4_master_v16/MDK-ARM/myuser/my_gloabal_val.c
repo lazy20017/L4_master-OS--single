@@ -64,7 +64,7 @@ uint8_t my_CC1101_Sleep_status=1;  //CC1101的SLEEP标识，为1标识CC1101睡眠
 
 //TIM6
 uint16_t my_tim6_count=0;
-uint16_t my_cyc_time_count=147;  //周期发送数据时间，秒为单位
+uint16_t my_cyc_time_count=117;  //周期发送数据时间，秒为单位
 uint16_t  my_cyc_delay=0;
 
 uint8_t my_cc_Efied_count=0;  //记录CC1101发送后，停止的时间，然后开启接地中断

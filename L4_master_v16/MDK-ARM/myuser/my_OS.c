@@ -117,14 +117,14 @@ void my_fun_CC1101_time_dialog_tx2(
         my_Time_Cyc_exit_Status = 0;
 
 
-        if(my_CC1101_Sleep_status == 1)
+        if(my_CC1101_Sleep_status == 1 || my_DTU_send_faile_count>=2)
         {
             CC1101SetSleep();
         }
         //DTU失败次数标识
         my_DTU_send_faile_count++;
         if(my_DTU_send_faile_count >= 0XFFFF)
-            my_DTU_send_faile_count = 11;
+            my_DTU_send_faile_count = 3;
 
     }
 
@@ -580,9 +580,9 @@ uint8_t my_fun_RX_CC1101_text0_RX_OK(void)
 		
 		//
 		if(my_CC1101_COM_Fram_buf[1] == 0x20 && my_CC1101_all_step == 0x0052)
-			my_que1_wait_time=5000;
+			my_que1_wait_time=10000;
 		else if(my_CC1101_COM_Fram_buf[1] == 0x20 && my_CC1101_all_step == 0x0053)
-			my_que1_wait_time=5000;
+			my_que1_wait_time=10000;
 		else
 			my_que1_wait_time=2000;
     return 1;
