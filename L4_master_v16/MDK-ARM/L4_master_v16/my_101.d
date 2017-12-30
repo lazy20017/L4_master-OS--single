@@ -55,3 +55,4 @@ l4_master_v16\my_101.o: myuser\my_cc1101.h
 l4_master_v16\my_101.o: myuser\my_cc1101REG.h
 l4_master_v16\my_101.o: myuser\my_spi.h
 l4_master_v16\my_101.o: ../Inc/spi.h
+l4_master_v16\my_101.o: myuser\my_extern_val.h

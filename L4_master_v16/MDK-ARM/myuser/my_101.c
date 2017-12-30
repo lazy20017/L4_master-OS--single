@@ -1,4 +1,5 @@
 #include "my_101.h"
+#include "my_extern_val.h"
 
 
 
@@ -236,10 +237,14 @@ void my_fun_101send_AC_data(UART_HandleTypeDef* USARTx, uint8_t my_status, uint8
     }
     //模拟数据
 		#if OS_CC1101_ZSQ_Monidata==1
+		uint16_t xx=0;
+		xx=(my_CC1101_chip_address+1)*25;
 			for(ii = 0; ii < ADC2_COLM; ii++)
 			{
-						my_data[2 * ii] = 2 * ii;
-            my_data[2 * ii + 1] = 2 * ii + 1;		
+						my_data[2 * ii] = ++xx;
+            my_data[2 * ii + 1] = (xx>>8);	
+				if(xx>=200)
+					xx=(my_CC1101_chip_address+1)*25;
 			}
 		#endif
 
@@ -304,22 +309,24 @@ void my_fun_101send_AC12T_Cyc_data(UART_HandleTypeDef* USARTx, uint8_t my_status
 		
 		 //模拟数据
 		#if OS_CC1101_ZSQ_Monidata==1
+		uint16_t xx=300;
+		xx=(my_CC1101_chip_address+1)*300;
 				for(ii = 0; ii < 12; ii++)
         {   //电流全波
-            my_data[2 * ii] = 2 * ii;
-            my_data[2 * ii + 1] = 2 * ii+1;
+            my_data[2 * ii] = ++xx;
+            my_data[2 * ii + 1] = (xx>>8);
 
         }
         for(ii = 0; ii < 12; ii++)
         {   //电场全波
-            my_data[2 * ii + 24] = 2 * ii + 24;
-            my_data[2 * ii + 1 + 24] = 2 * ii + 1 + 24;
+            my_data[2 * ii + 24] =++xx;
+            my_data[2 * ii + 1 + 24] = (xx>>8);
 
         }
         for(ii = 0; ii < 12; ii++)
         {   //电流半波
-            my_data[2 * ii + 48] = 2 * ii + 48;
-            my_data[2 * ii + 1 + 48] = 2 * ii + 1 + 48;
+            my_data[2 * ii + 48] = ++xx;
+            my_data[2 * ii + 1 + 48] =(xx>>8);
 
         }
 		#endif
@@ -413,7 +420,7 @@ void my_fun_101send_AC_Rec_data(UART_HandleTypeDef* USARTx, uint8_t my_status, u
     else if(my_row == 10 ) //电流
     {
         my_row = my_row - 10;
-			 xx=15;
+			 xx=15*(my_CC1101_chip_address+1);
 			  //printf("my_all_i_up_value=%d\n",my_all_i_up_value);
 				//printf("\n===960===start==\n");
         for(ii = 0; ii < WAVE_number_sec3; ii++)
@@ -431,9 +438,13 @@ void my_fun_101send_AC_Rec_data(UART_HandleTypeDef* USARTx, uint8_t my_status, u
 					  
 					
 					 #if	CC1101_SEND_I_E_Simulation_data_status==1
+							
 							my_data[2 * ii] = xx;
 							my_data[2 * ii + 1] = (xx>>8);
 							xx++;
+							if(xx>=65535)
+								xx=(my_CC1101_chip_address+1)*15;
+							
 					#endif
         }
 				//printf("\n===960===end==\n");
@@ -442,7 +453,7 @@ void my_fun_101send_AC_Rec_data(UART_HandleTypeDef* USARTx, uint8_t my_status, u
     else if(my_row == 11 )  //电场
     {
         my_row = my_row - 10;
-				xx=2000;
+				xx=2000*(my_CC1101_chip_address+1);
         for(ii = 0; ii < WAVE_number_sec3; ii++)
         {
 
@@ -455,27 +466,12 @@ void my_fun_101send_AC_Rec_data(UART_HandleTypeDef* USARTx, uint8_t my_status, u
 							my_data[2 * ii] =xx;
 							my_data[2 * ii + 1] =(xx>>8);
 							xx--;
+							if(xx<=0)
+								xx=2000*(my_CC1101_chip_address+1);
 					#endif
         }
 
     }
-		
-		#if OS_CC1101_ZSQ_Monidata==1
-		
-//					for(ii = 0; ii < WAVE_number_sec2; ii++)
-//        {
-//            my_data[2 * ii] = 2 * ii;
-//            my_data[2 * ii + 1] = 2 * ii + 1;
-//        }
-		
-		
-		#endif
-		
-		
-		
-		
-		
-		
 		
 
     //测试使用
@@ -510,7 +506,7 @@ extern uint8_t  my_E_Field_exit_Status; //表示电场产生中断
 extern uint16_t my_E_Field_exit_add;
 
 extern uint8_t  my_Time_Cyc_exit_Status; //表示电场产生中断
-extern uint16_t my_Time_Cyc_exit_add;
+//extern uint16_t my_Time_Cyc_exit_add;
 
 extern uint16_t my_wave_write_add;
 
@@ -537,23 +533,34 @@ void my_fun_101send_Alarm_status_data(UART_HandleTypeDef* USARTx, uint8_t my_sta
     uint8_t my_data[4] = {0}; //添加一个计时数
 
     my_data[0] = my_Fault_Current_End_Status;
-    my_data[1] = my_cyc_delay;  //计时低字节
+    my_data[1] = my_tim6_count;  //计时低字节
     my_data[2] = my_Fault_E_Fild_End_Status;
-    my_data[3] = (my_cyc_delay>>8);  //计时高字节
+    my_data[3] = (my_tim6_count>>8);  //计时高字节
+		
+		if(my_cyc_alarm_status==1 && my_contorl_byte==0x02)
+		{
+			
+			my_data[0]=0XF0;
+			my_cyc_alarm_status=0;
+		}
+		
 		//my_sys_start_status=0;
 		#if OS_CC1101_ZSQ_Monidata==1
 		if(my_contorl_byte==0x02)
-		my_data[0] = ++my_test_value;
+		//my_data[0] = ++my_test_value;
+		;
 		else
-			my_data[0]=0XFF;	
+			;//my_data[0]=0XFF;	
 		
-    my_data[1] = 0X02;  //计时低字节
+    //my_data[1] = (my_CC1101_chip_address+1);  //计时低字节
 		if(my_contorl_byte==0x02)
-    my_data[2] = ++my_test_value;
+    //my_data[2] = ++my_test_value;
+		;
 		else
-			my_data[2]=0xFF;
-    my_data[3] = 0X04;  //计时高字节	
-		printf("---------my_test_value=%d\n-----",my_test_value);
+			//my_data[2]=0xFF;
+		;
+    //my_data[3] = (my_CC1101_chip_address+1);  //计时高字节	
+		//printf("---------my_test_value=%d\n-----",my_test_value);
 		#endif
 
     my_fun_101_send_long_data(USARTx, my_contorl_byte, my_data, 4, ADDRESS_CHECK, my_CC1101_dest_address); //发送转换后的结果，利用串口进行发送

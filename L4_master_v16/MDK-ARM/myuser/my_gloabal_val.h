@@ -52,13 +52,13 @@
 //OS_CC1101_Test
 
 #define OS_CC1101_auto_reveive_OK 0 //OS调试使用，CC1101发送数据后，模拟收到OK帧
-#define OS_CC1101_ZSQ_Monidata 0  //指示器产生模拟数据给DTU
+#define OS_CC1101_ZSQ_Monidata 1  //指示器产生模拟数据给DTU
 #define OS_heap_high_water_data 1 //OS调试串口显示，每个函数剩余的堆栈区数量@@@，1为显示，0为不显示
 #define USE_CC1101_PWR_ON_STATUS  1  //1给CC1101供电，0为不供电
 
 //CC1101发送录波数据
 //#define CC1101_960data_Efield_STATUS 0  //1 CC1101发送录波电场数据，0为不发送电场，发送电流
-#define CC1101_SEND_I_E_Simulation_data_status 0  //CC1101发送 电流、电场模拟数据
+#define CC1101_SEND_I_E_Simulation_data_status 1  //CC1101发送 电流、电场模拟数据
 
 
 
@@ -67,7 +67,7 @@
 #define Debug_Usart_OUT_WAVE_960Data_Interupt 0 //3级缓冲,1位全波电流故障录波数据，2为电场，3为半波电流
 #define Debug_usart_out_wave_cmpare_data 0  //3级缓冲中，1显示，周期的首尾差值
 
-#define Debug_Usart_OUT_WAVE_Last_12T_Interupt 1 //显示故障中断后，每隔200ms录波的12个周期的数据
+#define Debug_Usart_OUT_WAVE_Last_12T_Interupt 0 //显示故障中断后，每隔200ms录波的12个周期的数据
 #define Debug_Usart_OUT_WAVE_End_Just_Interupt  1 //输出最终的判断结果，及依据。
 
 
@@ -97,3 +97,6 @@
 
 //校正算法是否使用
 #define USE_Adjust_suanfa 2  //1为使用最小二乘法校正算法，2为分段系数最小二乘法校正法，0位不使用校正算法
+
+//ADC半波采样，去零飘的方法
+#define USE_half_adjust_zero 1  //1为使用半波去零飘方法，半波采样到直流值，很小0.1左右，正定为0

@@ -27,7 +27,7 @@ extern uint8_t my_DAC_cyc_time;
 extern uint8_t  my_CC1101_all_count;
 
 extern uint8_t my_zsq_ALarm_send_status;
-
+extern uint8_t my_cyc_alarm_status;
 
 
 

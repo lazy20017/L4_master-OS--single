@@ -60,13 +60,13 @@
 
 //电源管理
 
-#define GANdianchi_ON  digitalLo(Gandianchi_V3V3_Ctrl_GPIO_Port,Gandianchi_V3V3_Ctrl_Pin) //开干电池，默认
+#define GANdianchi_ON  digitalLo(Gandianchi_V3V3_Ctrl_GPIO_Port,Gandianchi_V3V3_Ctrl_Pin) //开干电池，默认，低电平
 #define GANdianchi_OFF  digitalHi(Gandianchi_V3V3_Ctrl_GPIO_Port,Gandianchi_V3V3_Ctrl_Pin) //关干电池
 
 #define EN25505_ON  digitalLo(EN_2505_Ctrl_GPIO_Port,EN_2505_Ctrl_Pin) //开EN25505,工作，有输出，默认
 #define EN25505_OFF  digitalHi(EN_2505_Ctrl_GPIO_Port,EN_2505_Ctrl_Pin) //关EN25505，不工作，无输出
 
-#define CT_to_BQ25505_ON 	digitalLo(ZAIXIN_IN2505_Ctrl_GPIO_Port,ZAIXIN_IN2505_Ctrl_Pin) //CT给25505充电
+#define CT_to_BQ25505_ON 	digitalLo(ZAIXIN_IN2505_Ctrl_GPIO_Port,ZAIXIN_IN2505_Ctrl_Pin) //CT给25505充电,输出0，打开mos导通
 #define CT_to_BQ25505_OFF digitalHi(ZAIXIN_IN2505_Ctrl_GPIO_Port,ZAIXIN_IN2505_Ctrl_Pin)  //CT给25505不充电，默认
 
 #define CT_Source_short_ON   	digitalHi(Source_Ctrl_GPIO_Port,Source_Ctrl_Pin) //CT取电，短路，放电

@@ -735,10 +735,12 @@ void Callback01(void const * argument)
 
 		}
 		
-		//模拟报
-		if(my_os_count1 % (3677) ==0 && my_zsq_ALarm_send_status==0)
+		//周期报警
+		if(my_os_count1 % (3737+(my_CC1101_chip_address)*61) ==0 && my_zsq_ALarm_send_status==0 && my_os_count1!=0)
 		{		
 			printf("===send simulation alarm data--1!!!\n");
+			fun_wave2_to_wave3(); //二级缓存中的所有数据放入到三级缓存中，处理后值
+			my_cyc_alarm_status=1;
 			my_zsq_ALarm_send_status=1;
 			my_fun_give_Queue(&myQueue01Handle, 0X0002); //发送模拟报警
 			
@@ -746,10 +748,10 @@ void Callback01(void const * argument)
 		}
 		
 		//重复发送报警数据
-		if(my_os_count1 % (38) ==0 && my_CC1101_all_step==0x00 && my_zsq_ALarm_send_status==1)
+		if(my_os_count1 % (38) ==0 && my_CC1101_all_step==0x00 && my_zsq_ALarm_send_status==1&& my_os_count1!=0)
 		{
 			printf("==cyc send alarm data!!!--2\n");
-			//my_fun_give_Queue(&myQueue01Handle, 0X0002); //发送报警
+			my_fun_give_Queue(&myQueue01Handle, 0X0002); //发送报警
 		}
 
 	

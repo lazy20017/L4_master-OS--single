@@ -117,6 +117,11 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+          <Name>/</Name>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
@@ -150,34 +155,18 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>434</LineNumber>
+          <LineNumber>358</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134264174</Address>
+          <Address>134270816</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\myuser\my_101.c</Filename>
+          <Filename>.\myuser\my_OS.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\L4_master_v16\myuser/my_101.c\434</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>455</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134264346</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\myuser\my_101.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\L4_master_v16\myuser/my_101.c\455</Expression>
+          <Expression>\\L4_master_v16\myuser/my_OS.c\358</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -200,6 +189,11 @@
           <count>3</count>
           <WinNumber>1</WinNumber>
           <ItemText>my_data[2 * ii + 1],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>7*3+(my_CC1101_chip_address+1)*61,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>

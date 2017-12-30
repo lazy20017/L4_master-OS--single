@@ -1,13 +1,6 @@
 #include "my_ADC.h"
 #include "my_gloabal_val.h"
 
-
-
-//extern uint16_t ADC2_GetValue[ADC2_ROW][ADC2_COLM]; //用于保存采集的值,M个通道,N次，原始数据
-//extern double ADC2_Filer_value_buf_2[ADC2_COLM][3];  //AD转换后的物理值，12个周期的平均值，有效值，最大值，第1行为全波电流，第2行为电场，第3行为半波电流
-//extern double ADC2_Filer_value_buf_3[ADC2_COLM][3];  //三级换成
-
-
 extern uint16_t ADC1_GetValue[ADC1_ROW][ADC1_COLM]; //用于保存采集的值,M个通道,N次
 extern uint16_t ADC1_GetValue_Aver[ADC1_COLM]; //用于保存平均值
 extern double ADC1_Filer_value_buf[ADC1_COLM];  //用来存储ADC1采样到的的DC直流数据，共7个通道，真实值，转换后的

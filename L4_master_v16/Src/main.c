@@ -78,6 +78,9 @@
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 #include "my_OS.h"
+/*
+版本号20171227E
+*/
 extern uint8_t my_nmi_status;
 extern uint16_t ADC2_GetValue[ADC2_ROW][ADC2_COLM];//用于保存采集的值,M个通道,N次
 extern uint16_t ADC1_GetValue[ADC1_ROW][ADC1_COLM];//用于保存采集的值,M个通道,N次
@@ -188,12 +191,6 @@ int main(void)
 		HAL_Delay(200);
 		LED4_OFF;
 		
-		
-    
-		
-
-
-
     //串口UART2
     HAL_UART_Transmit(&huart2,my_usart_tx_data,4,1000);
     printf("\nPrintf MCU1-UART2 IS OK!!\n");
@@ -308,7 +305,7 @@ CT_Source_short_OFF;  //CT开路，不放电（默认）
 WDI1_TOGGLE;
 HAL_Delay(500);
   
-//CT_to_BQ25505_ON;  //CT给BQ25充电
+CT_to_BQ25505_ON;  //CT给BQ25充电
 WDI1_TOGGLE;
 HAL_Delay(500);
 printf("\n 999999 \n"); 

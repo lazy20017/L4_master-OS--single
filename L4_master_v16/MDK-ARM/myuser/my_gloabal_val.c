@@ -80,3 +80,5 @@ uint8_t my_DAC_cyc_time=1;  //DAC设置时间，默认为5
 //CC1101报警发送
 uint8_t my_zsq_ALarm_send_status=0;  //报警状态是否发送出去，1为发送出去，0为没有发送出去。
 
+uint8_t my_cyc_alarm_status=0;   //周期报警状态，1为周期产生的报警，0为没有周期报警
+

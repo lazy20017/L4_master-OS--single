@@ -226,7 +226,7 @@ void fun_real_half_Current(void)
         WAVE_half_ave_Current2[xi][0] = sum * MY_VDD / 4096 / 80; //平均值
         WAVE_half_ave_Current2[xi][1] = sqrt(sum_pwr * 1.0 / 80) * MY_VDD / 4096; //利用均方根法计算有效值
         WAVE_half_ave_Current2[xi][2] = max * MY_VDD / 4096;
-
+#if USE_half_adjust_zero==1
         if(WAVE_half_ave_Current1[xi][0] == WAVE_half_ave_Current1[xi][2] && WAVE_half_ave_Current1[xi][2] != 0)
         {
             //测量测量值
@@ -234,16 +234,12 @@ void fun_real_half_Current(void)
             WAVE_half_ave_Current1[xi][1] = 0;
             WAVE_half_ave_Current1[xi][2] = 0;
             //printf("\n @@max=%d",max);
-
             //转换值
             WAVE_half_ave_Current2[xi][0] = 0; //平均值
             WAVE_half_ave_Current2[xi][1] = 0; //利用均方根法计算有效值
             WAVE_half_ave_Current2[xi][2] = 0;
-
-
-
         }
-
+#endif
         //调试使用
         //printf("half no zero count=%d\n",count);
     }
@@ -383,7 +379,7 @@ void fun_real_all_dianchang(void)
         //WAVE_all_ave_E_Field2[xi][1] = sqrt(sum_pwr * 1.0 / count) * MY_VDD / 4096 * my_E_ratio_value; //电场，均方根法
         WAVE_all_ave_E_Field2[xi][1] = WAVE_all_ave_E_Field2[xi][0] ; //电场，平均值方法
         WAVE_all_ave_E_Field2[xi][2] = max * MY_VDD / 4096 * my_E_ratio_value;
-				
+				//零飘正定
 				if( WAVE_all_ave_E_Field1[xi][0]==WAVE_all_ave_E_Field1[xi][2] && WAVE_all_ave_E_Field1[xi][0]!=0)
 				{
 					//采样值

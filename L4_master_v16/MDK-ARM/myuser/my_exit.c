@@ -74,8 +74,7 @@ void HAL_GPIO_EXTI_Callback ( uint16_t GPIO_Pin)
             printf("\n ==电流中断==exit PA0,I_interrup=%d====\n",my_PA00_count);
 						printf("dianliu_add=%d,E_fild_add=%d",my_dianliu_exit_add,my_E_Field_exit_add);
 
-            //关闭电场中断
-						HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn); //接地中断开启
+            //关闭电场中断					
 						HAL_NVIC_DisableIRQ(EXIT_jiedi_EXTI_IRQn);
 						
 						
@@ -113,7 +112,8 @@ void HAL_GPIO_EXTI_Callback ( uint16_t GPIO_Pin)
             my_dianliu_exit_add=my_wave_write_add; //当前录波地址
             //计算故障点
 
-            my_add1=my_dianliu_exit_add-40;
+            //my_add1=my_dianliu_exit_add-40;
+						my_add1=my_dianliu_exit_add-40-320;
             if(my_add1<0)
             {
                 my_add1=WAVE_number+my_add1;
