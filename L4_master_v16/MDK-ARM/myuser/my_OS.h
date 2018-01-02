@@ -113,3 +113,5 @@ void my_fun_PWR_time_dialog_tx2(
 		
 void my_fun_TX_CC1101_heart(void); //心跳
 void my_fun_TX_CC1101_test5(void);
+void my_fun_TX_CC1101_config(void);  //参数设置
+void my_fun_TX_CC1101_config2(void);  //参数设置

@@ -45,20 +45,20 @@
 //OS_CC1101
 #define Debug_Usart_out_ADCdata  0 //为1，表示在CC1101的对话过程中，最后，显示ADC的采样数据
 #define Debug_Usart_out_wavedata_960Data_2cach 0  //**2级缓冲**转发ADC的录波数据,1为电流全波，2为电场全波，3为电流半波。前提条件是Debug_Usart_out_ADCdata==1
-#define Debug_Usart_OUT_WAVE_12T_CYC  0  //2级缓冲，1显示2级缓冲中录波的12T的有效值
+#define Debug_Usart_OUT_WAVE_12T_CYC  1  //2级缓冲，1显示2级缓冲中录波的12T的有效值
 #define Debug_Usart_OUT_WAVE_VALUE 0  //1中断中，显示12个周期的电流、电场、
 
 
 //OS_CC1101_Test
 
 #define OS_CC1101_auto_reveive_OK 0 //OS调试使用，CC1101发送数据后，模拟收到OK帧
-#define OS_CC1101_ZSQ_Monidata 1  //指示器产生模拟数据给DTU
+#define OS_CC1101_ZSQ_Monidata 0  //指示器产生模拟数据给DTU
 #define OS_heap_high_water_data 1 //OS调试串口显示，每个函数剩余的堆栈区数量@@@，1为显示，0为不显示
 #define USE_CC1101_PWR_ON_STATUS  1  //1给CC1101供电，0为不供电
 
 //CC1101发送录波数据
 //#define CC1101_960data_Efield_STATUS 0  //1 CC1101发送录波电场数据，0为不发送电场，发送电流
-#define CC1101_SEND_I_E_Simulation_data_status 1  //CC1101发送 电流、电场模拟数据
+#define CC1101_SEND_I_E_Simulation_data_status 0  //CC1101发送 电流、电场模拟数据
 
 
 

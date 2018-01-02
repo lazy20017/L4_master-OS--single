@@ -387,9 +387,13 @@ else
 	
 	//===CC1101 END
 	printf("sysclk=%dMHZ, hclk=%dMHZ\r\n",HAL_RCC_GetSysClockFreq()/1000000,HAL_RCC_GetHCLKFreq()/1000000);
+//RTC…Ë÷√≤ø∑÷
 
-
-	
+	HAL_RTC_GetDate(&hrtc, &my_RTC_date, RTC_FORMAT_BIN);
+  HAL_RTC_GetTime(&hrtc, &my_RTC_time, RTC_FORMAT_BIN);
+	printf("reset  RTC   %d-%d-%d %d:%d:%d===\n",my_RTC_date.Year,my_RTC_date.Month,my_RTC_date.Date,my_RTC_time.Hours,my_RTC_time.Minutes,my_RTC_time.Seconds);
+	//HAL_RTC_SetDate(&hrtc, &my_RTC_date, RTC_FORMAT_BIN);
+	//HAL_RTC_SetTime(&hrtc, &my_RTC_time, RTC_FORMAT_BIN);
   
 
 

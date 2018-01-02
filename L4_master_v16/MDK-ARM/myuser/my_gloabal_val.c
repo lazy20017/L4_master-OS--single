@@ -64,7 +64,7 @@ uint8_t my_CC1101_Sleep_status=1;  //CC1101的SLEEP标识，为1标识CC1101睡眠
 
 //TIM6
 uint16_t my_tim6_count=0;
-uint16_t my_cyc_time_count=337;  //周期发送数据时间，秒为单位
+uint16_t my_cyc_time_count=47;  //周期发送数据时间，秒为单位
 uint16_t  my_cyc_delay=0;
 
 uint8_t my_cc_Efied_count=0;  //记录CC1101发送后，停止的时间，然后开启接地中断
@@ -81,4 +81,7 @@ uint8_t my_DAC_cyc_time=1;  //DAC设置时间，默认为5
 uint8_t my_zsq_ALarm_send_status=0;  //报警状态是否发送出去，1为发送出去，0为没有发送出去。
 
 uint8_t my_cyc_alarm_status=0;   //周期报警状态，1为周期产生的报警，0为没有周期报警
+
+RTC_DateTypeDef my_RTC_date;
+RTC_TimeTypeDef my_RTC_time;
 

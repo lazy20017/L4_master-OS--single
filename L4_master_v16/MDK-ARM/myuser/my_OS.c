@@ -538,12 +538,18 @@ extern uint16_t my_que1_wait_time;
 uint8_t my_fun_RX_CC1101_text0_RX_OK(void)
 {
     uint16_t my_temp = 0;
-    if(my_CC1101_COM_Fram_buf[1] == 0x20) //进行tim6的校时
+		uint16_t my_inf_add=0;
+		uint8_t my_inf_len=0;
+		uint16_t my_temp16=0;
+		//校正timer
+    if(my_CC1101_COM_Fram_buf[1] == 0x20 && my_CC1101_COM_Fram_buf[4]!=0XFF && my_CC1101_COM_Fram_buf[5] !=0XFF) //进行tim6的校时
     {
         my_temp = my_CC1101_COM_Fram_buf[5];
         my_temp = (my_temp << 8) + my_CC1101_COM_Fram_buf[4];
         my_tim6_count = my_temp;
     }
+		
+		//各种确认命令分析
     if(my_CC1101_COM_Fram_buf[1] == 0x20 && my_CC1101_all_step == 0x0042)
     {
 				my_Time_Cyc_exit_Status = 0;
@@ -577,8 +583,52 @@ uint8_t my_fun_RX_CC1101_text0_RX_OK(void)
 					CC1101SetSleep();
         printf("====@@@@ CC1101 ALarm TIME FINISH!!==jiedi=\n\n");
     }
+		//参数设置命令
+		if( my_CC1101_all_step == 0x00E1 && my_CC1101_COM_Fram_buf[0]==0x68 && my_CC1101_COM_Fram_buf[5]==0x68 && my_CC1101_COM_Fram_buf[6] == 0x3F)
+		{
+			
+			
+			printf("===get config parameter!!===,len=%d\n", my_CC1101_COM_Fram_buf[1]);//len>5
+			my_inf_add=my_CC1101_COM_Fram_buf[10];
+			my_inf_add=(my_inf_add<<8)+my_CC1101_COM_Fram_buf[9];
+			my_inf_len=my_CC1101_COM_Fram_buf[1];
+			
+			//RTC
+			if(my_inf_len>5)
+				my_inf_len=my_inf_len-3;
+			
+			if(my_inf_add==0X4001)
+			{
+				
+			my_temp16=my_CC1101_COM_Fram_buf[12];
+			my_temp16=(my_temp16<<8)+my_CC1101_COM_Fram_buf[11];
+				
+			HAL_RTC_GetDate(&hrtc, &my_RTC_date, RTC_FORMAT_BIN);
+			HAL_RTC_GetTime(&hrtc, &my_RTC_time, RTC_FORMAT_BIN);
+			printf("OLD---RTC  %d-%d-%d %d:%d:%d===\n",my_RTC_date.Year,my_RTC_date.Month,my_RTC_date.Date,my_RTC_time.Hours,my_RTC_time.Minutes,my_RTC_time.Seconds);	
+			
+			my_RTC_time.Seconds=my_CC1101_COM_Fram_buf[13];
+			my_RTC_time.Minutes=my_CC1101_COM_Fram_buf[15];
+			my_RTC_time.Hours=	my_CC1101_COM_Fram_buf[16];
+			my_RTC_date.Date=my_CC1101_COM_Fram_buf[17];
+			my_RTC_date.Month=my_CC1101_COM_Fram_buf[18];
+			my_RTC_date.Year=my_CC1101_COM_Fram_buf[19];			
+				
+			HAL_RTC_SetDate(&hrtc, &my_RTC_date, RTC_FORMAT_BIN);
+			HAL_RTC_SetTime(&hrtc, &my_RTC_time, RTC_FORMAT_BIN);
+				
+			HAL_RTC_GetDate(&hrtc, &my_RTC_date, RTC_FORMAT_BIN);
+			HAL_RTC_GetTime(&hrtc, &my_RTC_time, RTC_FORMAT_BIN);
+			printf("NEW---RTC  %d-%d-%d %d:%d:%d===\n",my_RTC_date.Year,my_RTC_date.Month,my_RTC_date.Date,my_RTC_time.Hours,my_RTC_time.Minutes,my_RTC_time.Seconds);	
+			
+				
+			}
+			
+		}
 		
-		//
+		
+		
+		//任务延时时间设定
 		if(my_CC1101_COM_Fram_buf[1] == 0x20 && my_CC1101_all_step == 0x0052)
 			my_que1_wait_time=10000;
 		else if(my_CC1101_COM_Fram_buf[1] == 0x20 && my_CC1101_all_step == 0x0053)
@@ -775,3 +825,26 @@ void my_fun_TX_CC1101_heart(void)  //心跳
 
 }
 
+
+//请求参数设置
+void my_fun_TX_CC1101_config(void)  //参数设置
+{
+
+    my_fun_101_send_short_data(&huart2, 0x2F, my_tim6_count, ADDRESS_CHECK, my_CC1101_dest_address); //发送短帧
+
+
+
+#if OS_CC1101_auto_reveive_OK==1
+    my_fun_give_Queue(&myQueue02Handle, 0xE100); //@@@@@
+#endif
+
+
+}
+
+void my_fun_TX_CC1101_config2(void)  //参数设置
+{
+
+    my_fun_101_send_short_data(&huart2, 0x4F, my_tim6_count, ADDRESS_CHECK, my_CC1101_dest_address); //发送短帧
+		printf("===config parameter is finish!!!\n");
+
+}

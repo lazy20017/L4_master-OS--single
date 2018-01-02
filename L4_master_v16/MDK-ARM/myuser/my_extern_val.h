@@ -29,6 +29,9 @@ extern uint8_t  my_CC1101_all_count;
 extern uint8_t my_zsq_ALarm_send_status;
 extern uint8_t my_cyc_alarm_status;
 
+extern RTC_DateTypeDef my_RTC_date;
+extern RTC_TimeTypeDef my_RTC_time;
+extern RTC_HandleTypeDef hrtc;
 
 
 

@@ -116,7 +116,12 @@ void HAL_TIM_PeriodElapsedCallback2(TIM_HandleTypeDef *htim)
 					my_fun_give_Queue(&myQueue01Handle, 0X0001); //发送周期数据
         }
 
-
+			//设置参数请求
+			if(my_tim6_count % (43+(my_CC1101_chip_address)*2) ==0 && my_CC1101_all_step==0x00 && my_tim6_count!=my_cyc_delay)
+			{
+					printf("==send config parameter，my_tim6_count=%d !!!--2\n",my_tim6_count);
+					my_fun_give_Queue(&myQueue01Handle, 0X00E1); //发送报警
+			}
        
 				
 				//CC1101重新初始化

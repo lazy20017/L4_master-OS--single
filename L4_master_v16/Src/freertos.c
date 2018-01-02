@@ -280,8 +280,14 @@ void StartTask02(void const * argument)
         my_fun_CC1101_time_dialog_tx2(my_step, 0xF400, 0xF500, 0, my_fun_CC1101_test1);
         my_fun_CC1101_time_dialog_tx2(my_step, 0xF600, 0xF700, 0, my_fun_CC1101_test1);
         my_fun_CC1101_time_dialog_tx2(my_step, 0xF800, 0xF900, 1, my_fun_CC1101_test1);
-				//=====主动发送心跳帧
+				
+				
+				//=====主动发送心跳帧，请求参数设置
 				my_fun_CC1101_time_dialog_tx2(my_step, 0x0000, 0x00E0, 0, my_fun_TX_CC1101_heart);  //心跳
+				//==请求参数设置
+				my_fun_CC1101_time_dialog_tx2(my_step, 	0x0000, 0x00E1, 0, 	my_fun_TX_CC1101_config);  //请求参数设置
+				my_fun_CC1101_time_dialog_tx2(my_step,	0x0000,	0X00E2,	1,	my_fun_TX_CC1101_config2); //确认设置参数
+				
 
         //=====2 发送周期数据		
 				my_fun_CC1101_time_dialog_tx2(my_step, 0x0000, 0x0001, 0, my_fun_TX_CC1101_test0);//遥信
@@ -344,7 +350,8 @@ void StartTask03(void const * argument)
         my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0000, 0xF800, 0xF900, 0, my_fun_write_update_data_to_FLASH);
 				//=====心跳帧
 				my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x00E0, 0x2000, 0x0000, 1, my_fun_RX_CC1101_text0_RX_OK);
-				
+				//==请求参数设置
+				my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x00E1, 0xE100, 0x00E2, 0, my_fun_RX_CC1101_text0_RX_OK);//接收到参数设置命令
         //======周期接收部分===
         my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0001, 0x2000, 0x0040, 0, my_fun_RX_CC1101_text0_RX_OK);
         my_fun_CC1101_time_dialog_rx2(&myQueue01Handle, my_step, 0x0040, 0x2000, 0x0041, 0, my_fun_RX_CC1101_text0_RX_OK);
@@ -445,10 +452,10 @@ void StartTask04(void const * argument)
                     my_status = 0x10;
                     temp8 = my_CC1101_COM_Fram_buf[1]; //功能码为0X20，代表OK帧
                 }
-                else if (my_CC1101_COM_Fram_buf[0] == 0x68)
+                else if (my_CC1101_COM_Fram_buf[0] == 0x68) //长帧的功能码
                 {
                     my_status = 0x68;
-                    temp8 = my_CC1101_COM_Fram_buf[6]; //功能码为0X20，代表OK帧
+                    temp8 = my_CC1101_COM_Fram_buf[6]; //
                 }
                 else
                 {
@@ -499,6 +506,13 @@ void StartTask04(void const * argument)
                 my_step = 0XF800;
                 xQueueSend(myQueue02Handle, &my_step, 100);
             }
+						//参数设置
+						else if(temp8==0X3F)
+						{
+								my_step = 0XE100;
+                xQueueSend(myQueue02Handle, &my_step, 100);
+							
+						}
 
             //===
 
@@ -754,7 +768,22 @@ void Callback01(void const * argument)
 			my_fun_give_Queue(&myQueue01Handle, 0X0002); //发送报警
 		}
 
-	
+//		//设置参数请求
+//		if(my_os_count1 % (23) ==0 && my_CC1101_all_step==0x00)
+//		{
+//			printf("==send config parameter，my_os_count1=%d !!!--2\n",my_os_count1);
+//			my_fun_give_Queue(&myQueue01Handle, 0X00E1); //发送报警
+//		}
+		
+		 if(my_os_count1 % (3673) ==0 )
+		 {
+			 
+				EN25505_OFF;
+			
+				HAL_Delay(1000);
+				EN25505_ON;//BQ25505工作（默认）
+			 
+		 }
 
   /* USER CODE END Callback01 */
 }

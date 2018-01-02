@@ -25,7 +25,22 @@ uint8_t my_E_fild_change_count = 0; //½ÓµØ×´Ì¬£¬µç³¡²úÉú½×Ô¾ĞÔÏÂ½µ
 uint8_t my_E_fild_min_count = 0;   //½ÓµØ£¬µç³¡×îĞ¡Öµ
 
 
-#define V_cell (2*1.0/1500) //¶¨ÒåÒ»¸ö»ù´¡×ª»»µçÑ¹£¬1AµçÁ÷¶ÔÓ¦µÄADC²É¼¯µçÑ¹
+uint8_t my_Line_Current_stop_status = 0; //Í£µç×´Ì¬±êÊ¶£¬1ÎªÍ£µç£¬0ÎªÕı³£
+uint8_t my_Line_Current_stop_last_status = 0xff; //ÉÏÒ»´ÎµÄ×´Ì¬£¬ÀûÓÃÕâ¸ö±äÁ¿£¬ºÍ×îĞÂµÄ×´Ì¬±È½Ï£¬Í£µçÁË¾ÍÉÏ´«
+uint16_t my_Line_Efild_valu = 0; //¶ÔµØµç³¡µÄÖµ
+uint16_t my_line_Current_value = 0; //ÏßÉÏµçÁ÷µÄÓĞĞ§Öµ£¬·Åµ½10±¶È¡ÕûÊı
+
+
+uint16_t MY_Efile_Zero_data = 10; //µç³¡Ğ¡ÓÚ´ËÖµ£¬±íÊ¾Îª0
+uint16_t MY_Efile_floor_data = 20; //µç³¡ÏÂÏŞ£¬Ğ¡ÓÚ´ËÖµ£¬±íÊ¾½ÓµØ
+float my_HA_Zero_data = 0.5; //°ë²¨µçÁ÷ÅĞ¶Á×îĞ¡Öµ£¬Ğ¡ÓÚÕâ¸öÖµ¾ÍÈÏÎªÍ£µçÁË¡£
+double my_A_Zero_data = 0; //µçÁ÷0ÖµÌõ¼ş
+
+
+
+
+
+
 #define E_cell 1.0        //µç³¡¶ÔÓ¦µÄĞ£ÕıÖµ,ÀûÓÃADC²ÉÑùµÃµ½µÄÊı¾İ½øĞĞµÈ±È±ä»¯
 uint16_t Current_D_value = 150; //µçÁ÷ÉÏÉıÍ»±ä·§Öµ,ÅĞ¶ÏÌõ¼ş£¬´óÓÚ´ËÖµ±íÊ¾£¬²úÉú¶ÌÂ·µçÁ÷,Õâ¸öÖµÊÇÅĞ¶Ï¶ÌÂ·Ìõ¼ş£¬ADCÊ¹ÓÃ
 uint16_t E_fild_D_value = 80; //µç³¡ÏÂµøÍ»±ä·§Öµ
@@ -217,14 +232,14 @@ void fun_real_half_Current(void)
         //2017-04-18
 
         //²âÁ¿²âÁ¿Öµ
-        WAVE_half_ave_Current1[xi][0] = sum / count;
+        WAVE_half_ave_Current1[xi][0] = sum*1.0 / count;
         WAVE_half_ave_Current1[xi][1] = sqrt(sum_pwr * 1.0 / count);
         WAVE_half_ave_Current1[xi][2] = max;
         //printf("\n @@max=%d",max);
 
         //×ª»»Öµ
-        WAVE_half_ave_Current2[xi][0] = sum * MY_VDD / 4096 / 80; //Æ½¾ùÖµ
-        WAVE_half_ave_Current2[xi][1] = sqrt(sum_pwr * 1.0 / 80) * MY_VDD / 4096; //ÀûÓÃ¾ù·½¸ù·¨¼ÆËãÓĞĞ§Öµ
+        WAVE_half_ave_Current2[xi][0] = sum * MY_VDD / 4096 / count; //Æ½¾ùÖµ
+        WAVE_half_ave_Current2[xi][1] = sqrt(sum_pwr * 1.0 / count) * MY_VDD / 4096; //ÀûÓÃ¾ù·½¸ù·¨¼ÆËãÓĞĞ§Öµ
         WAVE_half_ave_Current2[xi][2] = max * MY_VDD / 4096;
 #if USE_half_adjust_zero==1
         if(WAVE_half_ave_Current1[xi][0] == WAVE_half_ave_Current1[xi][2] && WAVE_half_ave_Current1[xi][2] != 0)
@@ -368,9 +383,9 @@ void fun_real_all_dianchang(void)
 
         }
         //²ÉÑùÖµ
-
-        WAVE_all_ave_E_Field1[xi][0] = sum / 80.0;
-        WAVE_all_ave_E_Field1[xi][1] = sum / 80.0;//sqrt(sum_pwr * 1.0 / 80); //¾ù·½¸ù·¨
+				count=80;
+        WAVE_all_ave_E_Field1[xi][0] = sum*1.0 / count;
+        WAVE_all_ave_E_Field1[xi][1] = sum *1.0/ count;//sqrt(sum_pwr * 1.0 / 80); //¾ù·½¸ù·¨
         WAVE_all_ave_E_Field1[xi][2] = max;
 
         //×ª»»Öµ
@@ -512,7 +527,7 @@ int fun_my_wave1_to_wave2(void)
         {
             for(xi = my_stop_add2; xi <= my_stop_add1; xi++)
             {
-                if(my_wave_record[2][xi] != 0)
+                if(my_wave_record[2][xi] >my_HA_Zero_data)
                     my_befor_500ms_normal_count++;
             }
         }
@@ -521,12 +536,12 @@ int fun_my_wave1_to_wave2(void)
             my_stop_add2 = WAVE_number + my_stop_add2;
             for(xi = my_stop_add2; xi < WAVE_number; xi++)
             {
-                if(my_wave_record[2][xi] != 0)
+                if(my_wave_record[2][xi] >my_HA_Zero_data)
                     my_befor_500ms_normal_count++;
             }
             for(xi = 0; xi <= my_stop_add1; xi++)
             {
-                if(my_wave_record[2][xi] != 0)
+                if(my_wave_record[2][xi] >my_HA_Zero_data)
                     my_befor_500ms_normal_count++;
 
             }
@@ -538,7 +553,7 @@ int fun_my_wave1_to_wave2(void)
             my_stop_add1 = WAVE_number + my_stop_add1;
             for(xi = my_stop_add2; xi <= my_stop_add1; xi++)
             {
-                if(my_wave_record[2][xi] != 0)
+                if(my_wave_record[2][xi] >my_HA_Zero_data)
                     my_befor_500ms_normal_count++;
             }
 
@@ -627,8 +642,8 @@ ADC2_Filer_value_buf_2Êı×é£¬Ã¿¸öÍ¨µÀ12¸öÖÜÆÚµÄÆ½¾ùÖµ£¬ÀûÓÃÉÏÃæµÄÊı×é¼ÆËãµÄ£¬3¸öÁ
 void my_adc2_convert2(uint8_t my_status)
 {
 
-    double temp1 = 0, temp2 = 0, temp3 = 0;
-    uint16_t temp11 = 0, temp12 = 0, temp13 = 0;
+    double temp1 = 0, temp2 = 0, temp3 = 0,max3=0;
+    uint16_t temp11 = 0, temp12 = 0, temp13 = 0,max13=0;
     int xi = 0;
 
     if(my_status == 1)
@@ -642,82 +657,98 @@ void my_adc2_convert2(uint8_t my_status)
 
     //¼ÆËã12¸öÖÜÆÚµÄÀÛ¼ÆÆ½¾ùÖµ
     //===È«²¨µçÁ÷
-    temp1 = temp2 = temp3 = 0;
-    temp11 = temp12 = temp13 = 0;
+    temp1 = temp2 = temp3 =max3= 0;
+    temp11 = temp12 = temp13 =max13= 0;
     for(xi = 0; xi < 12; xi++) //12¸öÖÜÆÚ£¬Ã¿¸öÖÜÆÚµÄÖµ
     {
         //²ÉÑùÖµ
         temp11 = temp11 + WAVE_all_ave_Current1[xi][0];
         temp12 = temp12 + WAVE_all_ave_Current1[xi][1];
         temp13 = temp13 + WAVE_all_ave_Current1[xi][2];
+				if(WAVE_all_ave_Current1[xi][1]>max13) //¼ÆËãÓĞĞ§ÖµµÄ×î´óÖµ
+					max13=WAVE_all_ave_Current1[xi][1];
 
         //×ª»»Öµ
         temp1 = temp1 + WAVE_all_ave_Current2[xi][0]; //Æ½¾ùÖµÀÛ¼ÆÇóºÍ
         temp2 = temp2 + WAVE_all_ave_Current2[xi][1];
         temp3 = temp3 + WAVE_all_ave_Current2[xi][2];
+				if( WAVE_all_ave_Current2[xi][1]>max3)  //¼ÆËãÓĞĞ§ÖµµÄ×î´óÖµ
+					max3= WAVE_all_ave_Current2[xi][1];
     }
 
     //µÃµ½12ÖÜÆÚÆ½¾ùºóACµÄÒ»¸ö½á¹û£¬
     //²âÁ¿Öµ
     ADC2_Filer_value_buf_1[0][0] = temp11 / 12; //Æ½¾ù
     ADC2_Filer_value_buf_1[0][1] = temp12 / 12; //ÓĞĞ§Öµ
-    ADC2_Filer_value_buf_1[0][2] = temp13 / 12; //×î´óÖµ
+    //ADC2_Filer_value_buf_1[0][2] = temp13 / 12; //×î´óÖµ
+		ADC2_Filer_value_buf_1[0][2] = max13; //×î´óÖµ£¨ÓĞĞ§Öµ£©
 
     //×ª»»Öµ
     ADC2_Filer_value_buf_2[0][0] = temp1 / 12; //Æ½¾ù
     ADC2_Filer_value_buf_2[0][1] = temp2 / 12; //ÓĞĞ§Öµ
-    ADC2_Filer_value_buf_2[0][2] = temp3 / 12; //×î´óÖµ
+    //ADC2_Filer_value_buf_2[0][2] = temp3 / 12; //×î´óÖµ
+		ADC2_Filer_value_buf_2[0][2] = max3; //×î´óÖµ£¨ÓĞĞ§Öµ£©
 
 
     //====µç³¡
-    temp1 = temp2 = temp3 = 0;
-    temp11 = temp12 = temp13 = 0;
+    temp1 = temp2 = temp3 =max3= 0;
+    temp11 = temp12 = temp13 =max13=0;
     for(xi = 0; xi < 12; xi++)
     {
         //²ÉÑùÖµ
         temp11 = temp11 + WAVE_all_ave_E_Field1[xi][0];
         temp12 = temp12 + WAVE_all_ave_E_Field1[xi][1];
         temp13 = temp13 + WAVE_all_ave_E_Field1[xi][2];
+				if(WAVE_all_ave_E_Field1[xi][1]>max13)  //ÓĞĞ§ÖµµÄ×î´óÖµ
+					max13=WAVE_all_ave_E_Field1[xi][1];
 
         temp1 = temp1 + WAVE_all_ave_E_Field2[xi][0]; //Æ½¾ùÖµÀÛ¼ÆÇóºÍ
         temp2 = temp2 + WAVE_all_ave_E_Field2[xi][1];
         temp3 = temp3 + WAVE_all_ave_E_Field2[xi][2];
+				if( WAVE_all_ave_E_Field2[xi][1]>max3)  //ÓĞĞ§ÖµµÄ×î´óÖµ
+					max3= WAVE_all_ave_E_Field2[xi][1];
     }
 
     //²âÁ¿Öµ
     ADC2_Filer_value_buf_1[1][0] = temp11 / 12; //Æ½¾ù
     ADC2_Filer_value_buf_1[1][1] = temp12 / 12; //ÓĞĞ§Öµ
-    ADC2_Filer_value_buf_1[1][2] = temp13 / 12; //×î´óÖµ
+    //ADC2_Filer_value_buf_1[1][2] = temp13 / 12; //×î´óÖµ
+		ADC2_Filer_value_buf_1[1][2] = max13; //×î´óÖµ
 
     //×ª»»Öµ
     ADC2_Filer_value_buf_2[1][0] = temp1 / 12; //Æ½¾ù
     ADC2_Filer_value_buf_2[1][1] = temp2 / 12; //ÓĞĞ§Öµ
-    ADC2_Filer_value_buf_2[1][2] = temp3 / 12; //×î´óÖµ
-
+    //ADC2_Filer_value_buf_2[1][2] = temp3 / 12; //×î´óÖµ
+		ADC2_Filer_value_buf_2[1][2] = max3; //×î´óÖµ
     //====°ë²¨µçÁ÷
-    temp1 = temp2 = temp3 = 0;
-    temp11 = temp12 = temp13 = 0;
+    temp1 = temp2 = temp3 =max3= 0;
+    temp11 = temp12 = temp13 =max13= 0;
     for(xi = 0; xi < 12; xi++)
     {
         //²ÉÑùÖµ
         temp11 = temp11 + WAVE_half_ave_Current1[xi][0];
         temp12 = temp12 + WAVE_half_ave_Current1[xi][1];
         temp13 = temp13 + WAVE_half_ave_Current1[xi][2];
-
+				if(WAVE_half_ave_Current1[xi][2]>max13)
+					max13=WAVE_half_ave_Current1[xi][2];
 
         temp1 = temp1 + WAVE_half_ave_Current2[xi][0]; //Æ½¾ùÖµÀÛ¼ÆÇóºÍ
         temp2 = temp2 + WAVE_half_ave_Current2[xi][1];
         temp3 = temp3 + WAVE_half_ave_Current2[xi][2];
+				if( WAVE_half_ave_Current2[xi][2]>max3)
+					max3= WAVE_half_ave_Current2[xi][2];
     }
     //²âÁ¿Öµ
     ADC2_Filer_value_buf_1[2][0] = temp11 / 12; //Æ½¾ù
     ADC2_Filer_value_buf_1[2][1] = temp12 / 12; //ÓĞĞ§Öµ
-    ADC2_Filer_value_buf_1[2][2] = temp13 / 12; //×î´óÖµ
+    //ADC2_Filer_value_buf_1[2][2] = temp13 / 12; //×î´óÖµ
+		ADC2_Filer_value_buf_1[2][2] = max13; //×î´óÖµ
 
 
     ADC2_Filer_value_buf_2[2][0] = temp1 / 12; //Æ½¾ù
     ADC2_Filer_value_buf_2[2][1] = temp2 / 12; //ÓĞĞ§Öµ
-    ADC2_Filer_value_buf_2[2][2] = temp3 / 12; //×î´óÖµ
+    //ADC2_Filer_value_buf_2[2][2] = temp3 / 12; //×î´óÖµ
+		ADC2_Filer_value_buf_2[2][2] = max3; //×î´óÖµ
 
 
 //===
@@ -728,22 +759,22 @@ void my_adc2_convert2(uint8_t my_status)
 
 
 
-    printf("***cache2 WAVE0 12T DATA --ALL_Current****\r\n");
+    printf("***cache2 WAVE0 12T DATA --ALL_Current2****\r\n");
     int ii = 0;
     for(ii = 0; ii < 12; ii++)
         printf("%.2f MAX=%.2f\r\n", WAVE_all_ave_Current2[ii][1], WAVE_all_ave_Current2[ii][2]); //12T,È«²¨µçÁ÷
 
-    printf("**cache2 *WAVE0 12T DATA --Half_Current-MAX****\r\n");
+    printf("**cache2 *WAVE0 12T DATA --Half_Current2-MAX****\r\n");
     for(ii = 0; ii < 12; ii++)
     {
-
-        printf("%d\r\n", WAVE_half_ave_Current1[ii][2]); //12T,È«²¨µçÁ÷
+				 printf("%.2f MAX=%.2f\r\n", WAVE_half_ave_Current2[ii][1], WAVE_half_ave_Current2[ii][2]); //12T,È«²¨µçÁ÷
+        //printf("%d\r\n", WAVE_half_ave_Current1[ii][2]); //12T,È«²¨µçÁ÷
     }
-    printf("**cache2 *WAVE0 12T DATA --E_fild-MAX****\r\n");
+    printf("**cache2 *WAVE0 12T DATA --E_fild2-MAX****\r\n");
     for(ii = 0; ii < 12; ii++)
     {
-
-        printf("%d\r\n", WAVE_half_ave_Current1[ii][1]); //12T,µç³Ø
+				 printf("%.2f MAX=%.2f\r\n", WAVE_all_ave_E_Field2[ii][1], WAVE_all_ave_E_Field2[ii][2]); //12T,È«²¨µçÁ÷
+        //printf("%d\r\n", WAVE_half_ave_Current1[ii][1]); //12T,µç³Ø
     }
 
     printf("**cache2*WAVE0 12T DATA --END****\r\n");
@@ -902,13 +933,13 @@ uint8_t fun_Judege_It_cache3(void)
         if(my_cmpar_value[0][ii] >= Current_D_value)
             my_short_circuit_count++;  //ÖĞ¶ÏÊ±¿Ìºó£¬¶ÌÂ·ÖÜÆÚ¼ÆÊı£¬ÀûÓÃ´óÓÚ½×Ô¾Öµ½øĞĞÅĞ¶Ï 1
 
-        if(my_half_current_aver2[ii] == 0 && my_after_stop1_normal_count == 0)
+        if(my_half_current_aver2[ii] <= my_HA_Zero_data && my_after_stop1_normal_count == 0)
             my_after_short_stop_count1++;  //ÖĞ¶ÏÊ±¿Ìºó£¬µÚÒ»´ÎÍ£µçÖÜÆÚ¼ÆÊı£¬Ìõ¼şÊÇÍ£µç£¬²¢ÇÒÃ»ÓĞÀ´µç 2
 
-        if(my_half_current_aver2[ii] != 0 && my_after_short_stop_count1 > 0)
+        if(my_half_current_aver2[ii] > my_HA_Zero_data && my_after_short_stop_count1 > 0)
             my_after_stop1_normal_count++; //µÚÒ»´ÎÍ£µçºó£¬À´µç×´Ì¬Í³¼Æ,ÊÇ·ñĞèÒª¿¼ÂÇ°ë²¨²âÁ¿µÄ²ĞÓàµçÁ÷£¿£¿ 3
 
-        if(my_half_current_aver2[ii] == 0 && my_after_stop1_normal_count > 0)
+        if(my_half_current_aver2[ii] <= my_HA_Zero_data && my_after_stop1_normal_count > 0)
             my_after_short_stop_count2++;  //¶ş´ÎÍ£µçµÄÍ³¼Æ 4
 
         if(fabs(my_cmpar_value[1][ii]) >= E_fild_D_value) //
@@ -925,7 +956,7 @@ uint8_t fun_Judege_It_cache3(void)
     my_befor_short_stop_count = 0;
     for(ii = 0; ii < 4; ii++)
     {
-        if(my_half_current_aver1[ii] == 0)
+        if(my_half_current_aver1[ii] <= my_HA_Zero_data)
             my_befor_short_stop_count++;
 
     }
@@ -933,11 +964,11 @@ uint8_t fun_Judege_It_cache3(void)
     printf("my_short_circuit_count=%d\r\n", my_short_circuit_count);
     //======12T======
 #if Debug_Usart_OUT_WAVE_12T_Interupt==1
-    printf("***WAVE0 12T DATA --ALL_Current****\r\n");
+    printf("***WAVE0 12T DATA --ALL_Current3****\r\n");
     for(ii = 0; ii < 12; ii++)
         printf("%.2f MAX=%.2f\r\n", WAVE_all_ave_Current3[ii][1], WAVE_all_ave_Current3[ii][2]); //12T,È«²¨µçÁ÷
 
-    printf("***WAVE0 12T DATA --Half_Current****\r\n");
+    printf("***WAVE0 12T DATA --Half_Current3****\r\n");
     for(ii = 0; ii < 12; ii++)
         printf("%.2f\r\n", WAVE_half_ave_Current3[ii][1]); //12T,È«²¨µçÁ÷
 
@@ -991,7 +1022,7 @@ uint8_t fun_Judege_It_cache2(void)
     {
         //my_all_current_aver1[ii]=(WAVE_all_ave_Current2[4+ii][1]-1.2)/V_cell;  //Çó³öºó8¸öÖÜÆÚ¶ÔÓ¦µÄÓĞĞ§µçÁ÷Öµ
         my_all_current_aver2[ii] = WAVE_all_ave_Current2[ii][1];
-        my_half_current_aver2[ii] = WAVE_half_ave_Current2[ii][1] / V_cell;
+        my_half_current_aver2[ii] = WAVE_half_ave_Current2[ii][1]; //ÓĞĞ§ÖµµÄ×ª»»
         my_E_fild_aver2[ii] = WAVE_all_ave_E_Field2[ii][1] / E_cell;
     }
 
@@ -1013,11 +1044,11 @@ uint8_t fun_Judege_It_cache2(void)
 
         if(my_cmpar_value[0][ii] >= Current_D_value)
             my_short_circuit_count++;  //ÖĞ¶ÏÊ±¿Ìºó£¬¶ÌÂ·ÖÜÆÚ¼ÆÊı
-        if(my_half_current_aver2[ii] == 0 && my_after_stop1_normal_count == 0)
+        if(my_half_current_aver2[ii] <= my_HA_Zero_data && my_after_stop1_normal_count == 0)
             my_after_short_stop_count1++;  //ÖĞ¶ÏÊ±¿Ìºó£¬µÚÒ»´ÎÍ£µçÖÜÆÚ¼ÆÊı£¬Ìõ¼şÊÇÍ£µç£¬²¢ÇÒÎ´À´µç
-        if(my_half_current_aver2[ii] != 0 && my_after_short_stop_count1 > 0)
+        if(my_half_current_aver2[ii] > my_HA_Zero_data && my_after_short_stop_count1 > 0)
             my_after_stop1_normal_count++; //µÚÒ»´ÎÍ£µçºó£¬À´µç×´Ì¬Í³¼Æ,ÊÇ·ñĞèÒª¿¼ÂÇ°ë²¨²âÁ¿µÄ²ĞÓàµçÁ÷£¿£¿
-        if(my_half_current_aver2[ii] == 0 && my_after_stop1_normal_count > 0)
+        if(my_half_current_aver2[ii] <=my_HA_Zero_data && my_after_stop1_normal_count > 0)
             my_after_short_stop_count2++;  //¶ş´ÎÍ£µçµÄÍ³¼Æ
 
 
@@ -1233,16 +1264,7 @@ uint8_t my_fun_current_exit_just(void)
 Ë¼Â·£º´Ëº¯Êı²»½øĞĞÂ¼²¨Êı¾İ1¼¶µ½2¼¶µÄ´¦Àí£¬Ò²²»½øĞĞ×ª»»¡£Ö±½ÓÈ¡12TµÄÊı¾İ2¼¶»º³åÖµ£¨×ª»»ºóµÄÖµ£©£¬ÀûÓÃ°ë²¨Êı¾İÅĞ¶ÏÊÇ·ñÍ£µç¡£
 ÓÃ·¨£º´Ëº¯Êı£¬ĞèÒª¸úÔÚDACÉèÖÃº¯Êı£¬»òÕßÖÜÆÚ²ÉÑùº¯Êıºó±ß£¬ÕâÑù£¬ÀûÓÃÉÏÒ»¸öº¯ÊıµÄÂ¼²¨½á¹û¾Í¿ÉÒÔÅĞ¶ÏÍ£µç£¬ºÍ¶ÔµØµç³¡µÄÖµ¡£
 */
-uint8_t my_Line_Current_stop_status = 0; //Í£µç×´Ì¬±êÊ¶£¬1ÎªÍ£µç£¬0ÎªÕı³£
-uint8_t my_Line_Current_stop_last_status = 0xff; //ÉÏÒ»´ÎµÄ×´Ì¬£¬ÀûÓÃÕâ¸ö±äÁ¿£¬ºÍ×îĞÂµÄ×´Ì¬±È½Ï£¬Í£µçÁË¾ÍÉÏ´«
-uint16_t my_Line_Efild_valu = 0; //¶ÔµØµç³¡µÄÖµ
-uint16_t my_line_Current_value = 0; //ÏßÉÏµçÁ÷µÄÓĞĞ§Öµ£¬·Åµ½10±¶È¡ÕûÊı
 
-
-uint16_t MY_Efile_Zero_data = 10; //µç³¡Ğ¡ÓÚ´ËÖµ£¬±íÊ¾Îª0
-uint16_t MY_Efile_floor_data = 50; //µç³¡ÏÂÏŞ£¬Ğ¡ÓÚ´ËÖµ£¬±íÊ¾½ÓµØ
-uint16_t my_HA_Zero_data = 0;
-uint16_t my_A_Zero_data = 1;
 
 void my_fun_get_Line_stop_Efild(void)
 {
