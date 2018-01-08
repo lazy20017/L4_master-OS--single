@@ -12,7 +12,7 @@
 
 
 #define RF_reg_count 47
-#define my_CC1101_default_channer 0x02    //芯片默认CC1101信道
+#define my_CC1101_default_channer 0x02    //芯片默认CC1101信道  0x02 
 
 
 

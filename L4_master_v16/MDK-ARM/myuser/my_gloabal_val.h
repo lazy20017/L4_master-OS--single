@@ -45,7 +45,7 @@
 //OS_CC1101
 #define Debug_Usart_out_ADCdata  0 //为1，表示在CC1101的对话过程中，最后，显示ADC的采样数据
 #define Debug_Usart_out_wavedata_960Data_2cach 0  //**2级缓冲**转发ADC的录波数据,1为电流全波，2为电场全波，3为电流半波。前提条件是Debug_Usart_out_ADCdata==1
-#define Debug_Usart_OUT_WAVE_12T_CYC  1  //2级缓冲，1显示2级缓冲中录波的12T的有效值
+#define Debug_Usart_OUT_WAVE_12T_CYC  0  //2级缓冲，1显示2级缓冲中录波的12T的有效值
 #define Debug_Usart_OUT_WAVE_VALUE 0  //1中断中，显示12个周期的电流、电场、
 
 
