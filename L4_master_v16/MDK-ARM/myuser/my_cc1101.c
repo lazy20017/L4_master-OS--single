@@ -228,8 +228,8 @@ INT8U CC1101RecPacket( INT8U *rxBuffer )
                 my_rssi_dbm = (my_rssi_dbm - 256) / 2 - 75;
             else
                 my_rssi_dbm = (my_rssi_dbm) / 2 - 75;
-            if(my_rssi_dbm<-50)
-            printf("*** RSSI=[%d] ***\n", my_rssi_dbm);
+            if(my_rssi_dbm<-70)
+            printf("*** RSSI=[%d] ***\n", my_rssi_dbm);  //信号强度需要调整，上线后用-50或者-70
             return pktLen;
         }
         else

@@ -102,6 +102,7 @@ extern uint16_t my_dac1_channel2_data_e;
 
 extern uint8_t  my_Time_Cyc_exit_Status;
 extern uint16_t my_pro_step;
+extern double ADC2_Filer_value_buf_2[ADC2_COLM][3];
 
 
 
@@ -394,6 +395,9 @@ else
 	printf("reset  RTC   %d-%d-%d %d:%d:%d===\n",my_RTC_date.Year,my_RTC_date.Month,my_RTC_date.Date,my_RTC_time.Hours,my_RTC_time.Minutes,my_RTC_time.Seconds);
 	//HAL_RTC_SetDate(&hrtc, &my_RTC_date, RTC_FORMAT_BIN);
 	//HAL_RTC_SetTime(&hrtc, &my_RTC_time, RTC_FORMAT_BIN);
+//DACÇ¿ÖÆ600A
+	ADC2_Filer_value_buf_2[0][1]=600;
+	my_fun_Set_DAC_I_ref();//DA×ª»»
   
 
 

@@ -373,49 +373,7 @@ void my_fun_101send_AC_Rec_data(UART_HandleTypeDef* USARTx, uint8_t my_status, u
     }
    
 //--------------------
-    if(my_row == 0 ) //全波电流
-    {
-
-//        for(ii = 0; ii < WAVE_number_sec2; ii++)
-//        {
-//            temp = (my_wave_record_sec2[my_row][ii] - my_all_i_up_value);
-
-//            //temp=my_wave_record_sec2[my_row][ii];
-//            temp = temp * MY_VDD / 4096 * (my_i_ratio_value * my_I_100A_Radio) * 10; //保留小数点后1位
-//					
-//            my_data[2 * ii] = temp;
-//            my_data[2 * ii + 1] = (temp >> 8) & 0x00FF;
-//					
-//					
-//					 #if	CC1101_SEND_I_E_Simulation_data_status==1
-//							my_data[2 * ii] = 2*ii;
-//							my_data[2 * ii + 1] = 2 * ii + 1;
-//					#endif
-//        }
-
-    }
-
-    else if(my_row == 1 )  //电场
-    {
-
-//        for(ii = 0; ii < WAVE_number_sec2; ii++)
-//        {
-//            temp=my_wave_record_sec2[my_row][ii];
-//            temp = temp * MY_VDD / 4096 * (my_E_ratio_value) * 10; //保留小数点后1位
-
-//            my_data[2 * ii] = temp;
-//            my_data[2 * ii + 1] = (temp >> 8) & 0x00FF;
-//					 #if	CC1101_SEND_I_E_Simulation_data_status==1
-//							my_data[2 * ii] = 2*ii;
-//							my_data[2 * ii + 1] = 2 * ii + 1;
-//					#endif
-
-
-//        }
-
-    }
-
-
+    
 
     else if(my_row == 10 ) //电流
     {

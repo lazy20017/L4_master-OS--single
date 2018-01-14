@@ -67,8 +67,8 @@ void HAL_TIM_PeriodElapsedCallback2(TIM_HandleTypeDef *htim)
 					,my_Current_exit_Status,my_E_Field_exit_Status,my_sys_start_status,my_tim6_count,my_reset_count);  
 					
 					my_reset_count++;
-					if(my_reset_count>50)
-						HAL_NVIC_SystemReset();
+					if(my_reset_count>250)
+						HAL_NVIC_SystemReset();  //œµÕ≥÷ÿ∆Ù
 						
 					return;
 				}

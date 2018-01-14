@@ -64,7 +64,8 @@ void my_fun_give_Queue(osMessageQId *my_QHL, uint16_t temp_step)
     {
         printf(" send QH ERROR--[%XH],xRseult=[%XH]--\r\n", temp_step, xResult);
         
-        NVIC_SystemReset(); //应该打开使用20171025@@@@@@
+        HAL_NVIC_SystemReset();  //系统重启，向指令队列放数据导致拥塞，
+				
 
 
 
