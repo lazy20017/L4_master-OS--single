@@ -276,37 +276,37 @@ void StartTask02(void const * argument)
 
 
         //====0 DTU 在线升级--发送部分
-        my_fun_CC1101_time_dialog_tx2(my_step, 0xF000, 0xF100, 0, my_fun_CC1101_test1);
-        my_fun_CC1101_time_dialog_tx2(my_step, 0xF200, 0xF300, 0, my_fun_CC1101_test1);
-        my_fun_CC1101_time_dialog_tx2(my_step, 0xF400, 0xF500, 0, my_fun_CC1101_test1);
-        my_fun_CC1101_time_dialog_tx2(my_step, 0xF600, 0xF700, 0, my_fun_CC1101_test1);
-        my_fun_CC1101_time_dialog_tx2(my_step, 0xF800, 0xF900, 1, my_fun_CC1101_test1);
+        my_fun_CC1101_time_dialog_tx2(my_step, 0xF000, 0xF100, 0, my_fun_CC1101_test1,3);
+        my_fun_CC1101_time_dialog_tx2(my_step, 0xF200, 0xF300, 0, my_fun_CC1101_test1,3);
+        my_fun_CC1101_time_dialog_tx2(my_step, 0xF400, 0xF500, 0, my_fun_CC1101_test1,3);
+        my_fun_CC1101_time_dialog_tx2(my_step, 0xF600, 0xF700, 0, my_fun_CC1101_test1,3);
+        my_fun_CC1101_time_dialog_tx2(my_step, 0xF800, 0xF900, 1, my_fun_CC1101_test1,3);
 
 
         //=====主动发送心跳帧，请求参数设置
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x0000, 0x00E0, 0, my_fun_TX_CC1101_heart);  //心跳
+        my_fun_CC1101_time_dialog_tx2(my_step, 0x0000, 0x00E0, 0, my_fun_TX_CC1101_heart,3);  //心跳
         //==请求参数设置
-        my_fun_CC1101_time_dialog_tx2(my_step, 	0x0000, 0x00E1, 0, 	my_fun_TX_CC1101_config);  //请求参数设置
-        my_fun_CC1101_time_dialog_tx2(my_step,	0x0000,	0X00E2,	1,	my_fun_TX_CC1101_config2); //确认设置参数
+        my_fun_CC1101_time_dialog_tx2(my_step, 	0x0000, 0x00E1, 0, 	my_fun_TX_CC1101_config,3);  //请求参数设置
+        my_fun_CC1101_time_dialog_tx2(my_step,	0x0000,	0X00E2,	1,	my_fun_TX_CC1101_config2,3); //确认设置参数
 
 
         //=====2 发送周期数据
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x0000, 0x0001, 0, my_fun_TX_CC1101_test0);//遥信
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0040, 0, my_fun_TX_CC1101_test1);//DC，共7个分量
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0041, 0, my_fun_TX_CC1101_test2);//AC有效值，3个分量，电流，电场，半波
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0042, 0, my_fun_TX_CC1101_test3);//AC12T
+        my_fun_CC1101_time_dialog_tx2(my_step, 0x0000, 0x0001, 0, my_fun_TX_CC1101_test0,3);//遥信
+        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0040, 0, my_fun_TX_CC1101_test1,3);//DC，共7个分量
+        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0041, 0, my_fun_TX_CC1101_test2,3);//AC有效值，3个分量，电流，电场，半波
+        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0042, 0, my_fun_TX_CC1101_test3,3);//AC12T
 //				if(my_use_cyc_rec_data_status==1)
 //        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0043, 0, my_fun_TX_CC1101_test4);//录波
 
         //====1 发送报警数据
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x0000, 0x0002, 0, my_fun_TX_CC1101_test0); //遥信
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0050, 0, my_fun_TX_CC1101_test1); //遥测DC
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0051, 0, my_fun_TX_CC1101_test2); //遥测AC，线上电流，电场、半波的有效值，就3个值
-        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0052, 0, my_fun_TX_CC1101_test3); //遥测12TAC
+        my_fun_CC1101_time_dialog_tx2(my_step, 0x0000, 0x0002, 0, my_fun_TX_CC1101_test0,2); //遥信
+        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0050, 0, my_fun_TX_CC1101_test1,2); //遥测DC
+        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0051, 0, my_fun_TX_CC1101_test2,2); //遥测AC，线上电流，电场、半波的有效值，就3个值
+        my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0052, 0, my_fun_TX_CC1101_test3,2); //遥测12TAC
         if(my_use_alarm_rec_data_status == 1)
-            my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0053, 0, my_fun_TX_CC1101_test4); //录波_电流
+            my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0053, 0, my_fun_TX_CC1101_test4,2); //录波_电流
         if(my_use_alarm_rec_data_status_Efild == 1)
-            my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0054, 0, my_fun_TX_CC1101_test5); //录波_电场
+            my_fun_CC1101_time_dialog_tx2(my_step, 0x2000, 0x0054, 0, my_fun_TX_CC1101_test5,2); //录波_电场
 
         //======3 参数设置部分
 
@@ -540,6 +540,7 @@ void StartTask08(void const * argument)
     HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启
     HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn); //接地中断开启
     HAL_TIM_Base_Start_IT(&htim6);  //开启tim6定时器,1s
+    double my_temp_double = 0;
     for(;;)
     {
 
@@ -552,12 +553,12 @@ void StartTask08(void const * argument)
         if((uxBits & 0x01) == 0x01) //短路中断，标志
         {
             my_status = 1; //通过标志组，获得接收到数据的标志
-            //printf("cc1101 receive data !\r\n");
+            //printf("cc1101 receive data my_status1=%d\r\n",my_status);
         }
         else if((uxBits & 0x02) == 0x02)
         {
             my_status = 2;
-
+						 //printf("cc1101 receive data my_status2=%d\r\n",my_status);
         }
         else
             my_status = 0;
@@ -575,9 +576,21 @@ void StartTask08(void const * argument)
 
             if(temp8 == 1 && (my_Fault_Current_End_Status != 0 || my_Fault_E_Fild_End_Status != 0)) //正常报警处理
             {
-               ADC2_Filer_value_buf_2[0][1]=600;
-							 my_fun_Set_DAC_I_ref();//DA转换
-							//中断处理结束了，恢复中断开启
+								
+								
+							
+                //进入中断后，把对应的DAC值设定为600A
+                my_temp_double = ADC2_Filer_value_buf_2[0][1];
+                ADC2_Filer_value_buf_2[0][1] = 600;
+                my_ADC_Count_old = my_ADC_Count - 1;
+                my_fun_Set_DAC_I_ref();//DA转换
+                ADC2_Filer_value_buf_2[0][1] = my_temp_double;
+								osDelay(3);
+
+								//不同相序进行随机进行延时发送
+								
+								osDelay((my_CC1101_chip_address-1)*30*1000);
+                //中断处理结束了，恢复中断开启
                 HAL_NVIC_ClearPendingIRQ(EXIT_dianliu_EXTI_IRQn);
                 __HAL_GPIO_EXTI_CLEAR_FLAG(EXIT_dianliu_Pin);
                 __HAL_GPIO_EXTI_CLEAR_IT(EXIT_dianliu_Pin);
@@ -587,21 +600,30 @@ void StartTask08(void const * argument)
                 __HAL_GPIO_EXTI_CLEAR_IT(EXIT_jiedi_Pin);
 
 
-                HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启
+               HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启
                 HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn); //接地中断开启
 
                 //进入数据发送环节@@@@@@@
+								printf("interrrupt is alarm\n");
+								temp8=0;
                 my_zsq_ALarm_send_status = 1; //报警发送状态为1，启动发送
                 my_step = 0X0002; //0X0200
                 xQueueSend(myQueue01Handle, &my_step, 100);
             }
-						
-						else if(temp8 == 1 && my_Fault_Current_End_Status == 0 && my_Fault_E_Fild_End_Status == 0) //中断但是没有报警
+
+            else if(temp8 == 1 && my_Fault_Current_End_Status == 0 && my_Fault_E_Fild_End_Status == 0) //中断但是没有报警
             {
-                
-							 ADC2_Filer_value_buf_2[0][1]=600;
-							 my_fun_Set_DAC_I_ref();//DA转换
-							//中断处理结束了，恢复中断开启
+							
+							
+                my_temp_double = ADC2_Filer_value_buf_2[0][1];
+                ADC2_Filer_value_buf_2[0][1] = 600;
+                my_ADC_Count_old = my_ADC_Count - 1; //设定变化条件，可以进行设定DAC
+                my_fun_Set_DAC_I_ref();//DA转换
+                ADC2_Filer_value_buf_2[0][1] = my_temp_double;
+								osDelay(3);
+								//不同相序进行随机进行延时发送
+								osDelay((my_CC1101_chip_address-1)*30*1000);
+                //中断处理结束了，恢复中断开启
                 HAL_NVIC_ClearPendingIRQ(EXIT_dianliu_EXTI_IRQn);
                 __HAL_GPIO_EXTI_CLEAR_FLAG(EXIT_dianliu_Pin);
                 __HAL_GPIO_EXTI_CLEAR_IT(EXIT_dianliu_Pin);
@@ -613,18 +635,20 @@ void StartTask08(void const * argument)
 
                 HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启
                 HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn); //接地中断开启
-							
-							
-								//设定模拟报警数据
-								my_Fault_Current_End_Status=0XF1;
+
+
+                //设定模拟报警数据
+                my_Fault_Current_End_Status = 0XF2;  //中断，但是不是报警实践
 
                 //进入数据发送环节@@@@@@@
+								printf("interrrupt is alarm--NO\n");
+								temp8=0;
                 my_zsq_ALarm_send_status = 1; //报警发送状态为1，启动发送
                 my_step = 0X0002; //0X0200
                 xQueueSend(myQueue01Handle, &my_step, 100);
             }
-						
-						
+
+
         }
         //=====周期处理===
         if(my_status == 2)
@@ -677,7 +701,7 @@ void Callback01(void const * argument)
             printf("\n==DAC Vref CC1101_all_step=[%X],A_EXIT_status=%d,E_exit_status=%d,cyc_exit_status=%d\n", my_CC1101_all_step, my_E_Field_exit_Status, my_Current_exit_Status, my_Time_Cyc_exit_Status);
             //printf("=====DAC Vref====\n");
             my_fun_Set_DAC_I_ref();//DA转换
-            my_fun_get_Line_stop_Efild(); //静态判断
+            my_fun_get_Line_stop_Efild(); //静态判断@@@@@@@@@@@@@@@@@@2
             printf("----after DAC CC1101_STEP=[%X]---\n", my_CC1101_all_step);
         }
     }
@@ -697,7 +721,7 @@ void Callback01(void const * argument)
 
     if(my_os_count1 % (13) == 0 )
     {
-        printf("\n===yongsai control[%d]===\n", my_os_count1);
+        printf("\n==ZSQ[%d]--yongsai control[%d]===\n",my_CC1101_chip_address, my_os_count1);
         my_adc_1_convert_dis(0); //显示直流值
         //==CC1101低功耗控制策略
         if(ADC1_Filer_value_buf[6] >= 4.0)
@@ -754,25 +778,53 @@ void Callback01(void const * argument)
         }
 
         //线上取电管理策略
-        if(my_os_count1%3600==0)
+        if(my_os_count1 % 3607 == 0)
         {
-					CT_to_BQ25505_ON;  //CT给BQ25充电
-					HAL_Delay(500);
-					CT_to_BQ25505_OFF;
-					HAL_Delay(500);
-					CT_to_BQ25505_ON;
+            CT_to_BQ25505_ON;  //CT给BQ25充电
+            HAL_Delay(500);
+            CT_to_BQ25505_OFF;
+            HAL_Delay(500);
+            CT_to_BQ25505_ON;
         }
-				//25505芯片的管理策略
+        //25505芯片的管理策略
         if(my_os_count1 % (3673) == 0 )
         {
 
             EN25505_OFF;
-
             HAL_Delay(1000);
             EN25505_ON;//BQ25505工作（默认）
 
         }
-
+				//线上放电策略
+				if(ADC2_Filer_value_buf_2[0][1]>300 && my_Line_short_status==1)
+				{
+					CT_Source_short_ON; //短路放电 10分钟，充电10分钟
+					
+					if(my_Line_short_count>600) //短路放电10分钟
+					{
+						my_Line_short_status=0;
+						my_Line_short_count=0;
+					}
+					
+				}
+				else if(ADC2_Filer_value_buf_2[0][1]>300 && my_Line_short_status==0)
+				{
+					CT_Source_short_OFF;//不短路放电 
+				
+					if(my_Line_short_count>600) //不短路，充电10分钟
+					{
+						my_Line_short_status=1;
+						my_Line_short_count=0;
+					}
+					
+					
+				}
+				if(ADC2_Filer_value_buf_2[0][1]<280)
+				{
+					CT_Source_short_OFF;//不短路放电
+					my_Line_short_status=0;
+				}
+       //====================
 
         //初始化状态结束
         if(my_sys_start_status == 1)
@@ -793,7 +845,7 @@ void Callback01(void const * argument)
 
             my_tim6_count = 0;
             my_fun_give_Queue(&myQueue01Handle, 0X0001); //发送周期数据
-            my_sys_start_status = 0;
+            //my_sys_start_status = 0;//@@@@@指示器重启，初始化的标志。
 
         }
 
@@ -803,7 +855,7 @@ void Callback01(void const * argument)
     }
 
     //周期报警
-    if(my_os_count1 % (3737 + (my_CC1101_chip_address) * 61) == 0 && my_zsq_ALarm_send_status == 0 && my_os_count1 != 0)
+    if(my_os_count1 % (3637 * 3 + (my_CC1101_chip_address-1) * 31) == 0 && my_zsq_ALarm_send_status == 0 && my_os_count1 != 0)
     {
         printf("===send simulation alarm data--1!!!\n");
         fun_wave2_to_wave3(); //二级缓存中的所有数据放入到三级缓存中，处理后值
@@ -815,7 +867,7 @@ void Callback01(void const * argument)
     }
 
     //重复发送报警数据
-    if(my_os_count1 % (38) == 0 && my_CC1101_all_step == 0x00 && my_zsq_ALarm_send_status == 1 && my_os_count1 != 0)
+    if(my_os_count1 % (38+ (my_CC1101_chip_address-1) * 15) == 0 && my_CC1101_all_step == 0x00 && my_zsq_ALarm_send_status == 1 && my_os_count1 != 0)
     {
         printf("==cyc send alarm data!!!--2\n");
         my_fun_give_Queue(&myQueue01Handle, 0X0002); //发送报警

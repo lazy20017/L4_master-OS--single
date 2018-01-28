@@ -54,6 +54,7 @@ void HAL_TIM_PeriodElapsedCallback2(TIM_HandleTypeDef *htim)
     else if(htim == &htim6) //TIM6为1s一次，为了响应中断
     {
         my_tim6_count++;
+				my_Line_short_count++;
 			 //喂狗信号
 			  //LED3_TOGGLE;
 			  WDI1_TOGGLE;
@@ -131,14 +132,14 @@ void HAL_TIM_PeriodElapsedCallback2(TIM_HandleTypeDef *htim)
 						
 					}
 					
-					 //定时一段时间进行录波计算，或者周期发送时间到进行计算
+					 //定时一段时间进行录波计算，获得线上的电流和电场值
         
         if(my_Time_Cyc_exit_Status==0 && my_tim6_count%17==0 && my_tim6_count!=0 && my_tim6_count%my_cyc_time_count!=0 && my_CC1101_all_step==0) //
         {
          
             my_dianliu_exit_add=my_wave_write_add; //当前录波地址
             my_Time_Cyc_exit_add = my_wave_write_add;								
-					
+						my_ADC_Count++;
             xResult=	xEventGroupSetBitsFromISR(xCreatedEventGroup2, 0X02,&xHigherPriorityTaskWoken);
             if(xResult!=pdFAIL)
             {

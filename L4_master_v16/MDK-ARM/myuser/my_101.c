@@ -375,7 +375,7 @@ void my_fun_101send_AC_Rec_data(UART_HandleTypeDef* USARTx, uint8_t my_status, u
 //--------------------
     
 
-    else if(my_row == 10 ) //电流
+     if(my_row == 10 ) //电流
     {
         my_row = my_row - 10;
 			 xx=15*(my_CC1101_chip_address+1);

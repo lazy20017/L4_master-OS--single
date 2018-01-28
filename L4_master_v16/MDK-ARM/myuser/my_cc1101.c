@@ -21,7 +21,7 @@
 uint16_t my_CC1101_sync_word = 0x0102; //CC1101同步字，默认为0x8799
 uint8_t my_CC1101_change_channer = my_CC1101_default_channer; //动态信道号
 
-uint8_t my_CC1101_chip_address = 0x01; //发送源地址01 02 03 ZSQ地址1,2,3，---9
+uint8_t my_CC1101_chip_address = 0x03; //发送源地址01 02 03 ZSQ地址1,2,3，---9
 uint8_t my_CC1101_dest_address = 0xFE; //发送目标地址，0XFE为DTU，0xFD为调试器，0x00为广播
 
 //指示器地址构成：同步字低字节+同步字高字节+信道字节+信道内地址字节(01，02，03)
@@ -629,7 +629,7 @@ void CC1101SendPacket_add( INT8U *txbuffer, INT8U size, TX_DATA_MODE mode, INT8U
     //xSemaphoreTake(myMutex01Handle,3000);
 
     HAL_NVIC_DisableIRQ(EXIT_CC_IRQ_GD0); //关闭中断，不产生发射中断
-    HAL_NVIC_DisableIRQ(EXIT_jiedi_EXTI_IRQn);
+    //HAL_NVIC_DisableIRQ(EXIT_jiedi_EXTI_IRQn);
     //载波监听
     kk = 0;
     while(my_fun_CC1101_re_CCA_status() == 1)
@@ -708,9 +708,9 @@ void CC1101SendPacket_add( INT8U *txbuffer, INT8U size, TX_DATA_MODE mode, INT8U
     __HAL_GPIO_EXTI_CLEAR_IT(PIN_CC_IRQ); //这个可以清除外部中断，每个中断的清除函数都不一样，需要分别调用
     HAL_NVIC_EnableIRQ(EXIT_CC_IRQ_GD0); //---------开启接收中断
 
-    __HAL_GPIO_EXTI_CLEAR_IT(EXIT_jiedi_EXTI_IRQn);
-		__HAL_GPIO_EXTI_CLEAR_FLAG(EXIT_jiedi_EXTI_IRQn);
-    HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn);
+    //__HAL_GPIO_EXTI_CLEAR_IT(EXIT_jiedi_EXTI_IRQn);
+		//__HAL_GPIO_EXTI_CLEAR_FLAG(EXIT_jiedi_EXTI_IRQn);
+    //HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn);
     my_cc_Efied_count = 1;
 
     //xSemaphoreGive(myMutex01Handle);

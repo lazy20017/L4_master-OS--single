@@ -76,6 +76,7 @@ void HAL_GPIO_EXTI_Callback ( uint16_t GPIO_Pin)
 
             //关闭电场中断					
 						HAL_NVIC_DisableIRQ(EXIT_jiedi_EXTI_IRQn);
+						HAL_NVIC_DisableIRQ(EXIT_dianliu_EXTI_IRQn);
 						
 						
             //发送状态标识0X01，到状态标识组中,PA1
@@ -123,6 +124,10 @@ void HAL_GPIO_EXTI_Callback ( uint16_t GPIO_Pin)
 
             printf("\n ==电场中断==exit PA1,E_interrup=%d====\n",my_PA01_count);
 						printf("dianliu_add=%d,E_fild_add=%d",my_dianliu_exit_add,my_E_Field_exit_add);
+						
+						 //关闭电场中断				
+						HAL_NVIC_DisableIRQ(EXIT_jiedi_EXTI_IRQn);
+						HAL_NVIC_DisableIRQ(EXIT_dianliu_EXTI_IRQn);
 
             //发送状态标识0X01，到状态标识组中,PA1
             xResult=	xEventGroupSetBitsFromISR(xCreatedEventGroup2, 0X01,&xHigherPriorityTaskWoken);

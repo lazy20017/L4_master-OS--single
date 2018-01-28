@@ -75,7 +75,8 @@ void my_fun_CC1101_time_dialog_tx2(
     uint16_t my_before_step,
     uint16_t my_now_step,
     uint8_t end_status,
-    void (*ptfun)(void)
+    void (*ptfun)(void),
+		uint8_t re_send_count
 );
 //==============
 

@@ -198,7 +198,7 @@ int main(void)
     USART_printf(&huart2,"usart_printf MCU1-UART2 IS OK!!");
 	
     my_fr=HAL_RCC_GetSysClockFreq();  //读取系统时钟
-    printf("\n ================SysClockFreq:%dMHZ========\n",my_fr/1000000);
+    printf("\n ======ZSQ:[%d]=====SysClockFreq:%dMHZ========\n",my_CC1101_chip_address,my_fr/1000000);
 
     //---ADC1,ADC2---DMA方式配置与启动
     HAL_ADC_Start_DMA(&hadc1, (uint32_t *)&ADC1_GetValue[0][0],ADC1_ROW*ADC1_COLM);//&ADC2_GetValue[0][0],ADC2_ROW*ADC2_COLM

@@ -39,5 +39,5 @@ void my_fun_get_Line_stop_Efild(void);
 
 void my_fun_wave1_to_wave2_old_data(void);
 
-void my_fun_query_Efild(void);
+//void my_fun_query_Efild(void);
 

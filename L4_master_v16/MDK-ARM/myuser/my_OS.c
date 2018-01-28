@@ -38,6 +38,7 @@ extern uint8_t my_UART2_Status;
 extern uint8_t my_UART3_Status;
 
 extern uint8_t my_use_alarm_rec_data_status_Efild;
+extern double ADC2_Filer_value_buf_2[ADC2_COLM][3];
 
 uint16_t  my_GPRS_all_step = 0;
 uint8_t my_GPRS_all_count = 0;
@@ -82,7 +83,8 @@ void my_fun_CC1101_time_dialog_tx2(
     uint16_t my_before_step,
     uint16_t my_now_step,
     uint8_t end_status,
-    void (*ptfun)(void)
+    void (*ptfun)(void),
+		uint8_t re_send_count
 )
 {
     //===判断部分
@@ -102,7 +104,7 @@ void my_fun_CC1101_time_dialog_tx2(
     }
 
     //===重复发送部分
-    if( my_now_step == my_CC1101_all_step && my_CC1101_all_count < 3 )
+    if( my_now_step == my_CC1101_all_step && my_CC1101_all_count < re_send_count )
     {
         my_CC1101_all_count++;
         printf("CC1101 TX-Fun= [%XH]--%d\r\n", my_now_step, my_CC1101_all_count);
@@ -110,7 +112,7 @@ void my_fun_CC1101_time_dialog_tx2(
         //HAL_Delay(1);//CC1101发送数据，要延时一下，因为操作系统任务切换需要1ms
         ptfun();		//调用对应的函数
     }
-    else if(my_CC1101_all_count >= 3)
+    else if(my_CC1101_all_count >= re_send_count)
     {
 
         my_CC1101_all_count = 0;
@@ -118,14 +120,14 @@ void my_fun_CC1101_time_dialog_tx2(
         my_Time_Cyc_exit_Status = 0;
 
 
-        if(my_CC1101_Sleep_status == 1 || my_DTU_send_faile_count>=2)
+        if(my_CC1101_Sleep_status == 1 || my_DTU_send_faile_count>=re_send_count-1)
         {
             CC1101SetSleep();
         }
         //DTU失败次数标识
         my_DTU_send_faile_count++;
         if(my_DTU_send_faile_count >= 0XFFFF)
-            my_DTU_send_faile_count = 3;
+            my_DTU_send_faile_count = re_send_count;
 
     }
 
@@ -409,6 +411,13 @@ void my_fun_TX_CC1101_test2(void)  //遥测 交流有效值
         my_fun_101send_AC_data(&huart2, my_DC_AC_status, 0X51); //
     }
     //====	2 发送交流数据包
+		
+#if Debug_Usart_out_ADCdata==1
+		//@@@ 发送显示数据AC，到调试串口
+    printf("All_A:AVR=%.2f, RMS=%.2f, MAX=%.2f, \n", ADC2_Filer_value_buf_2[0][0], ADC2_Filer_value_buf_2[0][1], ADC2_Filer_value_buf_2[0][2]);
+    printf("ALL_E:AVR=%.2f, RMS=%.2f, MAX=%.2f, \n", ADC2_Filer_value_buf_2[1][0], ADC2_Filer_value_buf_2[1][1], ADC2_Filer_value_buf_2[1][2]);
+    printf("Hal_A:AVR=%.2f, RMS=%.2f, MAX=%.2f, \n", ADC2_Filer_value_buf_2[2][0], ADC2_Filer_value_buf_2[2][1], ADC2_Filer_value_buf_2[2][2]); 
+#endif
 
 
 #if OS_CC1101_auto_reveive_OK==1

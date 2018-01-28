@@ -25,7 +25,7 @@ uint8_t my_E_fild_change_count = 0; //接地状态，电场产生阶跃性下降
 uint8_t my_E_fild_min_count = 0;   //接地，电场最小值
 
 
-uint8_t my_Line_Current_stop_status = 0; //停电状态标识，1为停电，0为正常
+uint8_t my_Line_Current_stop_status = 0; //停电状态标识，1为停电，0为正常,2为接地
 uint8_t my_Line_Current_stop_last_status = 0xff; //上一次的状态，利用这个变量，和最新的状态比较，停电了就上传
 uint16_t my_Line_Efild_valu = 0; //对地电场的值
 uint16_t my_line_Current_value = 0; //线上电流的有效值，放到10倍取整数
@@ -33,7 +33,7 @@ uint16_t my_line_Current_value = 0; //线上电流的有效值，放到10倍取整数
 
 uint16_t MY_Efile_Zero_data = 10; //电场小于此值，表示为0
 uint16_t MY_Efile_floor_data = 20; //电场下限，小于此值，表示接地
-float my_HA_Zero_data = 0.5; //半波电流判读最小值，小于这个值就认为停电了。
+float my_HA_Zero_data = 2; //半波电流判读最小值，小于这个值就认为停电了。0.2
 double my_A_Zero_data = 0; //电流0值条件
 
 
@@ -1129,7 +1129,7 @@ uint8_t fun_Judege_It_end(void)
 
 
     if(my_befor_500ms_normal_count > 0 && my_befor_short_stop_count > 0 && my_short_circuit_count > 0 && my_after_short_stop_count1 == 0  && my_after_stop1_normal_count == 0  && my_after_short_stop_count2 == 0)
-        my_Fault_Current_End_Status = 0X0F; //非故障相合闸成功,不报警
+        my_Fault_Current_End_Status = 0X0E; //非故障相合闸成功,不报警
 
 
 
@@ -1265,35 +1265,57 @@ uint8_t my_fun_current_exit_just(void)
 用法：此函数，需要跟在DAC设置函数，或者周期采样函数后边，这样，利用上一个函数的录波结果就可以判断停电，和对地电场的值。
 */
 
-
+double my_E_Fild_old=0;
 void my_fun_get_Line_stop_Efild(void)
 {
 
     uint16_t  my_step = 00;
 
-    return ;
+    //return ;
 //取当前数据
     my_fun_wave1_to_wave2_old_data();
     my_adc2_convert2(0);
 
 
-//停电判断
+//静态数据判断
     if( ADC2_Filer_value_buf_2[1][0] <= MY_Efile_Zero_data &&  ADC2_Filer_value_buf_2[2][1] <= my_HA_Zero_data) //电场为0，半波为0
         my_Line_Current_stop_status = 1; //表示停电,  没有电场，没有电流
 
     else if(ADC2_Filer_value_buf_2[0][1] >= my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1] > MY_Efile_floor_data   && ADC2_Filer_value_buf_2[2][1] > my_HA_Zero_data)
-        my_Line_Current_stop_status = 0; //表示正常，  线路 有电流，有电场。
+        my_Line_Current_stop_status = 3; //表示正常，  线路 有电流，有电场。
 
     else if(ADC2_Filer_value_buf_2[0][1] >= my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1] <= MY_Efile_floor_data 	&& ADC2_Filer_value_buf_2[2][1] > my_HA_Zero_data)
         my_Line_Current_stop_status = 2; //表示接地，  线路电场很小，有电流
+		
+//电场跌落百分比
+		if((my_E_Fild_old-ADC2_Filer_value_buf_2[1][1])*1.0/my_E_Fild_old>0.45 && my_E_Fild_old>ADC2_Filer_value_buf_2[1][1] && my_E_Fild_old>MY_Efile_floor_data  && ADC2_Filer_value_buf_2[2][1] > my_HA_Zero_data && ADC2_Filer_value_buf_2[0][1] >= my_A_Zero_data)
+		{
+			my_Line_Current_stop_status = 2;  //利用百分比方法判断，接地
+		}
+		my_E_Fild_old=ADC2_Filer_value_buf_2[1][1];
+//静态电流大于400A判据
+		if(ADC2_Filer_value_buf_2[0][1]>400 && ADC2_Filer_value_buf_2[1][1]>MY_Efile_Zero_data)
+		{
+				fun_wave2_to_wave3();
+        my_Fault_Current_End_Status = 0XF3;
+        my_Fault_E_Fild_End_Status = 00;
+        printf("==return Short over 400--1 A_S=%d  E_S=%d\n",my_Fault_Current_End_Status,my_Fault_E_Fild_End_Status);
+        my_zsq_ALarm_send_status = 1;
+        my_step = 0x0002; //发送报警，消息任务
+        xQueueSend(myQueue01Handle, &my_step, 100);
+			
+		}
+		
+		
+		
 
 //报警状态恢复
-    if(	my_Line_Current_stop_status == 0 && (my_Fault_Current_End_Status != 0 || my_Fault_E_Fild_End_Status != 0))
+    if(	my_Line_Current_stop_status == 3 && (my_Fault_Current_End_Status != 0 || my_Fault_E_Fild_End_Status != 0))
     {
         fun_wave2_to_wave3();
         my_Fault_Current_End_Status = 00;
         my_Fault_E_Fild_End_Status = 00;
-        printf("==return normal--1\n");
+        printf("==return normal--1 A=%d  E=%d\n",my_Fault_Current_End_Status,my_Fault_E_Fild_End_Status);
         my_zsq_ALarm_send_status = 1;
         my_step = 0x0002; //发送报警，消息任务
         xQueueSend(myQueue01Handle, &my_step, 100);
@@ -1303,10 +1325,10 @@ void my_fun_get_Line_stop_Efild(void)
     if(my_Line_Current_stop_status == 1 && my_Line_Current_stop_last_status == 0 ) //上次正常，现在停电，上传
     {
         fun_wave2_to_wave3();
-        my_Fault_Current_End_Status = 0xFF;
-        my_Fault_E_Fild_End_Status = 0xFF;
+        my_Fault_Current_End_Status = 0xFE;
+        my_Fault_E_Fild_End_Status = 0xFE;
         my_Line_Current_stop_last_status = 1;
-        printf("==return normal--2---stop\n");
+        printf("==return normal--2---stop A=%d  E=%d\n",my_Fault_Current_End_Status,my_Fault_E_Fild_End_Status);
         my_zsq_ALarm_send_status = 1;
         my_step = 0x0002; //发送报警，消息任务
         xQueueSend(myQueue01Handle, &my_step, 100);
@@ -1319,14 +1341,14 @@ void my_fun_get_Line_stop_Efild(void)
 
         my_Fault_E_Fild_End_Status = 0x01;
         my_Line_Current_stop_last_status = my_Line_Current_stop_status;
-        printf("==return normal--2---jiedi\n");
+        printf("==return normal--3---jiedi= A=%d  E=%d\n",my_Fault_Current_End_Status,my_Fault_E_Fild_End_Status);
         my_zsq_ALarm_send_status = 1;
         my_step = 0x0002; //发送报警，消息任务
         xQueueSend(myQueue01Handle, &my_step, 100);
 
     }
 //线路正常，历史数据变化
-    else if(my_Line_Current_stop_status == 0 && my_Line_Current_stop_last_status != 0)
+    else if(my_Line_Current_stop_status == 3 && my_Line_Current_stop_last_status != 0)
     {
 
         my_Line_Current_stop_last_status = 0; //把历史状态，恢复为最新状态
@@ -1334,7 +1356,7 @@ void my_fun_get_Line_stop_Efild(void)
 
 
 #if Debug_Usart_OUT_LINE_STOP_STATUS==1
-    printf("--Line stop staus=[%d]--\r\n", my_Line_Current_stop_status);
+    printf("--Line stop staus=[%d]--A=%d,E=%d \n", my_Line_Current_stop_status,my_Fault_Current_End_Status,my_Fault_E_Fild_End_Status);
 #endif
 
 //电场值获得
@@ -1398,34 +1420,34 @@ void my_fun_wave1_to_wave2_old_data(void)
 /*
 功能：查询法获得，电场状态
 */
-void my_fun_query_Efild(void)
-{
+//void my_fun_query_Efild(void)
+//{
 
-    uint16_t my_step = 0;
-    my_fun_wave1_to_wave2_old_data();
-    my_adc2_convert2(0);
+//    uint16_t my_step = 0;
+//    my_fun_wave1_to_wave2_old_data();
+//    my_adc2_convert2(0);
 
-    //停电判断
-    if( ADC2_Filer_value_buf_2[1][2] <= MY_Efile_Zero_data &&  ADC2_Filer_value_buf_2[2][2] <= my_HA_Zero_data) //电场为0，半波为0
-        my_Line_Current_stop_status = 1; //表示停电,没有电场，没有电流
-    else if(ADC2_Filer_value_buf_2[0][1] >= my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1] > MY_Efile_Zero_data)
-        my_Line_Current_stop_status = 0; //表示正常，线路 有电流，有电场。
-    else if(ADC2_Filer_value_buf_2[0][1] >= my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1] <= MY_Efile_floor_data)
-        my_Line_Current_stop_status = 2; //表示接地，线路电场很小，有电流
+//    //停电判断
+//    if( ADC2_Filer_value_buf_2[1][2] <= MY_Efile_Zero_data &&  ADC2_Filer_value_buf_2[2][2] <= my_HA_Zero_data) //电场为0，半波为0
+//        my_Line_Current_stop_status = 1; //表示停电,没有电场，没有电流
+//    else if(ADC2_Filer_value_buf_2[0][1] >= my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1] > MY_Efile_Zero_data)
+//        my_Line_Current_stop_status = 0; //表示正常，线路 有电流，有电场。
+//    else if(ADC2_Filer_value_buf_2[0][1] >= my_A_Zero_data &&  ADC2_Filer_value_buf_2[1][1] <= MY_Efile_floor_data)
+//        my_Line_Current_stop_status = 2; //表示接地，线路电场很小，有电流
 
-    //接地波形
-    if(my_Line_Current_stop_status == 2  && my_Line_Current_stop_last_status == 0)
-    {
-        my_E_Field_exit_add = my_E_fild_time_add;
-        fun_wave2_to_wave3();
+//    //接地波形
+//    if(my_Line_Current_stop_status == 2  && my_Line_Current_stop_last_status == 0)
+//    {
+//        my_E_Field_exit_add = my_E_fild_time_add;
+//        fun_wave2_to_wave3();
 
-        my_Fault_E_Fild_End_Status = 0x01;
-        my_Line_Current_stop_last_status = my_Line_Current_stop_status;
-        my_zsq_ALarm_send_status = 1;
-        my_step = 0x0002; //发送报警，消息任务
-        xQueueSend(myQueue01Handle, &my_step, 100);
+//        my_Fault_E_Fild_End_Status = 0x01;
+//        my_Line_Current_stop_last_status = my_Line_Current_stop_status;
+//        my_zsq_ALarm_send_status = 1;
+//        my_step = 0x0002; //发送报警，消息任务
+//        xQueueSend(myQueue01Handle, &my_step, 100);
 
-    }
+//    }
 
-}
+//}
 

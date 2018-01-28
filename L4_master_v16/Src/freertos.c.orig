@@ -89,6 +89,7 @@ extern  uint8_t my_Fault_Current_End_Status ; //
 extern  uint8_t my_Fault_E_Fild_End_Status ; //
 extern TIM_HandleTypeDef htim6;
 extern double ADC1_Filer_value_buf[];
+extern double ADC2_Filer_value_buf_2[ADC2_COLM][3];
 
 uint16_t   my_os_count1 = 0;
 uint8_t 	my_exit_status_count = 0;
@@ -539,6 +540,7 @@ void StartTask08(void const * argument)
     HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启
     HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn); //接地中断开启
     HAL_TIM_Base_Start_IT(&htim6);  //开启tim6定时器,1s
+		double my_temp_double=0;
     for(;;)
     {
 
@@ -572,9 +574,18 @@ void StartTask08(void const * argument)
         {
             temp8 = my_fun_current_exit_just(); //1为表示录波结束了，0为没有结束
 
-            if(temp8 == 1 && (my_Fault_Current_End_Status != 0 || my_Fault_E_Fild_End_Status != 0))
+            if(temp8 == 1 && (my_Fault_Current_End_Status != 0 || my_Fault_E_Fild_End_Status != 0)) //正常报警处理
             {
-                //中断处理结束了，恢复中断开启
+							
+							//进入中断后，把对应的DAC值设定为600A
+               my_temp_double=ADC2_Filer_value_buf_2[0][1];
+							 ADC2_Filer_value_buf_2[0][1]=600;
+							 my_ADC_Count_old=my_ADC_Count-1;
+							 my_fun_Set_DAC_I_ref();//DA转换
+							 ADC2_Filer_value_buf_2[0][1]=my_temp_double;
+							
+							
+							//中断处理结束了，恢复中断开启
                 HAL_NVIC_ClearPendingIRQ(EXIT_dianliu_EXTI_IRQn);
                 __HAL_GPIO_EXTI_CLEAR_FLAG(EXIT_dianliu_Pin);
                 __HAL_GPIO_EXTI_CLEAR_IT(EXIT_dianliu_Pin);
@@ -592,6 +603,39 @@ void StartTask08(void const * argument)
                 my_step = 0X0002; //0X0200
                 xQueueSend(myQueue01Handle, &my_step, 100);
             }
+						
+						else if(temp8 == 1 && my_Fault_Current_End_Status == 0 && my_Fault_E_Fild_End_Status == 0) //中断但是没有报警
+            {
+               my_temp_double=ADC2_Filer_value_buf_2[0][1];
+							 ADC2_Filer_value_buf_2[0][1]=600;
+								my_ADC_Count_old=my_ADC_Count-1;
+							 my_fun_Set_DAC_I_ref();//DA转换
+							 ADC2_Filer_value_buf_2[0][1]=my_temp_double;
+							
+							//中断处理结束了，恢复中断开启
+                HAL_NVIC_ClearPendingIRQ(EXIT_dianliu_EXTI_IRQn);
+                __HAL_GPIO_EXTI_CLEAR_FLAG(EXIT_dianliu_Pin);
+                __HAL_GPIO_EXTI_CLEAR_IT(EXIT_dianliu_Pin);
+
+                HAL_NVIC_ClearPendingIRQ(EXIT_jiedi_EXTI_IRQn);
+                __HAL_GPIO_EXTI_CLEAR_FLAG(EXIT_jiedi_Pin);
+                __HAL_GPIO_EXTI_CLEAR_IT(EXIT_jiedi_Pin);
+
+
+                HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启
+                HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn); //接地中断开启
+							
+							
+								//设定模拟报警数据
+								my_Fault_Current_End_Status=0XF1;
+
+                //进入数据发送环节@@@@@@@
+                my_zsq_ALarm_send_status = 1; //报警发送状态为1，启动发送
+                my_step = 0X0002; //0X0200
+                xQueueSend(myQueue01Handle, &my_step, 100);
+            }
+						
+						
         }
         //=====周期处理===
         if(my_status == 2)
@@ -724,13 +768,10 @@ void Callback01(void const * argument)
         if(my_os_count1%3600==0)
         {
 					CT_to_BQ25505_ON;  //CT给BQ25充电
-WDI1_TOGGLE;
-HAL_Delay(500);
-printf("\n 999999 \n"); 
-
-CT_to_BQ25505_OFF;
-
-
+					HAL_Delay(500);
+					CT_to_BQ25505_OFF;
+					HAL_Delay(500);
+					CT_to_BQ25505_ON;
         }
 				//25505芯片的管理策略
         if(my_os_count1 % (3673) == 0 )
@@ -763,7 +804,7 @@ CT_to_BQ25505_OFF;
 
             my_tim6_count = 0;
             my_fun_give_Queue(&myQueue01Handle, 0X0001); //发送周期数据
-            my_sys_start_status = 0;
+            //my_sys_start_status = 0;//@@@@@指示器重启，初始化的标志。
 
         }
 
@@ -773,7 +814,7 @@ CT_to_BQ25505_OFF;
     }
 
     //周期报警
-    if(my_os_count1 % (3737 + (my_CC1101_chip_address) * 61) == 0 && my_zsq_ALarm_send_status == 0 && my_os_count1 != 0)
+    if(my_os_count1 % (3637*3 + (my_CC1101_chip_address) * 61) == 0 && my_zsq_ALarm_send_status == 0 && my_os_count1 != 0)
     {
         printf("===send simulation alarm data--1!!!\n");
         fun_wave2_to_wave3(); //二级缓存中的所有数据放入到三级缓存中，处理后值

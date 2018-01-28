@@ -32,6 +32,10 @@ extern uint8_t my_cyc_alarm_status;
 extern RTC_DateTypeDef my_RTC_date;
 extern RTC_TimeTypeDef my_RTC_time;
 extern RTC_HandleTypeDef hrtc;
+extern uint16_t my_ADC_Count;  //用来记录ADC的二级缓存计算次数
+extern uint16_t my_ADC_Count_old;  //旧数据
+extern uint8_t my_Line_short_status;
+extern uint16_t my_Line_short_count;
 
 
 

@@ -73,7 +73,11 @@ void my_fun_Set_DAC_I_ref(void)
 	
 		//GPIO_PinState my_pin_status=HAL_GPIO_ReadPin(EXIT_jiedi_GPIO_Port,EXIT_jiedi_Pin);
 	  //printf("====EXIT_jiedi_pin=%d Vref=%.2f\n",my_pin_status,HAL_DAC_GetValue(&hdac1,DAC_CHANNEL_2)/4096.0*3.3);
-	
+	  if(my_ADC_Count==my_ADC_Count_old)
+		{
+			return;
+		}
+		my_ADC_Count_old=my_ADC_Count;
 
     temp_i = ADC2_Filer_value_buf_2[0][1]; //获得12周波电流的有效值,转换后的值,2为最大值，1为有效值
     temp_e=temp_i;
@@ -208,7 +212,7 @@ void my_fun_DAC_evref_auto_ajust(void)
 		
 		
 		my_DAC_cyc_time=17;
-		//HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn); //接地中断开启
+		
 		
 	}
 	

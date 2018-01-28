@@ -64,7 +64,7 @@ uint8_t my_CC1101_Sleep_status=1;  //CC1101µÄSLEEP±êÊ¶£¬Îª1±êÊ¶CC1101Ë¯Ãß
 
 //TIM6
 uint16_t my_tim6_count=0;
-uint16_t my_cyc_time_count=347;  //ÖÜÆÚ·¢ËÍÊı¾İÊ±¼ä£¬ÃëÎªµ¥Î»
+uint16_t my_cyc_time_count=131;//347;  //ÖÜÆÚ·¢ËÍÊı¾İÊ±¼ä£¬ÃëÎªµ¥Î»
 uint16_t  my_cyc_delay=0;
 
 uint8_t my_cc_Efied_count=0;  //¼ÇÂ¼CC1101·¢ËÍºó£¬Í£Ö¹µÄÊ±¼ä£¬È»ºó¿ªÆô½ÓµØÖĞ¶Ï
@@ -84,4 +84,9 @@ uint8_t my_cyc_alarm_status=0;   //ÖÜÆÚ±¨¾¯×´Ì¬£¬1ÎªÖÜÆÚ²úÉúµÄ±¨¾¯£¬0ÎªÃ»ÓĞÖÜÆÚ±
 
 RTC_DateTypeDef my_RTC_date;
 RTC_TimeTypeDef my_RTC_time;
+
+uint16_t my_ADC_Count=0;  //ÓÃÀ´¼ÇÂ¼ADCµÄ¶ş¼¶»º´æ¼ÆËã´ÎÊı
+uint16_t my_ADC_Count_old=0;  //¾ÉÊı¾İ
+uint8_t my_Line_short_status=0; //ÓÃÀ´±êÊ¶£¬300AÊ±³äµçÏßÂ·µÄ×´Ì¬£¬Ä¬ÈÏÎª0£¬±êÊ¶¿ª£¬ÕıÔÚ³äµç¡£Îª1±íÊ¾·Åµç¡£
+uint16_t my_Line_short_count=0; //300AÒÔÉÏ³äµç£¬ºÍ·ÅµçÊ±¼ä£¬10·ÖÖÓ£¬60*10=600Ãë
 
