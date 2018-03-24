@@ -55,6 +55,7 @@
 "l4_master_v16\my_os.o"
 "l4_master_v16\bsp_iap.o"
 "l4_master_v16\bsp_stm_flash.o"
+"l4_master_v16\my_zsq_param.o"
 "l4_master_v16\port.o"
 "l4_master_v16\heap_4.o"
 "l4_master_v16\event_groups.o"

@@ -24,6 +24,15 @@ uint8_t my_IT_Count = 0;  //中断次数记录
 uint8_t my_reset_count=0;
 
 extern uint16_t  my_CC1101_all_step;
+extern uint8_t my_Fault_Current_End_Status; //
+extern uint8_t my_Fault_E_Fild_End_Status; //
+
+uint16_t my_LED_ON_Count_gate=3600*8;  //用了设定LED报警后，闪烁的实际，1秒变化一次，最长3600*8,8个小时
+uint16_t my_LED_ON_Count=0; //
+uint16_t my_CC1101_RSSI_count=0; //cc1101的信号强度控制
+
+extern int my_CC1101_RSSI;
+extern double ADC1_Filer_value_buf[];
 
 
 void HAL_TIM_PeriodElapsedCallback2(TIM_HandleTypeDef *htim)
@@ -146,6 +155,102 @@ void HAL_TIM_PeriodElapsedCallback2(TIM_HandleTypeDef *htim)
                 portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
             }																	
         }
+				
+				
+				//LED灯闪烁控制--有报警状态====================
+				//my_LED_ON_Count_gate=60*10;  //灯闪烁时间的阀值，单位秒
+				
+				if(((my_Fault_Current_End_Status & 0X01)==1 || (my_Fault_E_Fild_End_Status & 0X01)==1) && my_LED_ON_Count<my_LED_ON_Count_gate)
+				{
+					LED2_TOGGLE;
+					LED4_TOGGLE;
+					my_LED_ON_Count++;
+					
+				}
+				else if((my_Fault_Current_End_Status & 0X01)==0 && (my_Fault_E_Fild_End_Status & 0X01)==0  && my_LED_ON_Count>0) //线路恢复正常
+				{
+					LED2_OFF;
+					LED4_OFF;
+					my_LED_ON_Count=0;
+					
+//				fun_wave2_to_wave3();     
+//        printf("==time6 return normal--1 A=%d  E=%d\n",my_Fault_Current_End_Status,my_Fault_E_Fild_End_Status);
+//				my_Fault_Current_End_Status = 00;
+//        my_Fault_E_Fild_End_Status = 00;
+//        my_zsq_ALarm_send_status = 1;
+//        uint16_t my_step = 0x0002; //发送报警，消息任务
+//        //xQueueSend(myQueue01Handle, &my_step, 100);
+//				my_fun_give_Queue(&myQueue01Handle, my_step); //发送报警
+					
+					
+				}
+				else if(my_LED_ON_Count>=my_LED_ON_Count_gate) //报警时间已过
+				{
+					LED2_OFF;
+					LED4_OFF;
+					my_Fault_Current_End_Status=0;
+					my_Fault_E_Fild_End_Status=0;
+					my_LED_ON_Count=0;
+					
+				}
+				
+				//CC1101发送控制，如果my_CC1101_RSSI信号强度低于-70就关闭
+				if(my_tim6_count%(1*61)==0)   //1分钟检测一次
+				{
+					if(my_CC1101_RSSI<-70)
+					{
+						my_CC1101_RSSI_count++;//信号过弱				
+					}
+					else
+					{
+						my_CC1101_RSSI_count=0;  //信号正常
+					}
+					
+					//==================
+					
+					if(my_CC1101_RSSI_count>60 && my_CC1101_RSSI_count<=75)
+					{      //短时间内开启一段时间
+						    
+								if(my_CC1101_RSSI_count==61)
+								{
+									CC1101_PWR_ON; //CC1101上电    
+									CC1101Init();
+	
+								}
+						
+					}
+					else if(my_CC1101_RSSI_count>75)
+					{
+						CC1101_PWR_OFF;//CC1101断电
+						my_CC1101_RSSI_count=1;      //继续关闭
+					}
+					else if(my_CC1101_RSSI_count>10 && my_CC1101_RSSI_count<59)
+					{
+						CC1101_PWR_OFF;//CC1101断电
+					}
+					
+				
+				
+				//=======电池直流电源的控制====CC1101，如果电压过低停止CC1101============
+					if(ADC1_Filer_value_buf[6] <3.6)  //停止CC1101
+					{
+						CC1101_PWR_OFF;//CC1101断电
+						
+					}
+					else if (ADC1_Filer_value_buf[6] <3.8) //开启CC1101
+					{
+						
+						CC1101_PWR_ON; //CC1101上电 
+					}
+					
+					
+					
+			}
+			
+					
+					
+				
+				
 					
 
     }

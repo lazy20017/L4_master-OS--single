@@ -36,6 +36,8 @@ extern uint16_t my_ADC_Count;  //用来记录ADC的二级缓存计算次数
 extern uint16_t my_ADC_Count_old;  //旧数据
 extern uint8_t my_Line_short_status;
 extern uint16_t my_Line_short_count;
+extern uint8_t my_use_Jiedi_exit_status;
+
 
 
 

@@ -694,6 +694,11 @@
               <FileType>5</FileType>
               <FilePath>.\myuser\my_gloabal_val.h</FilePath>
             </File>
+            <File>
+              <FileName>my_ZSQ_Param.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\myuser\my_ZSQ_Param.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

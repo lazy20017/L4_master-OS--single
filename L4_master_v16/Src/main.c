@@ -182,13 +182,13 @@ int main(void)
 		
 		
 		HAL_Delay(200);
-    //LED2_ON;		
+    LED2_ON;		
 		HAL_Delay(200);
 		LED2_OFF;
 		
 
 		 HAL_Delay(200);
-    //LED4_ON;		
+    LED4_ON;		
 		HAL_Delay(200);
 		LED4_OFF;
 		

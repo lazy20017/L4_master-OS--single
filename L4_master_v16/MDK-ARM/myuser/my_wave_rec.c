@@ -7,14 +7,17 @@
 #include "cmsis_os.h"
 #include "my_extern_val.h"
 
+//======================
 
+//====================
 //ÅĞ¾İÓÃ
 volatile uint8_t my_Fault_Current_End_Status = 0x00; //
 volatile uint8_t my_Fault_E_Fild_End_Status = 0x00; //
 
 uint8_t my_befor_500ms_normal_count = 0; //ÖĞ¶ÏÇ°500msÍ£µç×´Ì¬¼ÇÂ¼
 uint8_t my_befor_short_stop_count = 0; //ÖĞ¶ÏÇ°µÄ×´Ì¬£¬Ö»½øĞĞÒ»´Î²É¼¯£¬ÀûÓÃ3¼¶»º´æ¼ÆËã
-uint8_t my_short_circuit_count = 0; //¶ÌÂ·×´Ì¬£¬µçÁ÷²úÉú½×Ô¾ĞÔÉÏÉı
+uint8_t my_short_circuit_count = 0; //¶ÌÂ·×´Ì¬£¬µçÁ÷²úÉú½×Ô¾ĞÔÉÏÉı,3¼¶»º³åÖĞ
+uint8_t my_short_circuit_count2 = 0; //¶ÌÂ·×´Ì¬£¬µçÁ÷²úÉú½×Ô¾ĞÔÉÏÉı£¬2¼¶»º³åÓÃ
 
 uint8_t my_after_short_stop_count1 = 0; //ÖĞ¶Ïºó£¬µÚÒ»´ÎÍ£µç×´Ì¬¼ÇÂ¼
 uint8_t my_after_short_stop_count2 = 0; //ÖĞ¶Ïºó£¬µÚÒ»´ÎÍ£µçºóÀ´µç£¬µÚ¶ş´ÎÍ£µçµÄ´ÎÊı¼ÇÂ¼
@@ -25,14 +28,14 @@ uint8_t my_E_fild_change_count = 0; //½ÓµØ×´Ì¬£¬µç³¡²úÉú½×Ô¾ĞÔÏÂ½µ
 uint8_t my_E_fild_min_count = 0;   //½ÓµØ£¬µç³¡×îĞ¡Öµ
 
 
-uint8_t my_Line_Current_stop_status = 0; //Í£µç×´Ì¬±êÊ¶£¬1ÎªÍ£µç£¬0ÎªÕı³£,2Îª½ÓµØ
-uint8_t my_Line_Current_stop_last_status = 0xff; //ÉÏÒ»´ÎµÄ×´Ì¬£¬ÀûÓÃÕâ¸ö±äÁ¿£¬ºÍ×îĞÂµÄ×´Ì¬±È½Ï£¬Í£µçÁË¾ÍÉÏ´«
+uint8_t my_Line_Current_stop_status = 0; //Í£µç×´Ì¬±êÊ¶£¬1ÎªÍ£µç£¬2Îª½ÓµØ,3ÎªÕı³£,
+uint8_t my_Line_Current_stop_last_status = 0xff; //ÉÏÒ»´ÎµÄ×´Ì¬£¬ÀûÓÃÕâ¸ö±äÁ¿£¬ºÍ×îĞÂµÄ×´Ì¬±È½Ï£¬Í£µçÁË¾ÍÉÏ´«,3ÎªÕı³£,1ÎªÍ£µç£¬2Îª½ÓµØ
 uint16_t my_Line_Efild_valu = 0; //¶ÔµØµç³¡µÄÖµ
 uint16_t my_line_Current_value = 0; //ÏßÉÏµçÁ÷µÄÓĞĞ§Öµ£¬·Åµ½10±¶È¡ÕûÊı
 
 
 uint16_t MY_Efile_Zero_data = 10; //µç³¡Ğ¡ÓÚ´ËÖµ£¬±íÊ¾Îª0
-uint16_t MY_Efile_floor_data = 20; //µç³¡ÏÂÏŞ£¬Ğ¡ÓÚ´ËÖµ£¬±íÊ¾½ÓµØ
+uint16_t MY_Efile_floor_data = 60; //µç³¡ÏÂÏŞ£¬Ğ¡ÓÚ´ËÖµ£¬±íÊ¾½ÓµØ£¬Ä¬ÈÏ40
 float my_HA_Zero_data = 2; //°ë²¨µçÁ÷ÅĞ¶Á×îĞ¡Öµ£¬Ğ¡ÓÚÕâ¸öÖµ¾ÍÈÏÎªÍ£µçÁË¡£0.2
 double my_A_Zero_data = 0; //µçÁ÷0ÖµÌõ¼ş
 
@@ -42,7 +45,7 @@ double my_A_Zero_data = 0; //µçÁ÷0ÖµÌõ¼ş
 
 
 #define E_cell 1.0        //µç³¡¶ÔÓ¦µÄĞ£ÕıÖµ,ÀûÓÃADC²ÉÑùµÃµ½µÄÊı¾İ½øĞĞµÈ±È±ä»¯
-uint16_t Current_D_value = 150; //µçÁ÷ÉÏÉıÍ»±ä·§Öµ,ÅĞ¶ÏÌõ¼ş£¬´óÓÚ´ËÖµ±íÊ¾£¬²úÉú¶ÌÂ·µçÁ÷,Õâ¸öÖµÊÇÅĞ¶Ï¶ÌÂ·Ìõ¼ş£¬ADCÊ¹ÓÃ
+uint16_t Current_D_value = 100; //µçÁ÷ÉÏÉıÍ»±ä·§Öµ,ÅĞ¶ÏÌõ¼ş£¬´óÓÚ´ËÖµ±íÊ¾£¬²úÉú¶ÌÂ·µçÁ÷,Õâ¸öÖµÊÇÅĞ¶Ï¶ÌÂ·Ìõ¼ş£¬ADCÊ¹ÓÃ£¬Ä¬ÈÏ150
 uint16_t E_fild_D_value = 80; //µç³¡ÏÂµøÍ»±ä·§Öµ
 uint16_t E_fild_threshold_value = 20; //µç³¡×îĞ¡Öµ£¬Ğ¡ÓÚÕâ¸öÖµ¾ÍÈÏÎª½ÓµÄÁË
 //========
@@ -61,12 +64,22 @@ double my_I_100A_Radio = 1.0; //±ê×¼ÏßÉÏµçÁ÷Îª100AÊ±µÄĞ£ÕıÏµÊı£¬Ëã·¨£¬Ä¬ÈÏÖµÎª1£
 double my_i_ratio_value = 1000; //1/2.0*1500; //µçÁ÷±ä±ÈÏµÊı//²ÉÑùµç×èÎª2Å·Ä·£¬±ä±ÈÎª1500:1,×îÖÕÓÃµÄ1000
 double my_value_daya = 2.0; //¼Ó·¨Ğ£ÕıÏµÊı£¬Ä¬ÈÏ2.0
 
-double my_i_5a_radio = 5.3 / 6.96; //5.08/6.26;//0.662251656;//0.857517365;   //5.08--6.26  303---393
-double my_i_50a_radio = 51.5 / 68.14;
-double my_i_300a_radio = 300 / 396.22; //293.4/377.354;//0.748091603;//0.770811922;
+//+++++++++++++++++++++++
+//double my_i_5a_radio = 5.02 / 7.61; //5.08/6.26;//0.662251656;//0.857517365;   //5.08--6.26  303---393
+//double my_i_50a_radio = 50.9 / 71.06;
+//double my_i_300a_radio = 306.1 / 412.6; //293.4/377.354;//0.748091603;//0.770811922;
 
-double my_10A_gatedata = 13;
-double my_100A_gatedata = 137;
+//double my_10A_gatedata = 15.14;
+//double my_100A_gatedata = 139.92;
+
+extern double my_i_5a_radio ; //5.08/6.26;//0.662251656;//0.857517365;   //5.08--6.26  303---393
+extern double my_i_50a_radio ;
+extern double my_i_300a_radio; //293.4/377.354;//0.748091603;//0.770811922;
+
+extern double my_10A_gatedata ;
+extern double my_100A_gatedata ;
+
+//+++++++++++++++++++++++++=
 //ÔÚ³ËÉÏÒ»¸ö100AÊ±µÃµ½µÄĞ£ÕıÏµÊı¡£
 
 double my_E_ratio_value = 1000; //µç³¡±ä±ÈÏµÊı
@@ -137,9 +150,9 @@ void my_adc2_convert_dis(uint8_t convet_status)
         my_adc2_convert2(1);
 
     //ÓĞĞ§Öµ=1.1*Æ½¾ùÖµ£¬×î´óÖµ=Æ½¾ùÖµ/0.637
-    printf("All_A:AVR=%.2f, RMS=%.2f, MAX=%.2f, \n", ADC2_Filer_value_buf_2[0][0], ADC2_Filer_value_buf_2[0][1], ADC2_Filer_value_buf_2[0][2]);
-    printf("ALL_E:AVR=%.2f, RMS=%.2f, MAX=%.2f, \n", ADC2_Filer_value_buf_2[1][0], ADC2_Filer_value_buf_2[1][1], ADC2_Filer_value_buf_2[1][2]);
-    printf("Hal_A:AVR=%.2f, RMS=%.2f, MAX=%.2f, \n", ADC2_Filer_value_buf_2[2][0], ADC2_Filer_value_buf_2[2][1], ADC2_Filer_value_buf_2[2][2]);
+    printf("1All_A:AVR=%.2f, RMS=%.2f, MAX=%.2f, \n", ADC2_Filer_value_buf_2[0][0], ADC2_Filer_value_buf_2[0][1], ADC2_Filer_value_buf_2[0][2]);
+    printf("1ALL_E:AVR=%.2f, RMS=%.2f, MAX=%.2f, \n", ADC2_Filer_value_buf_2[1][0], ADC2_Filer_value_buf_2[1][1], ADC2_Filer_value_buf_2[1][2]);
+    printf("1Hal_A:AVR=%.2f, RMS=%.2f, MAX=%.2f, \n", ADC2_Filer_value_buf_2[2][0], ADC2_Filer_value_buf_2[2][1], ADC2_Filer_value_buf_2[2][2]);
 
     //¶ş¼¶»º´æÂ¼²¨Êı¾İÊä³ö£¬²ÉÑùÂ¼²¨Êı¾İ·¢ËÍ
 //    printf("\n==========\n");
@@ -845,10 +858,10 @@ void fun_wave2_to_wave3(void)
 
 
 //////////////============================
-
+double my_all_current_aver0 = 0;
 uint8_t fun_Judege_It_cache3(void)
 {
-    double my_all_current_aver0 = 0;
+    //double my_all_current_aver0 = 0;
 
     double my_all_current_aver1[4] = {0};
     double my_all_current_aver2[8] = {0};
@@ -863,6 +876,7 @@ uint8_t fun_Judege_It_cache3(void)
     uint16_t ii = 0, jj = 0;
     //È«²¨¶ÔÓ¦ÓĞĞ§µçÁ÷Öµ
     //my_all_current_aver0 = WAVE_all_ave_Current3[0][1]; //¹ÊÕÏÇ°£¬µÚÒ»¸öÈ«²¨µÄÖµ
+		my_all_current_aver0 = 0;
     my_all_current_aver0 = my_DAC_Line_I;
 
     //ÖĞ¶ÏÇ°µç³¡µÄÆ½¾ùÖµ
@@ -910,6 +924,7 @@ uint8_t fun_Judege_It_cache3(void)
 
     //µçÁ÷ºÍµç³¡±ä»¯´ÎÊı¼ÇÂ¼
     my_short_circuit_count = 0; //¶ÌÂ·µçÁ÷´óÓÚÃÅÏŞ£¬´ÎÊı
+		my_short_circuit_count2=0;
     my_after_short_stop_count1 = 0;
     my_after_stop1_normal_count = 0;
     my_after_short_stop_count2 = 0;
@@ -1005,7 +1020,7 @@ uint8_t fun_Judege_It_cache3(void)
 
 uint8_t fun_Judege_It_cache2(void)
 {
-    double  my_all_current_aver0 = 0;
+    //double  my_all_current_aver0 = 0;
     double	my_all_current_aver2[12] = {0};
     double  my_half_current_aver2[12] = {0}; //°ë²¨ADC²ÉÑùºó×ª»»ºóµÃµ½µÄµçÁ÷Öµ
     double  my_E_fild_aver0 = 0;
@@ -1015,7 +1030,7 @@ uint8_t fun_Judege_It_cache2(void)
     uint8_t ii = 0, jj = 0;
     //È«²¨¶ÔÓ¦ÓĞĞ§µçÁ÷Öµ
     // my_all_current_aver0=(WAVE_all_ave_Current2[0][1]+WAVE_all_ave_Current2[1][1]+WAVE_all_ave_Current2[2][1]+WAVE_all_ave_Current2[3][1])/4.0;
-    my_all_current_aver0 = WAVE_all_ave_Current3[0][1]; //¹ÊÕÏÊ±¿ÌÇ°µÄ4¸öÖÜÆÚµÄÆ½¾ùÓĞĞ§µçÁ÷Öµ
+    //my_all_current_aver0 = WAVE_all_ave_Current3[0][1]; //¹ÊÕÏÊ±¿ÌÇ°µÄ4¸öÖÜÆÚµÄÆ½¾ùÓĞĞ§µçÁ÷Öµ
 
 
     for(ii = 0; ii < 12; ii++)
@@ -1043,7 +1058,7 @@ uint8_t fun_Judege_It_cache2(void)
 
 
         if(my_cmpar_value[0][ii] >= Current_D_value)
-            my_short_circuit_count++;  //ÖĞ¶ÏÊ±¿Ìºó£¬¶ÌÂ·ÖÜÆÚ¼ÆÊı
+            my_short_circuit_count2++;  //ÖĞ¶ÏÊ±¿Ìºó£¬¶ÌÂ·ÖÜÆÚ¼ÆÊı
         if(my_half_current_aver2[ii] <= my_HA_Zero_data && my_after_stop1_normal_count == 0)
             my_after_short_stop_count1++;  //ÖĞ¶ÏÊ±¿Ìºó£¬µÚÒ»´ÎÍ£µçÖÜÆÚ¼ÆÊı£¬Ìõ¼şÊÇÍ£µç£¬²¢ÇÒÎ´À´µç
         if(my_half_current_aver2[ii] > my_HA_Zero_data && my_after_short_stop_count1 > 0)
@@ -1100,19 +1115,26 @@ uint8_t fun_Judege_It_end(void)
     //¶ÌÂ·
     my_Fault_Current_End_Status = 0x00;
 
-    if(	my_befor_short_stop_count == 0 && my_short_circuit_count > 0 && my_short_circuit_count <= 25 && my_after_short_stop_count1 > 0  && my_after_stop1_normal_count == 0 && my_after_short_stop_count2 == 0 )
+    if(	my_befor_short_stop_count == 0 && my_short_circuit_count > 0 && my_short_circuit_count <= 12 && my_short_circuit_count2 <20&& my_after_short_stop_count1 > 0  && my_after_stop1_normal_count == 0 && my_after_short_stop_count2 == 0 )
         my_Fault_Current_End_Status = (0X01 | my_Fault_Current_End_Status); //£¨1£©--¶ÌÂ·1
 
-    if(my_befor_short_stop_count > 0 && my_short_circuit_count > 0 && my_after_short_stop_count1 == 0  && my_after_stop1_normal_count == 0  && my_after_short_stop_count2 == 0)
+    if(my_befor_short_stop_count > 0 && my_short_circuit_count > 0 && my_after_short_stop_count1 < 4  && my_after_stop1_normal_count == 0  && my_after_short_stop_count2 == 0)
         my_Fault_Current_End_Status = 0X02 | my_Fault_Current_End_Status; //£¨2£©--Í»ºÏ¸ºÔØÓ¿Á÷,²»±¨¾¯
 
     if(my_befor_500ms_normal_count > 0 && my_befor_short_stop_count > 0 && my_short_circuit_count > 0 && my_after_short_stop_count1 > 0  && my_after_stop1_normal_count == 0  && my_after_short_stop_count2 == 0)
-        my_Fault_Current_End_Status = 0X04 | my_Fault_Current_End_Status; //£¨3£©·Ç¹ÊÕÏÏàÖØºÏÕ¢Ó¿Á÷£¨²»³É¹¦£©,²»±¨¾¯
+        my_Fault_Current_End_Status = 0X04 | my_Fault_Current_End_Status; //£¨3£©·Ç¹ÊÕÏÏàÖØºÏÕ¢Ó¿Á÷£¨²»³É¹¦£©,²»±¨¾¯--¶ÌÂ·ÖĞ¶Ï
+		if(my_befor_500ms_normal_count > 0 && my_befor_short_stop_count == 0 && my_short_circuit_count ==0 && my_after_short_stop_count1 > 0  && my_after_stop1_normal_count > 0  && my_after_short_stop_count2 > 0)
+        my_Fault_Current_End_Status = 0X04 | my_Fault_Current_End_Status; //£¨3£©·Ç¹ÊÕÏÏàÖØºÏÕ¢Ó¿Á÷£¨²»³É¹¦£©,²»±¨¾¯--µç³¡ÖĞ¶Ï
+		
+		if(my_befor_500ms_normal_count > 0 && my_befor_short_stop_count > 0 && my_short_circuit_count > 0 && my_after_short_stop_count1 == 0  && my_after_stop1_normal_count == 0  && my_after_short_stop_count2 == 0)
+        my_Fault_Current_End_Status = 0X0E; //·Ç¹ÊÕÏÏàºÏÕ¢³É¹¦,²»±¨¾¯--¶ÌÂ·ÖĞ¶Ï
+		if(my_befor_500ms_normal_count > 0 && my_befor_short_stop_count ==0 && my_short_circuit_count == 0 && my_after_short_stop_count1 > 0  && my_after_stop1_normal_count > 0  && my_after_short_stop_count2 > 0)
+        my_Fault_Current_End_Status = 0X0E; //·Ç¹ÊÕÏÏàºÏÕ¢³É¹¦,²»±¨¾¯--µç³¡ÖĞ¶Ï
 
     if(my_befor_short_stop_count == 0 && my_short_circuit_count > 0 && my_after_short_stop_count1 == 0  && my_after_stop1_normal_count == 0  && my_after_short_stop_count2 == 0)
         my_Fault_Current_End_Status = 0X08 | my_Fault_Current_End_Status; //£¨4£©--¸ººÉË²¼äÍ»±ä£¬²»±¨¾¯
 
-    if(my_befor_short_stop_count == 0 && my_short_circuit_count > 30 && my_after_short_stop_count1 > 0 && my_after_stop1_normal_count == 0  && my_after_short_stop_count2 == 0)
+    if(my_befor_short_stop_count == 0 && my_short_circuit_count > 0 && my_short_circuit_count2 >=20 && my_after_short_stop_count1 > 0 && my_after_stop1_normal_count == 0  && my_after_short_stop_count2 == 0)
         my_Fault_Current_End_Status = 0X10 | my_Fault_Current_End_Status; //£¨5£©--ÈË¹¤Í¶ÇĞ´ó¸ººÉ,²»±¨¾¯
 
     if(my_befor_500ms_normal_count == 0 && my_befor_short_stop_count > 0 && my_short_circuit_count > 0 && my_after_short_stop_count1 > 0  && my_after_stop1_normal_count == 0  && my_after_short_stop_count2 == 0)
@@ -1120,16 +1142,14 @@ uint8_t fun_Judege_It_end(void)
 
 
     if(my_befor_short_stop_count == 0 && my_short_circuit_count > 0 && my_after_short_stop_count1 > 0  && my_after_stop1_normal_count > 0  && my_after_short_stop_count2 == 0)
-        my_Fault_Current_End_Status = 0X41 | my_Fault_Current_End_Status; //¶ÌÂ·2£¬ÖØºÏÕ¢³É¹¦
-
+        my_Fault_Current_End_Status = 0X41 | my_Fault_Current_End_Status; //¶ÌÂ·2£¬ÖØºÏÕ¢³É¹¦--¶ÌÂ·ÖĞ¶Ï
     if(my_befor_short_stop_count == 0 && my_short_circuit_count > 0 && my_after_short_stop_count1 > 0  && my_after_stop1_normal_count > 0  && my_after_short_stop_count2 > 0)
-        my_Fault_Current_End_Status = 0X81 | my_Fault_Current_End_Status; //¶ÌÂ·3£¬ÖØºÏÕ¢²»³É¹¦
+        my_Fault_Current_End_Status = 0X81 | my_Fault_Current_End_Status; //¶ÌÂ·3£¬ÖØºÏÕ¢²»³É¹¦--¶ÌÂ·ÖĞ¶Ï
 
 
 
 
-    if(my_befor_500ms_normal_count > 0 && my_befor_short_stop_count > 0 && my_short_circuit_count > 0 && my_after_short_stop_count1 == 0  && my_after_stop1_normal_count == 0  && my_after_short_stop_count2 == 0)
-        my_Fault_Current_End_Status = 0X0E; //·Ç¹ÊÕÏÏàºÏÕ¢³É¹¦,²»±¨¾¯
+    
 
 
 
@@ -1137,8 +1157,8 @@ uint8_t fun_Judege_It_end(void)
     //else
     //my_Fault_Current_End_Status=0X0E; //Î´Öª×´Ì¬
     //µç³¡ÅĞ¶Ï
-    if(my_E_fild_change_count > 0 && my_E_fild_min_count > 0 && my_after_short_stop_count1 == 0) //µç³¡µøÂä£¬µç³¡Ğ¡ÓÚÌØ¶¨Öµ£¬µçÁ÷Õı³££¬±¨½ÓµØ¹ÊÕÏ
-        my_Fault_E_Fild_End_Status = 0x01;
+    if(my_E_fild_change_count > 0 && my_E_fild_min_count > 0 && my_after_short_stop_count1 == 0) 
+        my_Fault_E_Fild_End_Status = 0x01; //µç³¡µøÂä£¬µç³¡Ğ¡ÓÚÌØ¶¨Öµ£¬µçÁ÷Õı³££¬±¨½ÓµØ¹ÊÕÏ
     else if(my_E_fild_change_count > 0 && my_E_fild_min_count > 0 && my_after_short_stop_count1 > 0)
         my_Fault_E_Fild_End_Status = 0x02; //µç³¡µøÂä£¬µ«ÊÇÃ»ÓĞµçÁ÷ÁË£¬Í£µç
 
@@ -1146,14 +1166,15 @@ uint8_t fun_Judege_It_end(void)
 #if Debug_Usart_OUT_WAVE_End_Just_Interupt==1
     printf("  I=[%XH],  E=[%XH]\r\n", my_Fault_Current_End_Status, my_Fault_E_Fild_End_Status);
     //printf("500ms  ¶ÌÂ·Ç°ÓĞµç=%d, Ç°Í£µç=%d, ¶ÌÂ·=%d, ¶ÌÂ·ºóÍ£µç=%d, Í£µçºóÕı³£=%d, Õı³£ºóÍ£µç=%d\r\n",
-    printf("500ms  frontX_A=%d, frontX_NOA=%d, short_circurt=%d, afterX_NOA=%d, afterNOA_normal=%d, afternorm_NOA=%d\r\n",
+    printf("500ms  frontX_A_A=%d, frontX_NOA_B=%d, short_circurt_C=%d, afterX_NOA_D=%d, afterNOA_normal_E=%d, afternorm_NOA_F=%d,short_circurt2-G=%d\r\n",
            my_befor_500ms_normal_count,
            my_befor_short_stop_count,
            my_short_circuit_count,
            my_after_short_stop_count1,
            my_after_stop1_normal_count,
-           my_after_short_stop_count2);
-    printf("¶ÌÂ·Ç°ÓĞµçA, ¶ÌÂ·Ç°Í£µçB, ¶ÌÂ·C, ¶ÌÂ·ºóÍ£µçD, Í£µçºóÕı³£E, Õı³£ºóÍ£µçF\n");
+           my_after_short_stop_count2,
+						my_short_circuit_count2);
+    printf("¶ÌÂ·Ç°ÓĞµç-A, ¶ÌÂ·Ç°Í£µç-B, ¶ÌÂ·-C, ¶ÌÂ·ºóÍ£µç-D, Í£µçºóÕı³£-E, Õı³£ºóÍ£µç-F\n");
 
 #endif
 
@@ -1313,28 +1334,42 @@ void my_fun_get_Line_stop_Efild(void)
     if(	my_Line_Current_stop_status == 3 && (my_Fault_Current_End_Status != 0 || my_Fault_E_Fild_End_Status != 0))
     {
         fun_wave2_to_wave3();
+				printf("==all return normal--1 A=%d  E=%d\n",my_Fault_Current_End_Status,my_Fault_E_Fild_End_Status);
         my_Fault_Current_End_Status = 00;
         my_Fault_E_Fild_End_Status = 00;
-        printf("==return normal--1 A=%d  E=%d\n",my_Fault_Current_End_Status,my_Fault_E_Fild_End_Status);
+       
         my_zsq_ALarm_send_status = 1;
         my_step = 0x0002; //·¢ËÍ±¨¾¯£¬ÏûÏ¢ÈÎÎñ
         xQueueSend(myQueue01Handle, &my_step, 100);
     }
+//¶ÌÂ·±¨¾¯»Ö¸´,Ö»¿¼ÂÇµçÁ÷£¬²»¿¼ÂÇµç³¡
+		else if(my_Line_Current_stop_status==2 && my_Fault_Current_End_Status != 0)
+		{
+				fun_wave2_to_wave3();
+				printf("==current return normal--1 A=%d  E=%d\n",my_Fault_Current_End_Status,my_Fault_E_Fild_End_Status);
+        my_Fault_Current_End_Status = 00;
+        //my_Fault_E_Fild_End_Status = 00;
+        
+        my_zsq_ALarm_send_status = 1;
+        my_step = 0x0002; //·¢ËÍ±¨¾¯£¬ÏûÏ¢ÈÎÎñ
+        xQueueSend(myQueue01Handle, &my_step, 100);
+			
+		}
 
 //Í£µç×´Ì¬ÉÏ´«
-    if(my_Line_Current_stop_status == 1 && my_Line_Current_stop_last_status == 0 ) //ÉÏ´ÎÕı³££¬ÏÖÔÚÍ£µç£¬ÉÏ´«
+    if(my_Line_Current_stop_status == 1 && my_Line_Current_stop_last_status == 3 ) //ÉÏ´ÎÕı³££¬ÏÖÔÚÍ£µç£¬ÉÏ´«
     {
         fun_wave2_to_wave3();
         my_Fault_Current_End_Status = 0xFE;
         my_Fault_E_Fild_End_Status = 0xFE;
-        my_Line_Current_stop_last_status = 1;
+        my_Line_Current_stop_last_status = 1; //Í£µç
         printf("==return normal--2---stop A=%d  E=%d\n",my_Fault_Current_End_Status,my_Fault_E_Fild_End_Status);
         my_zsq_ALarm_send_status = 1;
         my_step = 0x0002; //·¢ËÍ±¨¾¯£¬ÏûÏ¢ÈÎÎñ
         xQueueSend(myQueue01Handle, &my_step, 100);
     }
 //½ÓµØ×´Ì¬ÉÏ´«
-    else if(my_Line_Current_stop_status == 2 && my_Line_Current_stop_last_status == 0)
+    else if(my_Line_Current_stop_status == 2 && my_Line_Current_stop_last_status == 3)
     {
         my_E_Field_exit_add = my_E_fild_time_add;
         fun_wave2_to_wave3();
@@ -1348,10 +1383,10 @@ void my_fun_get_Line_stop_Efild(void)
 
     }
 //ÏßÂ·Õı³££¬ÀúÊ·Êı¾İ±ä»¯
-    else if(my_Line_Current_stop_status == 3 && my_Line_Current_stop_last_status != 0)
+    else if(my_Line_Current_stop_status == 3 && my_Line_Current_stop_last_status != 3)
     {
 
-        my_Line_Current_stop_last_status = 0; //°ÑÀúÊ·×´Ì¬£¬»Ö¸´Îª×îĞÂ×´Ì¬
+        my_Line_Current_stop_last_status = 3; //°ÑÀúÊ·×´Ì¬£¬»Ö¸´Îª×îĞÂ×´Ì¬
     }
 
 

@@ -40,6 +40,9 @@ extern uint8_t my_UART3_Status;
 extern uint8_t my_use_alarm_rec_data_status_Efild;
 extern double ADC2_Filer_value_buf_2[ADC2_COLM][3];
 
+extern uint8_t my_Fault_Current_End_Status ; //
+extern uint8_t my_Fault_E_Fild_End_Status;
+
 uint16_t  my_GPRS_all_step = 0;
 uint8_t my_GPRS_all_count = 0;
 
@@ -414,9 +417,10 @@ void my_fun_TX_CC1101_test2(void)  //遥测 交流有效值
 		
 #if Debug_Usart_out_ADCdata==1
 		//@@@ 发送显示数据AC，到调试串口
-    printf("All_A:AVR=%.2f, RMS=%.2f, MAX=%.2f, \n", ADC2_Filer_value_buf_2[0][0], ADC2_Filer_value_buf_2[0][1], ADC2_Filer_value_buf_2[0][2]);
-    printf("ALL_E:AVR=%.2f, RMS=%.2f, MAX=%.2f, \n", ADC2_Filer_value_buf_2[1][0], ADC2_Filer_value_buf_2[1][1], ADC2_Filer_value_buf_2[1][2]);
-    printf("Hal_A:AVR=%.2f, RMS=%.2f, MAX=%.2f, \n", ADC2_Filer_value_buf_2[2][0], ADC2_Filer_value_buf_2[2][1], ADC2_Filer_value_buf_2[2][2]); 
+    printf("2All_A:AVR=%.2f, RMS=%.2f, MAX=%.2f, \n", ADC2_Filer_value_buf_2[0][0], ADC2_Filer_value_buf_2[0][1], ADC2_Filer_value_buf_2[0][2]);
+    printf("2ALL_E:AVR=%.2f, RMS=%.2f, MAX=%.2f, \n", ADC2_Filer_value_buf_2[1][0], ADC2_Filer_value_buf_2[1][1], ADC2_Filer_value_buf_2[1][2]);
+    printf("2Hal_A:AVR=%.2f, RMS=%.2f, MAX=%.2f, \n", ADC2_Filer_value_buf_2[2][0], ADC2_Filer_value_buf_2[2][1], ADC2_Filer_value_buf_2[2][2]); 
+		printf("A_status=%X, E_status=%X\n",my_Fault_Current_End_Status,my_Fault_E_Fild_End_Status);
 #endif
 
 

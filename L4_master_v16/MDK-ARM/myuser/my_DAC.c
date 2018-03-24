@@ -35,6 +35,7 @@ extern double my_adjust_5_a;
 extern double my_adjust_5_b;
 
 extern double my_I_100A_Radio;
+
 extern double my_i_5a_radio;//0.857517365; 
 extern double my_i_50a_radio;//0.770811922;
 extern double my_i_300a_radio;//0.770811922;
@@ -211,6 +212,7 @@ void my_fun_DAC_evref_auto_ajust(void)
 #endif
 		
 		
+		//my_DAC_cyc_time=17;
 		my_DAC_cyc_time=17;
 		
 		

@@ -74,6 +74,7 @@ void my_adc_1_convert(void)
 /*
 功能：把ADC1对应的6个通道的物理值串口输出
 */
+extern int my_CC1101_RSSI;
 void my_adc_1_convert_dis(uint8_t convert_status)
 {
 
@@ -81,8 +82,9 @@ void my_adc_1_convert_dis(uint8_t convert_status)
         my_adc_1_convert();
     //=============USART2==debug
     printf(" DC:GANbat=%.2f, Zaixian=% .2f, sunbat=%.2f, Libat=%.2f, V1V2=%.2f\n",ADC1_Filer_value_buf[3],ADC1_Filer_value_buf[4],ADC1_Filer_value_buf[5],ADC1_Filer_value_buf[6],ADC1_Filer_value_buf[7]);
-    printf(" DC:Temp=%.2f,vbat=%.2f,vref=%.2f\n",ADC1_Filer_value_buf[0],ADC1_Filer_value_buf[1],ADC1_Filer_value_buf[2]);  
-    printf("\r\n");
+    printf(" DC:Temp=%.2f,vbat=%.2f,vref=%.2f, RSSI=%d\n",ADC1_Filer_value_buf[0],ADC1_Filer_value_buf[1],ADC1_Filer_value_buf[2],my_CC1101_RSSI);  
+	
+    printf("\n");
 }
 
 

@@ -537,8 +537,12 @@ void StartTask08(void const * argument)
     uint8_t my_status = 0;
     uint8_t temp8 = 0;
     uint16_t my_step = 0;
-    HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启
+    HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启@@@
+		if(my_use_Jiedi_exit_status==1)
     HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn); //接地中断开启
+		else
+		HAL_NVIC_DisableIRQ(EXIT_jiedi_EXTI_IRQn);
+		
     HAL_TIM_Base_Start_IT(&htim6);  //开启tim6定时器,1s
     double my_temp_double = 0;
     for(;;)
@@ -600,8 +604,11 @@ void StartTask08(void const * argument)
                 __HAL_GPIO_EXTI_CLEAR_IT(EXIT_jiedi_Pin);
 
 
-               HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启
-                HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn); //接地中断开启
+               HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启@@@
+               		if(my_use_Jiedi_exit_status==1)
+								HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn); //接地中断开启
+								else
+								HAL_NVIC_DisableIRQ(EXIT_jiedi_EXTI_IRQn);
 
                 //进入数据发送环节@@@@@@@
 								printf("interrrupt is alarm\n");
@@ -633,12 +640,15 @@ void StartTask08(void const * argument)
                 __HAL_GPIO_EXTI_CLEAR_IT(EXIT_jiedi_Pin);
 
 
-                HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启
-                HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn); //接地中断开启
+                HAL_NVIC_EnableIRQ(EXIT_dianliu_EXTI_IRQn); //短路中断开启@@@@@
+                if(my_use_Jiedi_exit_status==1)
+								HAL_NVIC_EnableIRQ(EXIT_jiedi_EXTI_IRQn); //接地中断开启
+								else
+								HAL_NVIC_DisableIRQ(EXIT_jiedi_EXTI_IRQn);
 
 
                 //设定模拟报警数据
-                my_Fault_Current_End_Status = 0XF2;  //中断，但是不是报警实践
+                my_Fault_Current_End_Status = 0XF2;  //中断，但是不是报警,是周期或者线路恢复正常
 
                 //进入数据发送环节@@@@@@@
 								printf("interrrupt is alarm--NO\n");

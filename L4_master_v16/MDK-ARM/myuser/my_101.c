@@ -498,7 +498,7 @@ void my_fun_101send_Alarm_status_data(UART_HandleTypeDef* USARTx, uint8_t my_sta
 		if(my_cyc_alarm_status==1 && my_contorl_byte==0x02)
 		{
 			
-			my_data[0]=0XF0;
+			my_data[0]=0XF0;  //周期发送录波数据数据
 			my_cyc_alarm_status=0;
 		}
 		
